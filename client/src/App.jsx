@@ -29,8 +29,8 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/dashboard" element={<ProtectedRoute><OwnerDashboard /></ProtectedRoute>} />
           <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
-          <Route path="/addHostel" element={<AddHostel />} />
-          <Route path="/hostel" element={<HostelList />} />
+          <Route path="/addHostel" element={<ProtectedRoute><AddHostel /></ProtectedRoute>} />
+          <Route path="/hostel" element={<ProtectedRoute><HostelList /></ProtectedRoute>} />
         </Routes>
       </Router>
     </AuthProvider>
