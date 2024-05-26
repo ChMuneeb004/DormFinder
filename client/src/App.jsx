@@ -30,7 +30,7 @@ function App() {
           <Route path="/dashboard" element={<ProtectedRoute><OwnerDashboard /></ProtectedRoute>} />
           <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
           <Route path="/addHostel" element={<ProtectedRoute><AddHostel /></ProtectedRoute>} />
-          <Route path="/hostel" element={<ProtectedRoute><HostelList /></ProtectedRoute>} />
+          <Route path="/hostel" element={<HostelList />} />
         </Routes>
       </Router>
     </AuthProvider>
