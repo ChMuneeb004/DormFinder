@@ -1,0 +1,14 @@
+/* @tailwind base;
+@tailwind component;
+@tailwind utilities; */
+
+@font-face {
+    font-family: Dormfinder_main_heading_font;
+    src: url(fonts/LexendDecaRegular.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: account_font;
+    src: url(fonts/Poppins-Medium.ttf);
+}
+

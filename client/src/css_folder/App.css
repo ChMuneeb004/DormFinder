@@ -1,0 +1,79 @@
+/* LoginPage.css */
+body {
+  background-color: #fafafa;
+}
+
+.main-container {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+
+.login-box {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-heading {
+  color: #000000cc;
+  margin-bottom: 10px;
+  margin-right: 20px;
+}
+
+.login-subtitle {
+  color: #6c757d;
+  margin-bottom: 30px;
+  margin-right: 20px;
+  font-size: 12px;
+}
+
+.login-button {
+  background-color: #F4BF96;
+  border-color: #F4BF96;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.login-button:hover {
+  background-color: #b14956;
+  border-color: #b14956;
+  
+}
+
+.signup-button {
+  background-color: #F4BF96;
+  border-color: #F4BF96;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.signup-button:hover {
+  background-color: #b14956;
+  border-color: #b14956;
+}
+
+.form-check-label {
+  margin-left: 0px;
+  color: #6c757d;
+}
+
+.forgot-password-link {
+  color: #6c757d;
+  float: right;
+}
+
+@media (max-width: 576px) {
+  .login-box {
+    padding: 20px;
+  }
+
+  /* .login-heading {
+    font-size: 1.5rem;
+  } */
+
+  /* .login-subtitle {
+    font-size: 1rem;
+  } */
+}

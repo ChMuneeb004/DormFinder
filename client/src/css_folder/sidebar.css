@@ -1,0 +1,206 @@
+/* Sidebar.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.logout-button {
+    text-align: center;
+}
+
+.logout-button .btn {
+    align-items: center;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.logout-button .btn i {
+    margin-right: 5px;
+}
+
+.nav-link {
+    align-items: center;
+    background-color: #F2EAE1;
+    border-radius: 5px;
+    color: #333;
+    display: flex;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    align-self: center;
+
+}
+
+.nav-link.active,
+.nav-link:hover {
+    background-color: #e9ecef;
+}
+
+.nav-link i {
+    background-color: #F2EAE1;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.nav-toggle {
+    display: none;
+}
+
+.navbar {
+    background-color: #F2EAE1;
+}
+
+.navbar-nav {
+    background-color: #F2EAE1;
+    list-style: none;
+    width: 100%;
+}
+
+.profiles {
+    background-color: #F2EAE1;
+    border: none;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.profiles-picture {
+    border-radius: 50%;
+    height: 100px;
+    margin-bottom: 10px;
+    width: 100px;
+}
+
+.role {
+    color: orange;
+    font-size: 14px;
+    margin: 0;
+}
+
+.side {
+    background-color: #F2EAE1;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    left: 0;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    width: 250px;
+}
+
+.username {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Media Queries */
+@media (max-width: 770px) {
+    .logout-button {
+        text-align: center;
+    }
+
+    .logout-button .btn {
+        align-items: center;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        width: 50%;
+    }
+
+    .logout-button .btn i {
+        margin-right: 5px;
+    }
+
+    .nav-link {
+        background-color: #F2EAE1;
+        border-radius: 5px;
+        color: #333;
+        display: block;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 5px 0;
+        padding: 10px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .nav-link.active,
+    .nav-link:hover {
+        background-color: #e9ecef;
+    }
+
+    .nav-link i {
+        background-color: #F2EAE1;
+        font-size: 18px;
+        margin-right: 10px;
+    }
+
+    .nav-toggle {
+        background: none;
+        border: 10px;
+        border-color: #333;
+        cursor: pointer;
+        display: inline;
+        font-size: 15px;
+        margin: 10px;
+        text-align: center;
+    }
+
+    .Navv {
+        background-color: #F2EAE1;
+        display: none;
+        flex-direction: column;
+        list-style: none;
+        width: 100%;
+    }
+
+    .Navv.show {
+        display: flex;
+    }
+
+    .profiles {
+        background-color: #F2EAE1;
+        border: none;
+        height: 100px;
+        margin-bottom: 20px;
+        text-align: center;
+        width: 100px;
+    }
+
+    .profiles-picture {
+        border-radius: 50%;
+        height: 70px;
+        margin-bottom: 10px;
+        width: 70px;
+    }
+
+    .role {
+        color: orange;
+        font-size: 12px;
+        font-style: italic;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .side {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        justify-content: flex-start;
+        left: 0;
+        padding: 20px;
+        position: relative;
+        top: 0;
+        width: 100%;
+    }
+
+    .username {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0;
+    }
+}

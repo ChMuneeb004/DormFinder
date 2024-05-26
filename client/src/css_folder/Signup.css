@@ -1,0 +1,155 @@
+.signupPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+@font-face {
+  font-family: account_font;
+  src: url(fonts/Poppins-Medium.ttf);
+}
+
+h1 {
+  font-family: account_font;
+  margin-bottom: 10px; 
+  font-size: 35px;
+  font-weight: normal;
+}
+
+.stepper {
+  width: 35%;
+  height: auto;
+  margin-top: 30px;
+}
+
+form {
+  margin-top: 25px;
+  width: 100%; 
+  max-width: 300px; 
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  margin-bottom: 0.5rem;
+  font-weight: normal;
+  margin-left: 5px;
+  font-size: 14px; 
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: 10px; 
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+.phone {
+  padding: 10px; 
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+.button {
+  padding: 10px 20px; 
+  border: none;
+  border-radius:111px;
+  background-color: #F4BF96;
+  color: white;
+  cursor: pointer;
+  width: 100%; 
+  max-width: 300px; 
+  margin-bottom: 10px;
+  transition: background-color 0.3s; 
+}
+
+link {
+  padding: 10px 20px; 
+  border: none;
+  border-radius: 30px;
+  background-color: #F4BF96;
+  color: white;
+  cursor: pointer;
+  width: 100%; 
+  max-width: 300px; 
+  margin-bottom: 10px;
+  transition: background-color 0.3s; 
+}
+
+button:hover {
+  background-color: #fab885;
+}
+
+.select-container {
+  width: 100%;
+  padding: 10px; 
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+select {
+  width: 10%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  appearance: none;
+}
+
+option {
+  padding: 10px;
+  font-size: 16px;
+}
+
+
+select:focus {
+  outline: none;
+  border-color: #ccc;
+}
+
+.vectors {
+  margin-top: 38px;
+}
+
+
+.profile {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  margin-bottom: 20px; 
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px; 
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+
+.border-image-box {
+width: 300px;
+height: 200px;
+border: 100px solid transparent;
+border-image: url('C:\Users\Public\COMMON\FYP\FYP DormFinder\client\src\media\Vectors.png') ; /* Replace with your image URL */
+/* Explanation:
+ * '30' is the slice value (can be in percentage or pixels)
+ * 'round' makes sure the image is repeated to fill the border area
+ */
+}

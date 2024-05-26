@@ -1,0 +1,60 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  
+}
+
+.background {
+  background-image: url("../media/maps.png");
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ 
+}
+
+@font-face {
+  font-family: theHeading;
+  src: url("../fonts/OdorMeanChey-Regular.ttf");
+}
+
+.heading {
+  /* margin-bottom: 10px; */
+  color: black;
+  font-size: 36px;
+  font-family: theHeading;
+  margin-top: 150px;
+}
+
+.form-group {
+  width: 100%;
+  max-width: 450px;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+}
+
+button {
+  padding: 6px;
+  background-color: #f19148;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 20%;
+}
+
+button:hover {
+  background-color: #1e5ea6;
+}

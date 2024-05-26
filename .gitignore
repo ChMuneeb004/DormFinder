@@ -1,0 +1,29 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Ignore node_modules and dist folders inside the client and server folders
+client/node_modules/
+client/dist/
+server/node_modules/
+server/dist/
+
+# Ignore other files and folders inside the client and server folders
+client/*.local
+server/*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
