@@ -50,8 +50,9 @@ const AddHostel = () => {
             console.log(`${key}: ${value}`);
         }
 
+
         try {
-            const response = await axios.post("http://localhost:3001/listHostel", formData, {
+            const response = await axios.post(import.meta.env.VITE_REACT_APP_BASEURL+"/listHostel", formData, {
                 headers: {
                     Authorization: `Bearer ${auth.token}`,
                     'Content-Type': 'multipart/form-data'
