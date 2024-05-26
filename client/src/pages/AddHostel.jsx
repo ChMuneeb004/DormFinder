@@ -15,21 +15,61 @@ const AddHostel = () => {
         description: '',
         images: [],
         number_of_rooms: '',
-        contact: ''
+        contact: '',
+        rooms: [
+            { type: 'double', price: '', availability: false },
+            { type: 'triple', price: '', availability: false },
+            { type: 'quadruple', price: '', availability: false },
+        ],
+        amenities: {
+            air_condition_check: false,
+            air_cooler_check: false,
+            kitchen_check: false,
+            gasoline_check: false,
+            water_cooler_check: false,
+            attached_bathroom_check: false
+        }
     });
 
     const handleChange = (e) => {
-        const { id, value, files } = e.target;
+        const { id, value, files, type, checked, name } = e.target;
         if (files) {
             setHostel({
                 ...hostel,
                 [id]: Array.from(files),
             });
+        } else if (type === 'checkbox') {
+            if (name.startsWith('room')) {
+                const index = parseInt(name.split('-')[1], 10);
+                setHostel(prevState => ({
+                    ...prevState,
+                    rooms: prevState.rooms.map((room, i) =>
+                        i === index ? { ...room, availability: checked } : room
+                    )
+                }));
+            } else {
+                setHostel(prevState => ({
+                    ...prevState,
+                    amenities: {
+                        ...prevState.amenities,
+                        [id]: checked
+                    }
+                }));
+            }
+        } else if (name.startsWith('room')) {
+            const index = parseInt(name.split('-')[1], 10);
+            const field = name.split('-')[2]; // Extract the field type from the name
+            setHostel(prevState => ({
+                ...prevState,
+                rooms: prevState.rooms.map((room, i) =>
+                    i === index ? { ...room, [field]: value } : room // Dynamically set the field value
+                )
+            }));
         } else {
-            setHostel({
-                ...hostel,
+            setHostel(prevState => ({
+                ...prevState,
                 [id]: value
-            });
+            }));
         }
     };
 
@@ -41,6 +81,8 @@ const AddHostel = () => {
         formData.append('description', hostel.description);
         formData.append('number_of_rooms', hostel.number_of_rooms);
         formData.append('contact', hostel.contact);
+        formData.append('roomTypes', JSON.stringify(hostel.roomTypes));
+        formData.append('amenities', JSON.stringify(hostel.amenities));
 
         for (const image of hostel.images) {
             formData.append('images', image);
@@ -50,15 +92,38 @@ const AddHostel = () => {
             console.log(`${key}: ${value}`);
         }
 
-
         try {
-            const response = await axios.post("http://localhost:3001/listHostel", formData, {
+            const hostelResponse = await axios.post("http://localhost:3001/listHostel", formData, {
                 headers: {
                     Authorization: `Bearer ${auth.token}`,
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log('Hostel added successfully:', response.data);
+
+            const hostelId = hostelResponse.data._id;
+
+            // Create Rooms
+            await axios.post("http://localhost:3001/listRooms", {
+                rooms: JSON.stringify(hostel.rooms),
+                hostelId
+            }, {
+                headers: {
+                    Authorization: `Bearer ${auth.token}`
+                }
+            });
+
+            // Create Amenities
+            await axios.post("http://localhost:3001/listAmenities", {
+                amenities: JSON.stringify(hostel.amenities),
+                hostelId
+            }, {
+                headers: {
+                    Authorization: `Bearer ${auth.token}`
+                }
+            });
+
+            console.log('Hostel, rooms, and amenities added successfully');
+            console.log('Hostel added successfully:', hostelResponse.data);
         } catch (error) {
             console.error('There was an error adding the hostel!', error);
         }
@@ -140,6 +205,77 @@ const AddHostel = () => {
                                 />
                             </Form.Group>
 
+                             <Form.Group>
+                                <Form.Label>Room Types</Form.Label>
+                                {hostel.rooms.map((room, index) => (
+                                    <div key={index}>
+                                        <Form.Check
+                                            type="checkbox"
+                                            label={`${room.type.charAt(0).toUpperCase() + room.type.slice(1)} Room`}
+                                            name={`room-${index}`}
+                                            checked={room.availability}
+                                            onChange={handleChange}
+                                        />
+                                        {room.availability && (
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="Enter price"
+                                                name={`room-${index}-price`}
+                                                value={room.price}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        )}
+                                    </div>
+                                ))}
+                            </Form.Group>
+
+                            <Form.Group>
+                                <Form.Label>Amenities</Form.Label>
+                                <Form.Check
+                                    type="checkbox"
+                                    label="Air Condition"
+                                    id="air_condition_check"
+                                    checked={hostel.amenities.air_condition_check}
+                                    onChange={handleChange}
+                                />
+                                <Form.Check 
+                                    type="checkbox"
+                                    label="Air Cooler"
+                                    id="air_cooler_check"
+                                    checked={hostel.amenities.air_cooler_check}
+                                    onChange={handleChange}
+                                />
+                                <Form.Check 
+                                    type="checkbox"
+                                    label="Kitchen"
+                                    id="kitchen_check"
+                                    checked={hostel.amenities.kitchen_check}
+                                    onChange={handleChange}
+                                />
+                                <Form.Check 
+                                    type="checkbox"
+                                    label="Gasoline"
+                                    id="gasoline_check"
+                                    checked={hostel.amenities.gasoline_check}
+                                    onChange={handleChange}
+                                />
+                                <Form.Check 
+                                    type="checkbox"
+                                    label="Water Cooler"
+                                    id="water_cooler_check"
+                                    checked={hostel.amenities.water_cooler_check}
+                                    onChange={handleChange}
+                                />
+                                <Form.Check 
+                                    type="checkbox"
+                                    label="Attached Bathroom"
+                                    id="attached_bathroom_check"
+                                    checked={hostel.amenities.attached_bathroom_check}
+                                    onChange={handleChange}
+                                />
+                            </Form.Group>
+
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
@@ -147,7 +283,7 @@ const AddHostel = () => {
                     </Col>
                 </Row>
             </Container>
-        </div>
+        </div> 
         );
 
 

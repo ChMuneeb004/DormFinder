@@ -8,6 +8,9 @@ const HostelModel = require("./models/Hostel")
 const multer = require("multer")
 const path = require("path")
 const jwt = require('jsonwebtoken')
+const RoomModel = require("./models/Rooms")
+const amenitiesModel = require("./models/facility")
+
 
 const app = express()
 app.use(express.json())
@@ -81,8 +84,9 @@ app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) =>
     }
 
     try {
-        const { name, location, description, number_of_rooms, contact, amenities } = req.body;
+        const { name, location, description, number_of_rooms, contact } = req.body;
         let images = [];
+        
 
         if (req.files && req.files.length > 0) {
             images = req.files.map(file => ({ data: file.buffer, contentType: file.mimetype }));
@@ -90,12 +94,7 @@ app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) =>
             return res.status(400).json({ error: 'No files were sent in the request.' });
         }
 
-        const rooms = req.body.rooms.map(room => ({
-            type: room.type,
-            price: room.price,
-            availability: room.availability
-        }));
-
+        
         const hostel = await HostelModel.create({
             name,
             location,
@@ -103,11 +102,12 @@ app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) =>
             images,
             number_of_rooms,
             contact,
-            amenities,
-            rooms,
+            // amenities,
+            // rooms,
             ownerEmail: req.email // associate hostel with the owner's email
         });
         res.status(201).json(hostel);
+        
     } catch (err) {
         console.error('Error creating hostel:', err);
         if (err.name === 'ValidationError') {
@@ -116,6 +116,106 @@ app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) =>
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+app.post('/listRooms', verifyToken, async (req, res) => {
+    if (req.userType !== 'owner') {
+        return res.status(403).json({ error: 'Forbidden', message: 'Only owners can add rooms' });
+    }
+
+    try {
+        const { rooms: roomsString, hostelId } = req.body;
+        const rooms = JSON.parse(roomsString);
+        const roomsWithIds = await RoomModel.insertMany(rooms.map(room => ({ 
+            ...room, 
+            hostel_id: hostelId, // Use the id of the hostel
+            room_type: room.type, // Use the type of the room
+            price: room.price, // Use the price of the room
+            availability: room.availability // Use the availability of the room
+        })));
+        res.status(201).json(roomsWithIds);
+    } catch (err) {
+        console.error('Error creating rooms:', err);
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({ error: 'Validation Error', message: err.message });
+        }
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.post('/listAmenities', verifyToken, async (req, res) => {
+    if (req.userType !== 'owner') {
+        return res.status(403).json({ error: 'Forbidden', message: 'Only owners can add amenities' });
+    }
+
+    try {
+        const { amenities, hostelId } = req.body;
+        const amenitiesData = { ...JSON.parse(amenities), hostel_id: hostelId };
+        const createdAmenities = await amenitiesModel.create(amenitiesData);
+        res.status(201).json(createdAmenities);
+    } catch (err) {
+        console.error('Error creating amenities:', err);
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({ error: 'Validation Error', message: err.message });
+        }
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) => {
+//     if (req.userType !== 'owner') {
+//         return res.status(403).json({ error: 'Forbidden', message: 'Only owners can add hostels' });
+//     }
+
+//     try {
+//         const { name, location, description, number_of_rooms, contact, amenities: amenitiesString, rooms: roomsString } = req.body;
+//         let images = [];
+
+//         if (req.files && req.files.length > 0) {
+//             images = req.files.map(file => ({ data: file.buffer, contentType: file.mimetype }));
+//         } else {
+//             return res.status(400).json({ error: 'No files were sent in the request.' });
+//         }
+
+//         const amenities = amenitiesString ? JSON.parse(amenitiesString) : {};
+//         const rooms = roomsString ? JSON.parse(roomsString).map(room => ({
+//             type: room.type,
+//             price: room.price,
+//             availability: room.availability
+//         })) : [];
+
+//         const hostel = await HostelModel.create({
+//             name,
+//             location,
+//             description,
+//             images,
+//             number_of_rooms,
+//             contact,
+//             ownerEmail: req.email // associate hostel with the owner's email
+//         });
+
+//         await RoomModel.insertMany(rooms.map(room => ({ ...room, hostel: hostel._id })));
+//         const amenitiesData = {
+//             ...amenities,
+//             hostel: hostel._id,
+//             attached_bathroom_check: amenities.attached_bathroom,
+//             water_cooler_check: amenities.water_cooler,
+//             gasoline_check: amenities.gasoline,
+//             kitchen_check: amenities.kitchen,
+//             air_cooler_check: amenities.air_cooler,
+//             air_condition_check: amenities.air_condition
+//         };
+//         await amenitiesModel.create(amenitiesData);
+
+//         res.status(201).json(hostel);
+//     } catch (err) {
+//         console.error('Error creating hostel:', err);
+//         if (err.name === 'ValidationError') {
+//             return res.status(400).json({ error: 'Validation Error', message: err.message });
+//         }
+//         return res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
+
 
 
 app.get('/gethostels', verifyToken, async (req, res) => {

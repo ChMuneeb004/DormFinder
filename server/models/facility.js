@@ -30,11 +30,12 @@ const AmenitiesSchema = new mongoose.Schema({
         type: Boolean,
         required: [true, 'Attached bathroom check is required']
     },
-    room_id: {
+    hostel_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Room',
-        required: [true, 'Room ID is required']
+        ref: 'Hostel',
+        required: [true, 'Hostel ID is required']
     }
+
 });
 
 const AmenitiesModel = mongoose.model("Amenities", AmenitiesSchema);

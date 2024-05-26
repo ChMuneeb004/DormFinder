@@ -39,6 +39,11 @@ body {
     padding: 40px;
 }
 
+form-check input[type=checkbox], .form-check-radio input[type=radio] {
+    opacity: 100;
+    position: absolute;
+}
+
 @media (max-width: 768px) {
     .sidebar {
         width: 100%;
