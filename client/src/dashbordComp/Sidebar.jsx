@@ -35,11 +35,13 @@ function Sidebar() {
 
     return (
         <div className="side">
-            <div className="profiles">
-                <img src={Profile} alt="profile" className="profiles-picture" />
-                <h3 className='text-body-emphasis username'>{username}</h3>
-                <p className='role'>Owner</p>
-            </div>
+            <Link to="/Profile-settings">
+                <div className="profiles">
+                    <img src={Profile} alt="profile" className="profiles-picture" />
+                    <h3 className='text-body-emphasis username'>{username}</h3>
+                    <p className='role'>Owner</p>
+                </div>
+            </Link>
             <button className="nav-toggle border-1" onClick={handleToggle}>
                 <i className="fa fa-bars text-white"></i>
             </button>

@@ -10,6 +10,7 @@ const path = require("path")
 const jwt = require('jsonwebtoken')
 const RoomModel = require("./models/Rooms")
 const amenitiesModel = require("./models/facility")
+const bcrypt = require('bcrypt')
 
 
 const app = express()
@@ -333,6 +334,66 @@ app.post('/signupCustomer', async (req, res) => {
         if (err.name === 'ValidationError') {
             return res.status(400).json({ error: 'Validation Error', message: err.message });
         }
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/profile', verifyToken, async (req, res) => {
+    try {
+        let user;
+        if (req.userType === 'customer') {
+            user = await CustomerModel.findOne({ email: req.email });
+        } else if (req.userType === 'owner') {
+            user = await OwnerModel.findOne({ email: req.email });
+        }
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({
+            email: user.email,
+            username: user.username,
+            contactNumber: user.Phone,
+            dateOfBirth: user.DOB,
+            cnic: user.CNIC,
+            userType: user.userType
+        });
+    } catch (err) {
+        console.error('Error fetching user profile:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.put('/profile', verifyToken, async (req, res) => {
+    const { username, password, contactNumber, dateOfBirth } = req.body;
+    try {
+        const updateData = {
+            username,
+            Phone: contactNumber,
+            DOB: dateOfBirth
+        };
+
+        if (password) {
+            // Encrypt the password before saving it
+            const salt = await bcrypt.genSalt(10);
+            updateData.password = await bcrypt.hash(password, salt);
+        }
+
+        let user;
+        if (req.userType === 'customer') {
+            user = await CustomerModel.findOneAndUpdate({ email: req.email }, updateData, { new: true });
+        } else if (req.userType === 'owner') {
+            user = await OwnerModel.findOneAndUpdate({ email: req.email }, updateData, { new: true });
+        }
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'Profile updated successfully' });
+    } catch (err) {
+        console.error('Error updating user profile:', err);
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 });

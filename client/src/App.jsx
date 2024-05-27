@@ -18,6 +18,7 @@ import HostelList from './dashbordComp/hostellist.jsx';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './contexts/ProtectedRoute';
 import DashboardHomePage from './pages/Dashboard.jsx';
+import Profiles from './dashbordComp/Profile.jsx';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/addHostel" element={<AddHostel />} />
           <Route path="/hostel" element={<HostelList />} />
           <Route path="/Dashboard/Home" element={<DashboardHomePage />} />
+          <Route path="/Profile-settings" element={<Profiles />} />
         </Routes>
       </Router>
     </AuthProvider>
