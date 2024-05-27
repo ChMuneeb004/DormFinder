@@ -1,13 +1,13 @@
 import React from 'react';
 import { Container, Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
-// import students from '../CustomerPage/students.jpg';
+// import studentImage from '../assets/student.jpg'; //
 
 const SearchBar = () => {
     return (
         <div>
             <Container className="text-center my-4">
-                <Row>
-                    <Col>
+                <Row className="justify-content-center align-items-center">
+                    <Col xs={12} md={8} lg={6}>
                         <h1>The home of student accommodation</h1>
                         <p>Search UK's No1 Student Accommodation Website</p>
                         <InputGroup className="mb-3">
@@ -17,10 +17,12 @@ const SearchBar = () => {
                             />
                             <Button variant="warning">Search</Button>
                         </InputGroup>
-                        <div>
-                            <img src="../CustomerPage/students.jpg" alt="Trustpilot" className="mr-2"/>
-                            <span>Great</span>
-                            <span className="ml-2">Trustpilot</span>
+                    </Col>
+                    <Col xs={12} md={4} className="text-md-left text-center mt-3 mt-md-0">
+                        <div className="d-flex justify-content-center justify-content-md-start">
+                            <img src="students.png" alt="Trustpilot" className="img-fluid mr-2" />
+                            <div className="d-flex flex-column justify-content-center">
+                            </div>
                         </div>
                     </Col>
                 </Row>
