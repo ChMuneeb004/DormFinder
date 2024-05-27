@@ -53,32 +53,6 @@ function verifyToken(req, res, next) {
     }
 }
 
-
-
-
-// app.post('/listHostel', upload.array('images'), async (req, res) => {
-//     console.log(req.files, req.body);
-//     try {
-//         const { name, location, description, number_of_rooms, contact } = req.body;
-//         let images = [];
-        
-//         if (req.files && req.files.length > 0) {
-//             images = req.files.map(file => ({ data: file.buffer, contentType: file.mimetype }));
-//         } else {
-//             return res.status(400).json({ error: 'No files were sent in the request.' });
-//         }
-
-//         const hostel = await HostelModel.create({ name, location, description, images, number_of_rooms, contact });
-//         res.status(201).json(hostel);
-//     } catch (err) {
-//         console.error('Error creating hostel:', err);
-//         if (err.name === 'ValidationError') {
-//             return res.status(400).json({ error: 'Validation Error', message: err.message });
-//         }
-//         return res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
-
 app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) => {
     if (req.userType !== 'owner') {
         return res.status(403).json({ error: 'Forbidden', message: 'Only owners can add hostels' });
@@ -162,61 +136,6 @@ app.post('/listAmenities', verifyToken, async (req, res) => {
     }
 });
 
-// app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) => {
-//     if (req.userType !== 'owner') {
-//         return res.status(403).json({ error: 'Forbidden', message: 'Only owners can add hostels' });
-//     }
-
-//     try {
-//         const { name, location, description, number_of_rooms, contact, amenities: amenitiesString, rooms: roomsString } = req.body;
-//         let images = [];
-
-//         if (req.files && req.files.length > 0) {
-//             images = req.files.map(file => ({ data: file.buffer, contentType: file.mimetype }));
-//         } else {
-//             return res.status(400).json({ error: 'No files were sent in the request.' });
-//         }
-
-//         const amenities = amenitiesString ? JSON.parse(amenitiesString) : {};
-//         const rooms = roomsString ? JSON.parse(roomsString).map(room => ({
-//             type: room.type,
-//             price: room.price,
-//             availability: room.availability
-//         })) : [];
-
-//         const hostel = await HostelModel.create({
-//             name,
-//             location,
-//             description,
-//             images,
-//             number_of_rooms,
-//             contact,
-//             ownerEmail: req.email // associate hostel with the owner's email
-//         });
-
-//         await RoomModel.insertMany(rooms.map(room => ({ ...room, hostel: hostel._id })));
-//         const amenitiesData = {
-//             ...amenities,
-//             hostel: hostel._id,
-//             attached_bathroom_check: amenities.attached_bathroom,
-//             water_cooler_check: amenities.water_cooler,
-//             gasoline_check: amenities.gasoline,
-//             kitchen_check: amenities.kitchen,
-//             air_cooler_check: amenities.air_cooler,
-//             air_condition_check: amenities.air_condition
-//         };
-//         await amenitiesModel.create(amenitiesData);
-
-//         res.status(201).json(hostel);
-//     } catch (err) {
-//         console.error('Error creating hostel:', err);
-//         if (err.name === 'ValidationError') {
-//             return res.status(400).json({ error: 'Validation Error', message: err.message });
-//         }
-//         return res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
-
 
 
 app.get('/gethostels', verifyToken, async (req, res) => {
@@ -235,15 +154,6 @@ app.get('/gethostels', verifyToken, async (req, res) => {
     }
 });
 
-// app.get('/gethostels', async (req, res) => {
-//     try {
-//         const hostels = await HostelModel.find();
-//         res.status(200).json(hostels);
-//     } catch (err) {
-//         console.error('Error retrieving hostels:', err);
-//         return res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
 
 app.get('/hostels/:id', async (req, res) => {
     const { id } = req.params;
