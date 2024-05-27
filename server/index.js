@@ -37,7 +37,11 @@ mongoose.connect("mongodb://127.0.0.1:27017/Dormfinder");
 const secretKey = 'secret_key';
 
 function verifyToken(req, res, next) {
-    const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+    const authHeader = req.headers.authorization;
+    console.log('Authorization Header:', authHeader);
+
+    const token = authHeader && authHeader.split(' ')[1];
+    console.log('Extracted Token:', token);
     if (!token) {
         return res.status(401).json({ error: 'Unauthorized', message: 'No token provided' });
     }
@@ -155,16 +159,29 @@ app.get('/gethostels', verifyToken, async (req, res) => {
 });
 
 
-app.get('/hostels/:id', async (req, res) => {
-    const { id } = req.params;
+// app.get('/hostels/:id', async (req, res) => {
+//     const { id } = req.params;
+//     try {
+//         const hostel = await HostelModel.findById(id);
+//         if (!hostel) {
+//             return res.status(404).json({ error: 'Not Found', message: 'Hostel not found' });
+//         }
+//         res.status(200).json(hostel);
+//     } catch (err) {
+//         console.error('Error retrieving hostel:', err);
+//         return res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
+
+app.get('/hostels/:id', verifyToken, async (req, res) => {
     try {
-        const hostel = await HostelModel.findById(id);
+        const hostel = await HostelModel.findById(req.params.id).populate('room').populate('amenities');
         if (!hostel) {
-            return res.status(404).json({ error: 'Not Found', message: 'Hostel not found' });
+            return res.status(404).json({ error: 'Hostel not found' });
         }
         res.status(200).json(hostel);
     } catch (err) {
-        console.error('Error retrieving hostel:', err);
+        console.error('Error fetching hostel details:', err);
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 });

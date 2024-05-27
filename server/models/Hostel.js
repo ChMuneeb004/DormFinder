@@ -42,6 +42,14 @@ const HostelSchema = new mongoose.Schema({
         required: [true, 'Owner email is required']
     },
 
+    room:
+     [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }],
+
+    amenities:
+     [{ type: mongoose.Schema.Types.ObjectId, ref: 'Amenities' }],
+     
+
+
     createdAt: {
         type: Date,
         default: Date.now

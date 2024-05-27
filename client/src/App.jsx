@@ -19,7 +19,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './contexts/ProtectedRoute';
 import DashboardHomePage from './pages/Dashboard.jsx';
 import Profiles from './dashbordComp/Profile.jsx';
-
+import HostelDetails from './dashbordComp/viewHostel.jsx';
 
 function App() {
   return (
@@ -35,6 +35,7 @@ function App() {
           <Route path="/hostel" element={<HostelList />} />
           <Route path="/Dashboard/Home" element={<DashboardHomePage />} />
           <Route path="/Profile-settings" element={<Profiles />} />
+          <Route path="/view-hostel/:id" element={<HostelDetails/>} />
         </Routes>
       </Router>
     </AuthProvider>
