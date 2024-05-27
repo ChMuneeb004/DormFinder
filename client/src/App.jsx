@@ -17,6 +17,7 @@ import AddHostel from './pages/AddHostel.jsx';
 import HostelList from './dashbordComp/hostellist.jsx';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './contexts/ProtectedRoute';
+import DashboardHomePage from './pages/Dashboard.jsx';
 
 
 function App() {
@@ -29,8 +30,9 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/dashboard" element={<ProtectedRoute><OwnerDashboard /></ProtectedRoute>} />
           <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
-          <Route path="/addHostel" element={<ProtectedRoute><AddHostel /></ProtectedRoute>} />
+          <Route path="/addHostel" element={<AddHostel />} />
           <Route path="/hostel" element={<HostelList />} />
+          <Route path="/Dashboard/Home" element={<DashboardHomePage />} />
         </Routes>
       </Router>
     </AuthProvider>

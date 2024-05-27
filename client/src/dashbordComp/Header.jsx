@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
 import hostel from "../media/Building.png";
 import booking from "../media/bookmark 1.png";
 import payment from "../media/usd-square 1.png";
@@ -6,10 +7,59 @@ import user from "../media/Vector.png";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, CardBody, CardTitle, CardText } from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
-
+import { AuthContext } from '../contexts/AuthContext';
 
 
 function Header() {
+    const { auth } = useContext(AuthContext);
+    const [data, setData] = useState({
+        hostelCount: 0,
+        totalPayments: 0,
+        bookingAnalytics: 0,
+        userAnalytics: 0
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const hostelResponse = await axios.get("http://localhost:3001/gethostels", {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}`
+                    }
+                });
+                // const paymentsResponse = await axios.get("http://localhost:3001/totalPayments", {
+                //     headers: {
+                //         Authorization: `Bearer ${auth.token}`
+                //     }
+                // });
+                // const bookingsResponse = await axios.get("http://localhost:3001/bookingAnalytics", {
+                //     headers: {
+                //         Authorization: `Bearer ${auth.token}`
+                //     }
+                // });
+                // const usersResponse = await axios.get("http://localhost:3001/userAnalytics", {
+                //     headers: {
+                //         Authorization: `Bearer ${auth.token}`
+                //     }
+                // });
+
+                setData({
+                    hostelCount: hostelResponse.data.count,
+                    // totalPayments: paymentsResponse.data.total,
+                    // bookingAnalytics: bookingsResponse.data.count,
+                    // userAnalytics: usersResponse.data.count
+                });
+            } catch (error) {
+                console.error("There was an error fetching the data!", error);
+            }
+        };
+
+        fetchData();
+    }, [auth.token]);
+
+
+
+
     const cardStyle = {
         border: 'none',
         borderRadius: '8px',
@@ -54,7 +104,7 @@ function Header() {
                             <div className="card-body">
                                 <img src={hostel} alt=".." style={imgStyle} />
                                 <h5 className="card-title " style={titleStyle}>Hostel</h5>
-                                <p className="card-text" style={textStyle}>10</p>
+                                <p className="card-text" style={textStyle}>{data.hostelCount}</p>
                             </div>
                         </button>
                     </Col>

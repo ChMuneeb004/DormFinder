@@ -44,7 +44,7 @@ function Sidebar() {
                 <i className="fa fa-bars text-white"></i>
             </button>
             <Nav className={`Navv  flex-column flex-sm-fill flex-fill ${navVisible ? 'show' : ''}`}>
-                <Nav.Link href="/Dashboard" className="nav-link">Home</Nav.Link>
+                <Nav.Link href="/Dashboard/Home" className="nav-link">Home</Nav.Link>
                 <Nav.Link href="/bookings" className="nav-link">Booking</Nav.Link>
                 <Nav.Link href="/hostel" className="nav-link">Hostel</Nav.Link>
                 <Nav.Link href="/payment" className="nav-link">Payment</Nav.Link>

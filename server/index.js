@@ -225,7 +225,9 @@ app.get('/gethostels', verifyToken, async (req, res) => {
 
     try {
         const hostels = await HostelModel.find({ ownerEmail: req.email }); // get hostels for the logged-in owner
-        res.status(200).json(hostels);
+        // const hostelCount = await HostelModel.countDocuments({ ownerEmail: req.email });
+        const hostelCount = hostels.length;
+        res.status(200).json({ hostels, count: hostelCount });
     } catch (err) {
         console.error('Error retrieving hostels:', err);
         return res.status(500).json({ error: 'Internal Server Error' });
