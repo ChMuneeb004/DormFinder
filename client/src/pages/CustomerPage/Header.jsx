@@ -7,20 +7,20 @@ const Header = () => {
         <Navbar bg="white" expand="lg" style={styles.navbar}>
             <Navbar.Brand href="#" style={styles.brand}>
                 <img
-                    src="path/to/logo.png" // Replace with the correct path to your logo
-                    width="30"
-                    height="30"
-                    className="d-inline-block align-top"
-                    alt="Accommodation for Students logo"
+                    src="Logo.png" 
+                    width="50"
+                    height="50"
+                    className="d-inline-block align-center"
+                    alt="Logo"
                     style={styles.logo}
                 />
                 <span style={styles.brandText}>
-                    accommodation <strong style={styles.strongText}>for students</strong>
+                    Dorm Finder
                 </span>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav nav" className="justify-content-end">
-                <Nav>
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="">
                     <Nav.Link href="#" style={styles.navLink}>Guides</Nav.Link>
                     <Nav.Link href="#" style={styles.navLink}>Blog</Nav.Link>
                     <Nav.Link href="#" style={styles.navLink}>Utilities</Nav.Link>
@@ -48,10 +48,6 @@ const styles = {
     brandText: {
         fontSize: '1.25rem',
         color: '#e27125',
-    },
-    strongText: {
-        fontWeight: 'bold',
-        color: '#333',
     },
     navLink: {
         color: '#333',
