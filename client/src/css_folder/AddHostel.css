@@ -1,58 +1,94 @@
-/* AddHostel.css */
-.content {
-    padding: 20px;
+body {
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
     background-color: #f8f9fa;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
-h1 {
-    margin-bottom: 20px;
+.profile {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.form-label {
-    font-weight: bold;
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
 }
 
-.form-control,
-.form-check-input,
-.form-check-label,
-.btn {
+.nav-link {
+    color: #000;
+    margin: 10px 0;
+    text-align: left;
+}
+
+.nav-link.active {
+    background-color: #ffcc00;
     border-radius: 5px;
+    padding: 10px;
 }
 
-.form-group {
-    margin-bottom: 20px;
-}
-
-.file-input-label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-.file-input {
-    display: block;
-    margin-bottom: 20px;
-}
-
-.amenities-group .form-check {
-    margin-right: 20px;
+.content {
+    margin-left: 250px;
+    padding: 40px;
+    flex-grow: 1;
 }
 
 @media (max-width: 768px) {
-    .d-flex {
-        flex-direction: column;
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .content {
+        margin-left: 0;
+        padding: 20px;
     }
 }
 
-button[type="submit"] {
-    background-color: #007bff;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
+.form-check-input[type="checkbox"], .form-check-input[type="radio"] {
+    opacity: 1;
+    position: relative;
 }
 
-button[type="submit"]:hover {
-    background-color: #0056b3;
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-control {
+    border-radius: 0.25rem;
+    box-shadow: none;
+    padding: 0.75rem;
+}
+
+.btn {
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+@media (max-width: 576px) {
+    .profile {
+        text-align: center;
+    }
+    .profile-img {
+        width: 60px;
+        height: 60px;
+    }
+    .content {
+        padding: 20px;
+    }
 }
