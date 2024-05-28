@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Header = () => {
     return (
-        <Navbar bg="white" expand="lg" style={styles.navbar}>
+        <Navbar bg="white" expand="md" style={styles.navbar}>
             <Navbar.Brand href="#" style={styles.brand}>
                 <img
                     src="Logo.png" 
@@ -19,8 +19,8 @@ const Header = () => {
                 </span>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="">
+            <Navbar.Collapse id="basic-navbar-nav" style={{ backgroundColor:'white'}}>
+                <Nav className="ml-auto justify-content-end" style={{ flexWrap: 'nowrap' }}>
                     <Nav.Link href="#" style={styles.navLink}>Guides</Nav.Link>
                     <Nav.Link href="#" style={styles.navLink}>Blog</Nav.Link>
                     <Nav.Link href="#" style={styles.navLink}>Utilities</Nav.Link>
@@ -52,6 +52,7 @@ const styles = {
     navLink: {
         color: '#333',
         marginRight: '1rem',
+        backgroundColor:'white'
     },
     landlordsAgentsLink: {
         border: '1px solid #ccc',
