@@ -19,8 +19,8 @@ const Header = () => {
                 </span>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav" style={{ backgroundColor:'white'}}>
-                <Nav className="ml-auto justify-content-end" style={{ flexWrap: 'nowrap' }}>
+            <Navbar.Collapse id="basic-navbar-nav" style={{backgroundColor:'white'}}>
+                <Nav className="ml-auto justify-content-end" style={{ flexWrap: 'nowrap', backgroundColor:'white' }}>
                     <Nav.Link href="#" style={styles.navLink}>Guides</Nav.Link>
                     <Nav.Link href="#" style={styles.navLink}>Blog</Nav.Link>
                     <Nav.Link href="#" style={styles.navLink}>Utilities</Nav.Link>
