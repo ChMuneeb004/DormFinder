@@ -23,9 +23,9 @@ const SearchBar = () => {
                             <FormControl
                                 placeholder="Search by city or university"
                                 aria-label="Search by city or university"
-                                style={{ padding: '10px', fontSize: '1rem', borderRadius: '5px 0 0 5px' }}
+                                style={{ padding: '10px', fontSize: '1rem', borderRadius: '20px 0 0 20px' }} // Changed borderRadius to make it round
                             />
-                            <Button variant="warning" style={{ borderRadius: '0 5px 5px 0' }}>
+                            <Button variant="warning" style={{ borderRadius: '0 20px 20px 0' }}> {/* Updated borderRadius */}
                                 <i className='fa fa-search'></i>
                             </Button>
                         </InputGroup>

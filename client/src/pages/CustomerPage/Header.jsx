@@ -8,8 +8,8 @@ const Header = () => {
             <Navbar.Brand href="#" style={styles.brand}>
                 <img
                     src="Logo.png" 
-                    width="50"
-                    height="50"
+                    width="30"
+                    height="30"
                     className="d-inline-block align-center"
                     alt="Logo"
                     style={styles.logo}
@@ -18,7 +18,7 @@ const Header = () => {
                     Dorm Finder
                 </span>
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Toggle aria-controls="basic-navbar-nav" style={{marginRight:'8px'}} />
             <Navbar.Collapse id="basic-navbar-nav" style={{backgroundColor:'white'}}>
                 <Nav className="ml-auto justify-content-end" style={{ flexWrap: 'nowrap', backgroundColor:'white' }}>
                     <Nav.Link href="#" style={styles.navLink}>Guides</Nav.Link>
@@ -44,10 +44,12 @@ const styles = {
     },
     logo: {
         marginRight: '8px',
+        marginLeft:'8px',
     },
     brandText: {
-        fontSize: '1.25rem',
+        fontSize: '1.55rem',
         color: '#e27125',
+        marginTop:'9px'
     },
     navLink: {
         color: '#333',
