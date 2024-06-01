@@ -1,0 +1,9 @@
+/* src/HostelList.css */
+.hostel-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  

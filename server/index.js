@@ -175,7 +175,12 @@ app.get('/gethostels', verifyToken, async (req, res) => {
 
 app.get('/hostels/:id', verifyToken, async (req, res) => {
     try {
-        const hostel = await HostelModel.findById(req.params.id).populate('room').populate('amenities');
+        console.log('Fetching hostel with ID:', req.params.id);
+        let query = HostelModel.findById(req.params.id);
+        query = query.populate('room').populate('amenities');
+        const hostel = await query;
+        console.log('Hostel details:', hostel);
+        //const hostel = await HostelModel.findById(req.params.id).populate('room').populate('amenities');
         if (!hostel) {
             return res.status(404).json({ error: 'Hostel not found' });
         }

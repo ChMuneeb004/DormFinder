@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import '../css_folder/sidebar.css'; 
-import Profile from '../media/profile.png';
+import ProfileImg from '../media/profile.png';
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 
-function Sidebar() {
+function Sidebar({ onProfileClick }) {
     const [username, setUsername] = useState('');
     const [navVisible, setNavVisible] = useState(false);
 
@@ -35,13 +34,11 @@ function Sidebar() {
 
     return (
         <div className="side">
-            <Link to="/Profile-settings">
-                <div className="profiles">
-                    <img src={Profile} alt="profile" className="profiles-picture" />
-                    <h3 className='text-body-emphasis username'>{username}</h3>
-                    <p className='role'>Owner</p>
-                </div>
-            </Link>
+            <div className="profiles" onClick={onProfileClick}>
+                <img src={ProfileImg} alt="profile" className="profiles-picture" />
+                <h3 className='text-body-emphasis username'>{username}</h3>
+                <p className='role'>Owner</p>
+            </div>
             <button className="nav-toggle border-1" onClick={handleToggle}>
                 <i className="fa fa-bars text-white"></i>
             </button>

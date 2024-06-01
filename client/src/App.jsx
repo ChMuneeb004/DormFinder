@@ -20,6 +20,7 @@ import ProtectedRoute from './contexts/ProtectedRoute';
 import DashboardHomePage from './pages/Dashboard.jsx';
 import Profiles from './dashbordComp/Profile.jsx';
 import HostelDetails from './dashbordComp/viewHostel.jsx';
+import HostelPage from './pages/CustomerPage/Hostel list/HostelPage.jsx';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/Dashboard/Home" element={<DashboardHomePage />} />
           <Route path="/Profile-settings" element={<Profiles />} />
           <Route path="/view-hostel/:id" element={<HostelDetails/>} />
+          <Route path="/hostel-page" element={<HostelPage />} />
         </Routes>
       </Router>
     </AuthProvider>

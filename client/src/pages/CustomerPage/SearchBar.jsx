@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import studentImage from '../assets/student.jpg'; //
+import { Link } from 'react-router-dom';
 
 const SearchBar = () => {
     return (
@@ -25,9 +25,11 @@ const SearchBar = () => {
                                 aria-label="Search by city or university"
                                 style={{ padding: '10px', fontSize: '1rem', borderRadius: '20px 0 0 20px' }} // Changed borderRadius to make it round
                             />
-                            <Button variant="warning" style={{ borderRadius: '0 20px 20px 0' }}> {/* Updated borderRadius */}
+                            
+                            <Button href='/hostel-page' variant="warning" style={{ borderRadius: '0 20px 20px 0' }}> {/* Updated borderRadius */}
                                 <i className='fa fa-search'></i>
                             </Button>
+                    
                         </InputGroup>
                     </Col>
                 </Row>

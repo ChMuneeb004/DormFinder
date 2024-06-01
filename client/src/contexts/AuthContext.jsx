@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        console.log('Tokesdndbsjn:', token);
         if (token) {
             const decoded = jwtDecode(token);
             setAuth({
