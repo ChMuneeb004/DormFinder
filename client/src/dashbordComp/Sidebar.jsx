@@ -34,7 +34,13 @@ function Sidebar({ onProfileClick }) {
 
     return (
         <div className="side">
-            <div className="profiles" onClick={onProfileClick}>
+            <div 
+                className="profiles" 
+                onClick={onProfileClick} 
+                role="button" 
+                tabIndex="0"
+                style={{ cursor: 'pointer' }} 
+            >
                 <img src={ProfileImg} alt="profile" className="profiles-picture" />
                 <h3 className='text-body-emphasis username'>{username}</h3>
                 <p className='role'>Owner</p>

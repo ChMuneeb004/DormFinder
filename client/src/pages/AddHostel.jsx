@@ -4,7 +4,7 @@ import { useState, useContext } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Sidebar from '../dashbordComp/Sidebar';
-import '../css_folder/AddHostel.css'
+import '../css_folder/AddHostel.css';
 import { AuthContext } from '../contexts/AuthContext';
 
 const AddHostel = () => {

@@ -76,7 +76,21 @@ form-check-radio input[type=radio] {
 
 form .form-check {
     margin-bottom: 10px;
+    visibility: visible;
+    opacity: 100%;
     
+}
+
+.form-check input[type=checkbox]{
+    opacity: 100;
+    position: absolute;
+    visibility: visible;
+}
+
+.form-check-radio input[type=radio] {
+    opacity: 100;
+    position: absolute;
+    visibility: visible;
 }
 
 .form-group {
@@ -88,6 +102,7 @@ form .form-check {
     border-radius: 0.25rem;
     box-shadow: none;
     padding: 0.75rem;
+    
     
 }
 
@@ -101,6 +116,11 @@ form .form-check {
 h1 {
     font-size: 2rem;
     font-weight: bold;
+}
+
+input {
+    visibility: visible;
+    opacity: 100%;
 }
 
 @media (max-width: 576px) {
