@@ -11,6 +11,8 @@ const jwt = require('jsonwebtoken')
 const RoomModel = require("./models/Rooms")
 const amenitiesModel = require("./models/facility")
 const bcrypt = require('bcrypt')
+const axios = require('axios');
+
 
 
 const app = express()
@@ -57,6 +59,32 @@ function verifyToken(req, res, next) {
     }
 }
 
+app.get('/api/hostels/search', verifyToken, async (req, res) => {
+    const { latitude, longitude, radius } = req.query;
+
+    if (!latitude || !longitude || !radius) {
+        return res.status(400).json({ error: 'Missing query parameters' });
+    }
+
+    const radiusInMeters = radius * 1000; // Convert radius to meters
+
+    try {
+        const hostels = await HostelModel.find({
+            location: {
+                $geoWithin: {
+                    $centerSphere: [[longitude, latitude], radiusInMeters / 6378100]
+                }
+            }
+        });
+
+        res.json(hostels);
+    } catch (err) {
+        console.error('Error fetching hostels:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) => {
     if (req.userType !== 'owner') {
         return res.status(403).json({ error: 'Forbidden', message: 'Only owners can add hostels' });
@@ -73,16 +101,38 @@ app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) =>
             return res.status(400).json({ error: 'No files were sent in the request.' });
         }
 
-        
+         // Fetch coordinates using AccuWeather API
+         const locationResponse = await axios.get(`http://dataservice.accuweather.com/locations/v1/locationKey?apikey=locationSearch&language=en-us&details=true`, {
+            params: {
+                q: location,
+                apikey: '0qdZGuDP7asKTBjebGIHY4jD4GGFgrgV'
+            }
+        });
+
+        if (locationResponse.data.length === 0) {
+            return res.status(400).json({ error: 'Invalid address', message: 'Unable to fetch coordinates for the provided address.' });
+        }
+
+        const locationKey = locationResponse.data[0].Key;
+
+        const geoResponse = await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=geocodeHostels&q=lat%2Clon`, {
+            params: {
+                apikey: '0qdZGuDP7asKTBjebGIHY4jD4GGFgrgV',
+                q: `${locationResponse.data[0].GeoPosition.Latitude},${locationResponse.data[0].GeoPosition.Longitude}`
+            }
+        });
+
+        const { Latitude, Longitude } = geoResponse.data.GeoPosition;
+
         const hostel = await HostelModel.create({
             name,
             location,
+            latitude: Latitude,
+            longitude: Longitude,
             description,
             images,
             number_of_rooms,
             contact,
-            // amenities,
-            // rooms,
             ownerEmail: req.email // associate hostel with the owner's email
         });
         res.status(201).json(hostel);

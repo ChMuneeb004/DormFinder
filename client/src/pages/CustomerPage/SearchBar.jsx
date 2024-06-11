@@ -1,9 +1,16 @@
 import React from 'react';
 import { Container, Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axois from 'axios';
 
 const SearchBar = () => {
+    const [searchQuery, setSearchQuery] = useState('');
+    const history = useNavigate();
+
+    const handleSearch = () => {
+        navigate(`/hostel-page?query=${searchQuery}`);
+    };
     return (
         <div>
             <Container className="text-center my-4">
@@ -23,10 +30,12 @@ const SearchBar = () => {
                             <FormControl
                                 placeholder="Search by city or university"
                                 aria-label="Search by city or university"
-                                style={{ padding: '10px', fontSize: '1rem', borderRadius: '20px 0 0 20px' }} // Changed borderRadius to make it round
+                                style={{ padding: '10px', fontSize: '1rem', borderRadius: '20px 0 0 20px' }}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
                             />
                             
-                            <Button href='/hostel-page' variant="warning" style={{ borderRadius: '0 20px 20px 0' }}> {/* Updated borderRadius */}
+                            <Button onClick={handleSearch} variant="warning" style={{ borderRadius: '0 20px 20px 0' }}> {/* Updated borderRadius */}
                                 <i className='fa fa-search'></i>
                             </Button>
                     

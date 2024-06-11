@@ -14,6 +14,14 @@ const HostelSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Address is required']
     },
+    latitude: {
+        type: Number,
+        required: true
+    },
+    longitude: {
+        type: Number,
+        required: true
+    },
     description: {
         type: [Buffer],
         required: [true, 'Description is required'],
