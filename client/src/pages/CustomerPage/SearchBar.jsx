@@ -3,6 +3,7 @@ import { Container, Row, Col, InputGroup, FormControl, Button } from 'react-boot
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import axois from 'axios';
+import { useState } from 'react';
 
 const SearchBar = () => {
     const [searchQuery, setSearchQuery] = useState('');

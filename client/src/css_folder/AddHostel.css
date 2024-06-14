@@ -135,3 +135,33 @@ input {
         padding: 20px;
     }
 }
+/* AddHostel.css */
+.add-hostel-container {
+    padding: 20px;
+}
+
+.add-hostel-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-hostel-form .form-group {
+    margin-bottom: 15px;
+}
+
+.add-hostel-form .form-control {
+    height: calc(2.25rem + 2px);
+    padding: .375rem .75rem;
+}
+
+.add-hostel-form .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.add-hostel-form .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
