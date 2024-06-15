@@ -42,9 +42,6 @@ function Sidebar({ onProfileClick }) {
     if (isMobile) {
         return (
             <Navbar expand="lg" className="mobile-navbar p-0">
-                <NavbarText>
-                    <h1>Dorm Finder</h1>
-                </NavbarText>
                 <Navbar.Brand className=" p-2 d-flex align-items-center" onClick={onProfileClick} style={{ cursor: 'pointer' }}>
                     <img src={ProfileImg} alt="profile" className="profiles-picture" />
                     <div className="profile-info m-2">
@@ -52,6 +49,19 @@ function Sidebar({ onProfileClick }) {
                         <p className='role'>Owner</p>
                     </div>
                 </Navbar.Brand>
+                <div>
+                    <img
+                        src="Logo.png"
+                        width="30"
+                        height="30"
+                        className="d-inline-block align-center"
+                        alt="Logo"
+                        style={{}}
+                    />
+                    <span style={{}}>
+                        Dorm Finder
+                    </span>
+                </div>
                 <Navbar.Toggle className=" m-2 btn btn-primary text-white" aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
@@ -73,11 +83,19 @@ function Sidebar({ onProfileClick }) {
 
     return (
         <div className="side">
-            <NavbarText>
-                <img src="../media/Logo.png" alt="" />
-                <h3 className='mt-0'>Dorm Finder</h3>
-            </NavbarText>
-
+            <div>
+                <img
+                    src="Logo.png"
+                    width="30"
+                    height="30"
+                    className="d-inline-block align-center"
+                    alt="Logo"
+                    style={{}}
+                />
+                <span style={{ display: 'inline-block' }}>
+                    Dorm Finder
+                </span>
+            </div>
             <div
                 className="profiles"
                 onClick={onProfileClick}
