@@ -49,16 +49,16 @@ function Sidebar({ onProfileClick }) {
                         <p className='role'>Owner</p>
                     </div>
                 </Navbar.Brand>
-                <div>
+                <div className='text-center align-content-center' style={{ marginBottom: '0px', padding: '4px', borderWidth: '1px', border: '1px', borderStyle:'groove', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius:'5px' }}>
                     <img
                         src="Logo.png"
-                        width="30"
-                        height="30"
+                        width="20"
+                        height="20"
                         className="d-inline-block align-center"
                         alt="Logo"
-                        style={{}}
+                        style={{ verticalAlign: 'middle' }}
                     />
-                    <span style={{}}>
+                    <span style={{ display: 'inline-block', fontSize: '15px', marginLeft: '8px' }}>
                         Dorm Finder
                     </span>
                 </div>
@@ -83,19 +83,20 @@ function Sidebar({ onProfileClick }) {
 
     return (
         <div className="side">
-            <div>
+            <div className='text-center align-content-center' style={{ marginBottom: '15px', padding: '4px', borderWidth: '1px', border: '1px', borderStyle: 'groove', borderRadius:'12px' , display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                     src="Logo.png"
-                    width="30"
-                    height="30"
+                    width="25"
+                    height="25"
                     className="d-inline-block align-center"
                     alt="Logo"
-                    style={{}}
+                    style={{ verticalAlign: 'middle' }}
                 />
-                <span style={{ display: 'inline-block' }}>
+                <span style={{ display: 'inline-block', fontSize: '22px', marginLeft: '8px' }}>
                     Dorm Finder
                 </span>
             </div>
+
             <div
                 className="profiles"
                 onClick={onProfileClick}

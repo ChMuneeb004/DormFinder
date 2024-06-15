@@ -34,7 +34,7 @@ function MainContent() {
                   <td>SOMthin@gmnaill.com</td>
                   <td>03054777605</td>
                   <td>08-Dec, 2021</td>
-                  <td><input type="text" className="form-control" placeholder="Token" /></td>
+                  <td><input type="text" className="form-control" placeholder="Token" style={{ minWidth: "170px", width: "100%" }} /></td>
                   <td><button className="btn btn-success text-white">Check</button></td>
                   <td><button style={{ backgroundColor: 'transparent', border: 'transparent' }}><i className="fa fa-trash-o" aria-hidden="true" style={{ color: 'red', fontSize: 25 }}></i></button></td>
                 </tr>
@@ -43,7 +43,7 @@ function MainContent() {
                   <td>SOMthin@gmnaill.com</td>
                   <td>03054777605</td>
                   <td>08-Dec, 2021</td>
-                  <td><input type="text" className="form-control" placeholder="Token" /></td>
+                  <td><input type="text" className="form-control" placeholder="Token" style={{ minWidth: "170px", width: "100%" }} /></td>
                   <td><button className="btn btn-success text-white">Check</button></td>
                   <td><button style={{ backgroundColor: 'transparent', border: 'transparent' }}><i className="fa fa-trash-o" aria-hidden="true" style={{ color: 'red', fontSize: 25 }}></i></button></td>
                 </tr>
