@@ -149,52 +149,93 @@ const AddHostel = () => {
         <div className="d-flex">
             <Container fluid>
                 <Row>
-                    <Col xs={12} sm={12} md={5} lg={4} xl={3}>
+                    <Col xs={0} sm={0} md={4} lg={3} xl={3}>
                         <Sidebar />
                     </Col>
-                    <Col xs={12} sm={10} md={7} lg={8} xl={9}>
+                    <Col xs={12} sm={12} md={8} lg={9} xl={9}>
                         <div className='p-4'>
                             <h1 className="mb-4">Add Hostel</h1>
                             {alert.show && <Alert variant={alert.variant} onClose={() => setAlert({ show: false, message: '', variant: '' })} dismissible>{alert.message}</Alert>}
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group controlId="name">
-                                    <Form.Label>Hostel Name</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Enter hostel name"
-                                        value={hostel.name}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Form.Group>
-
-                                <Form.Group controlId="location">
-                                    <Form.Label>Address</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Enter address"
-                                        value={hostel.location}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Form.Group>
+                            <Form className="add-hostel-form container" onSubmit={handleSubmit}>
+                                <Row>
+                                    <Col md={6}>
+                                        <Form.Group controlId="name">
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Enter your Hostel name"
+                                                value={hostel.name}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                            <Form.Text className="text-muted">
+                                                Enter your Hostel name
+                                            </Form.Text>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col md={6}>
+                                        <Form.Group controlId="location">
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Enter Hostel location"
+                                                value={hostel.location}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                            <Form.Text className="text-muted">
+                                                Enter Hostel location
+                                            </Form.Text>
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
 
                                 <Form.Group controlId="description">
-                                    <Form.Label>Description</Form.Label>
                                     <Form.Control
                                         as="textarea"
-                                        rows={3}
-                                        placeholder="Enter description (min 50 characters)"
+                                        placeholder="Your text goes here"
                                         value={hostel.description}
                                         onChange={handleChange}
                                         required
-                                        minLength={50}
-                                        style={{ width: '100%', height: '200px' }}
+                                        style={{ width: '100%', height: '150px' }}
                                     />
+                                    <Form.Text className="text-muted">
+                                        Provide a brief description of the hostel
+                                    </Form.Text>
                                 </Form.Group>
 
+                                <Row>
+                                    <Col md={6}>
+                                        <Form.Group controlId="number_of_rooms">
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="Number of Rooms"
+                                                value={hostel.number_of_rooms}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                            <Form.Text className="text-muted">
+                                                Number of Rooms
+                                            </Form.Text>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col md={6}>
+                                        <Form.Group controlId="contact">
+                                            <PhoneInput
+                                                country={'pk'}
+                                                value={hostel.contact}
+                                                onChange={handlePhoneChange}
+                                                inputStyle={{ width: '100%' }}
+                                                inputProps={{
+                                                    required: true,
+                                                }}
+                                            />
+                                            <Form.Text className="text-muted">
+                                                Enter your Hostel contact number
+                                            </Form.Text>
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+
                                 <Form.Group controlId="images">
-                                    <Form.Label>Hostel Images</Form.Label>
                                     <Card className="mb-3">
                                         <Card.Body>
                                             <Form.Control
@@ -205,7 +246,7 @@ const AddHostel = () => {
                                                 onChange={handleImageChange}
                                                 required
                                             />
-                                            <Button variant="warning" onClick={handleCustomButtonClick}>
+                                            <Button className="btn btn-primary text-white" variant="warning" onClick={handleCustomButtonClick}>
                                                 Upload Images
                                             </Button>
                                             {hostel.images.length > 0 && (
@@ -218,32 +259,7 @@ const AddHostel = () => {
                                         </Card.Body>
                                     </Card>
                                 </Form.Group>
-
-                                <Form.Group controlId="number_of_rooms">
-                                    <Form.Label>Number of Rooms</Form.Label>
-                                    <Form.Control
-                                        type="number"
-                                        placeholder="Enter number of rooms"
-                                        value={hostel.number_of_rooms}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Form.Group>
-
-                                <Form.Group controlId="contact">
-                                    <Form.Label>Contact</Form.Label>
-                                    <PhoneInput
-                                        country={'pk'}
-                                        value={hostel.contact}
-                                        onChange={handlePhoneChange}
-                                        inputStyle={{ width: '100%' }}
-                                        inputProps={{
-                                            required: true,
-                                            autoFocus: true
-                                        }}
-                                    />
-                                </Form.Group>
-
+                                
                                 <Form.Group>
                                     <Form.Label>Room Types</Form.Label>
                                     {hostel.rooms.map((room, index) => (
@@ -273,61 +289,22 @@ const AddHostel = () => {
 
                                 <Form.Group>
                                     <Form.Label>Amenities</Form.Label>
-                                    <Card className="mb-3">
-                                        <Card.Body>
-                                            <Row>
-                                                <Col xs={12} md={6}>
-                                                    <Form.Check
-                                                        type="checkbox"
-                                                        label="Air Condition"
-                                                        id="air_condition_check"
-                                                        checked={hostel.amenities.air_condition_check}
-                                                        onChange={handleChange}
-                                                    />
-                                                    <Form.Check
-                                                        type="checkbox"
-                                                        label="Air Cooler"
-                                                        id="air_cooler_check"
-                                                        checked={hostel.amenities.air_cooler_check}
-                                                        onChange={handleChange}
-                                                    />
-                                                    <Form.Check
-                                                        type="checkbox"
-                                                        label="Kitchen"
-                                                        id="kitchen_check"
-                                                        checked={hostel.amenities.kitchen_check}
-                                                        onChange={handleChange}
-                                                    />
-                                                </Col>
-                                                <Col xs={12} md={6}>
-                                                    <Form.Check
-                                                        type="checkbox"
-                                                        label="Gasoline"
-                                                        id="gasoline_check"
-                                                        checked={hostel.amenities.gasoline_check}
-                                                        onChange={handleChange}
-                                                    />
-                                                    <Form.Check
-                                                        type="checkbox"
-                                                        label="Water Cooler"
-                                                        id="water_cooler_check"
-                                                        checked={hostel.amenities.water_cooler_check}
-                                                        onChange={handleChange}
-                                                    />
-                                                    <Form.Check
-                                                        type="checkbox"
-                                                        label="Attached Bathroom"
-                                                        id="attached_bathroom_check"
-                                                        checked={hostel.amenities.attached_bathroom_check}
-                                                        onChange={handleChange}
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        </Card.Body>
-                                    </Card>
+                                    <Row>
+                                        {Object.keys(hostel.amenities).map((amenity, index) => (
+                                            <Col xs={6} md={4} key={index}>
+                                                <Form.Check
+                                                    type="checkbox"
+                                                    label={amenity.replace(/_/g, ' ').replace(/check/, '').replace(/^\w/, (c) => c.toUpperCase())}
+                                                    id={amenity}
+                                                    checked={hostel.amenities[amenity]}
+                                                    onChange={handleChange}
+                                                />
+                                            </Col>
+                                        ))}
+                                    </Row>
                                 </Form.Group>
 
-                                <Button variant="primary" type="submit">
+                                <Button className="btn btn-primary text-white" variant="primary" type="submit">
                                     Submit
                                 </Button>
                             </Form>
@@ -337,6 +314,6 @@ const AddHostel = () => {
             </Container>
         </div>
     );
-};
+}
 
 export default AddHostel;

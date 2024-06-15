@@ -21,7 +21,8 @@ import DashboardHomePage from './pages/Dashboard.jsx';
 import Profiles from './dashbordComp/Profile.jsx';
 import HostelDetails from './dashbordComp/viewHostel.jsx';
 import HostelPage from './pages/CustomerPage/Hostel list/HostelPage.jsx';
-
+import Bookings from './dashbordComp/Bookings.jsx'
+import Payment from './dashbordComp/Payment.jsx'
 function App() {
   return (
     <AuthProvider>
@@ -38,6 +39,8 @@ function App() {
           <Route path="/Profile-settings" element={<Profiles />} />
           <Route path="/view-hostel/:id" element={<HostelDetails/>} />
           <Route path="/hostel-page" element={<HostelPage />} />
+          <Route path="/bookings" element={<Bookings />}/> 
+          <Route path="/payment" element={<Payment />}/> 
         </Routes>
       </Router>
     </AuthProvider>
