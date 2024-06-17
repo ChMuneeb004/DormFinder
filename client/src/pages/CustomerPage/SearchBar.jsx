@@ -1,17 +1,59 @@
 import React from 'react';
-import { Container, Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
+import { Container, Row, Col, InputGroup, FormControl, Button, ListGroup } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
-import axois from 'axios';
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import universities from './universities.jsx';
 
 const SearchBar = () => {
-    const [searchQuery, setSearchQuery] = useState('');
-    const history = useNavigate();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [hostels, setHostels] = useState([]);
+    const [filteredUniversities, setFilteredUniversities] = useState([]);
+    const [selectedUniversity, setSelectedUniversity] = useState(null);
 
-    const handleSearch = () => {
-        navigate(`/hostel-page?query=${searchQuery}`);
+    useEffect(() => {
+        if (searchTerm) {
+            const filtered = universities.filter(university =>
+                university.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                university.location.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredUniversities(filtered);
+        } else {
+            setFilteredUniversities([]);
+        }
+    }, [searchTerm]);
+
+    const handleSelectUniversity = (university) => {
+        setSelectedUniversity(university);
+        setSearchTerm(university.name);
+        setFilteredUniversities([]);
     };
+
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+                params: {
+                    address: searchTerm,
+                    key: 'AIzaSyB9ehHDgZXPz2uOE6Tjfwiapo329zBVsKI'
+                }
+            });
+            const { lat, lng } = response.data.results[0].geometry.location;
+
+            const hostelsResponse = await axios.get('http://localhost:3001/searchHostels', {
+                params: {
+                    latitude: lat,
+                    longitude: lng,
+                    radius: 1.5 // radius in kilometers
+                }
+            });
+
+            // setHostels(hostelsResponse.data);
+        } catch (error) {
+            console.error('Error fetching hostels:', error);
+        }
+    };
+    
     return (
         <div>
             <Container className="text-center my-4">
@@ -28,18 +70,29 @@ const SearchBar = () => {
                         <h1 style={{ fontSize: '2.5rem', color: '#343a40', fontWeight: 'bold', marginBottom: '20px' }}>The home of student accommodation</h1>
                         <p style={{ fontSize: '1.25rem', color: '#6c757d', marginBottom: '20px' }}>Search PK's No.1 Student Accommodation Website</p>
                         <InputGroup className="mb-3">
-                            <FormControl
+                        <FormControl
                                 placeholder="Search by city or university"
                                 aria-label="Search by city or university"
                                 style={{ padding: '10px', fontSize: '1rem', borderRadius: '20px 0 0 20px' }}
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
+                                value={searchTerm}
+                                onChange={(e) => {
+                                    setSearchTerm(e.target.value);
+                                    setSelectedUniversity(null);
+                                }}
                             />
                             
                             <Button onClick={handleSearch} variant="warning" style={{ borderRadius: '0 20px 20px 0' }}> {/* Updated borderRadius */}
                                 <i className='fa fa-search'></i>
                             </Button>
-                    
+                            {filteredUniversities.length > 0 && (
+                                <ListGroup style={{ position: 'absolute', top: '100%', width: '100%', zIndex: '1000' }}>
+                                    {filteredUniversities.map((university, index) => (
+                                        <ListGroup.Item key={index} action onClick={() => handleSelectUniversity(university)}>
+                                            {university.name} - {university.location}
+                                        </ListGroup.Item>
+                                    ))}
+                                </ListGroup>
+                            )}
                         </InputGroup>
                     </Col>
                 </Row>

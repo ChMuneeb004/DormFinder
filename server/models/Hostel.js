@@ -40,9 +40,9 @@ const HostelSchema = new mongoose.Schema({
         required: [true, 'Contact is required'],
         validate: {
             validator: function(v) {
-                return /^\+923\d{2}-\d{7}$/.test(v);
+                return /^\+?92 ?3\d{2}-?\d{7}$/.test(v);
             },
-            message: 'Contact should be in the format +923XX-XXXXXXX'
+            message: 'Contact should be in the format +92 3XX-XXXXXXX'
         }
     },
     ownerEmail: {
@@ -55,7 +55,7 @@ const HostelSchema = new mongoose.Schema({
 
     amenities:
      [{ type: mongoose.Schema.Types.ObjectId, ref: 'Amenities' }],
-     
+
 
 
     createdAt: {

@@ -59,28 +59,32 @@ function verifyToken(req, res, next) {
     }
 }
 
-app.get('/api/hostels/search', verifyToken, async (req, res) => {
-    const { latitude, longitude, radius } = req.query;
+app.get('/searchHostels', async (req, res) => {
+    let { latitude, longitude, radius } = req.query;
+
+    // Convert latitude, longitude, and radius to numbers
+    latitude = parseFloat(latitude);
+    longitude = parseFloat(longitude);
+    radius = parseFloat(radius);
 
     if (!latitude || !longitude || !radius) {
-        return res.status(400).json({ error: 'Missing query parameters' });
+        return res.status(400).json({ error: 'Latitude, longitude, and radius are required and must be valid numbers.' });
     }
 
-    const radiusInMeters = radius * 1000; // Convert radius to meters
-
     try {
+        // Adjust the radius for latitude and longitude calculations
+        const latRadius = radius / 111; // Roughly 111km per degree of latitude
+        const longRadius = radius / (111 * Math.cos(latitude * (Math.PI / 180))); // Adjust for longitude
+
         const hostels = await HostelModel.find({
-            location: {
-                $geoWithin: {
-                    $centerSphere: [[longitude, latitude], radiusInMeters / 6378100]
-                }
-            }
+            latitude: { $gte: latitude - latRadius, $lte: latitude + latRadius },
+            longitude: { $gte: longitude - longRadius, $lte: longitude + longRadius }
         });
 
-        res.json(hostels);
+        res.status(200).json(hostels);
     } catch (err) {
         console.error('Error fetching hostels:', err);
-        res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
@@ -101,34 +105,25 @@ app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) =>
             return res.status(400).json({ error: 'No files were sent in the request.' });
         }
 
-         // Fetch coordinates using AccuWeather API
-         const locationResponse = await axios.get(`http://dataservice.accuweather.com/locations/v1/locationKey?apikey=locationSearch&language=en-us&details=true`, {
+        // Fetch coordinates using Google Maps Geocoding API
+        const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
             params: {
-                q: location,
-                apikey: '0qdZGuDP7asKTBjebGIHY4jD4GGFgrgV'
+                address: location,
+                key: 'AIzaSyB9ehHDgZXPz2uOE6Tjfwiapo329zBVsKI'
             }
         });
 
-        if (locationResponse.data.length === 0) {
+        if (response.data.status !== 'OK') {
             return res.status(400).json({ error: 'Invalid address', message: 'Unable to fetch coordinates for the provided address.' });
         }
 
-        const locationKey = locationResponse.data[0].Key;
-
-        const geoResponse = await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=geocodeHostels&q=lat%2Clon`, {
-            params: {
-                apikey: '0qdZGuDP7asKTBjebGIHY4jD4GGFgrgV',
-                q: `${locationResponse.data[0].GeoPosition.Latitude},${locationResponse.data[0].GeoPosition.Longitude}`
-            }
-        });
-
-        const { Latitude, Longitude } = geoResponse.data.GeoPosition;
+        const { lat, lng } = response.data.results[0].geometry.location;
 
         const hostel = await HostelModel.create({
             name,
             location,
-            latitude: Latitude,
-            longitude: Longitude,
+            latitude: lat,
+            longitude: lng,
             description,
             images,
             number_of_rooms,
