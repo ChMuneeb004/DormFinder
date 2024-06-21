@@ -28,7 +28,7 @@ function Sidebar({ onProfileClick }) {
         fetchUsername();
 
         const handleResize = () => {
-            setIsMobile(window.innerWidth <= 770);
+            setIsMobile(window.innerWidth <= 767);
         };
 
         window.addEventListener('resize', handleResize);
@@ -83,7 +83,7 @@ function Sidebar({ onProfileClick }) {
 
     return (
         <div className="side">
-            <div className='text-center align-content-center' style={{ marginBottom: '15px', padding: '4px', borderWidth: '1px', border: '1px', borderStyle: 'groove', borderRadius:'12px' , display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className=' text-center align-content-center' style={{ marginBottom: '15px', padding: '4px', borderWidth: '1px', border: '1px', borderStyle: 'groove', borderRadius:'12px' , display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                     src="Logo.png"
                     width="25"

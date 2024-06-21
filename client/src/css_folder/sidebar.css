@@ -99,7 +99,7 @@ body {
 }
 
 /* Media Queries */
-@media (max-width: 770px) {
+@media (max-width: 767px) {
     .logout-button {
         text-align: center;
     }
@@ -204,4 +204,26 @@ body {
         font-weight: bold;
         margin: 0;
     }
+}
+
+.nav-link {
+    color: #333;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.nav-link i {
+    margin-right: 10px;
+}
+
+.profile-picture {
+    border-radius: 50%;
+    margin-bottom: 15px;
+    width: 100px;
+}
+
+.sidebar {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    padding: 20px;
 }
