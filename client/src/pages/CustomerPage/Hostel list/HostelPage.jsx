@@ -47,7 +47,7 @@ const HostelPage = () => {
                 const formattedHostels = hostelsResponse.data.map(hostel => ({
                     images: hostel.images.map(image => ({
                         contentType: image.contentType,
-                        data: bufferToBase64(image.data)
+                        data: bufferToBase64(image.data.data)
                     })),
                     name: hostel.name || '',
                     description: hostel.description.join(' ') || '', // Convert array to string
