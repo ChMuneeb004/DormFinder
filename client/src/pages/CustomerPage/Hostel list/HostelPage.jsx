@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import HostelCard from './HostelCard';
+import Header from '../Header';
+
 
 const HostelPage = () => {
     const location = useLocation();
@@ -76,18 +78,22 @@ const HostelPage = () => {
     }
 
     return (
-        <div className="container my-4">
-            <h2>Search Results</h2>
-            <div className="row">
-                {hostels.length > 0 ? (
-                    hostels.map((hostel, index) => (
-                        <div key={index} className="col-md-4 mb-4">
-                            <HostelCard hostel={hostel} />
-                        </div>
-                    ))
-                ) : (
-                    <p>No hostels found for your search.</p>
-                )}
+        <div>
+            <Header />
+            <div className="container my-4">
+                <div></div>
+                <h2>Search Results</h2>
+                <div className="row">
+                    {hostels.length > 0 ? (
+                        hostels.map((hostel, index) => (
+                            <div key={index} className="col-md-4 mb-4">
+                                <HostelCard hostel={hostel} />
+                            </div>
+                        ))
+                    ) : (
+                        <p>No hostels found for your search.</p>
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -13,14 +13,16 @@ const hostels = [
   // Add more hostel objects here based on the provided data
 ];
 
-const HostelList = () => {
-  return (
-    <div className="hostel-list">
-      {hostels.map((hostel, index) => (
-        <HostelCard key={index} hostel={hostel} />
-      ))}
-    </div>
-  );
+const HostelList = ({ hostels }) => {
+    return (
+        <div className="container">
+            <div className="row">
+                {hostels.map((hostel, index) => (
+                    <HostelCard key={index} hostel={hostel} />
+                ))}
+            </div>
+        </div>
+    );
 };
 
 export default HostelList;
