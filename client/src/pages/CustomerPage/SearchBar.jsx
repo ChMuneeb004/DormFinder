@@ -11,6 +11,7 @@ const SearchBar = () => {
     const [hostels, setHostels] = useState([]);
     const [filteredUniversities, setFilteredUniversities] = useState([]);
     const [selectedUniversity, setSelectedUniversity] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (searchTerm) {
@@ -31,26 +32,29 @@ const SearchBar = () => {
     };
 
     const handleSearch = async () => {
-        try {
-            const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-                params: {
-                    address: searchTerm,
-                    key: 'AIzaSyB9ehHDgZXPz2uOE6Tjfwiapo329zBVsKI'
-                }
-            });
-            const { lat, lng } = response.data.results[0].geometry.location;
+        // try {
+        //     const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+        //         params: {
+        //             address: searchTerm,
+        //             key: 'AIzaSyB9ehHDgZXPz2uOE6Tjfwiapo329zBVsKI'
+        //         }
+        //     });
+        //     const { lat, lng } = response.data.results[0].geometry.location;
 
-            const hostelsResponse = await axios.get('http://localhost:3001/searchHostels', {
-                params: {
-                    latitude: lat,
-                    longitude: lng,
-                    radius: 1.5 // radius in kilometers
-                }
-            });
+        //     const hostelsResponse = await axios.get('http://localhost:3001/searchHostels', {
+        //         params: {
+        //             latitude: lat,
+        //             longitude: lng,
+        //             radius: 1.5 // radius in kilometers
+        //         }
+        //     });
 
-            // setHostels(hostelsResponse.data);
-        } catch (error) {
-            console.error('Error fetching hostels:', error);
+        //     setHostels(hostelsResponse.data);
+        // } catch (error) {
+        //     console.error('Error fetching hostels:', error);
+        // }
+        if (selectedUniversity) {
+            navigate(`/hostelList?university=${selectedUniversity.name}`);
         }
     };
     

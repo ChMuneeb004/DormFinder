@@ -38,7 +38,7 @@ function App() {
           <Route path="/Dashboard/Home" element={<DashboardHomePage />} />
           <Route path="/Profile-settings" element={<Profiles />} />
           <Route path="/view-hostel/:id" element={<HostelDetails/>} />
-          <Route path="/hostel-page" element={<HostelPage />} />
+          <Route path="/hostelList" element={<HostelPage />} />
           <Route path="/bookings" element={<Bookings />}/> 
           <Route path="/payment" element={<Payment />}/> 
         </Routes>
