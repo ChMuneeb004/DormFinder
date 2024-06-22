@@ -71,7 +71,8 @@
         { "name": "Beaconhouse National University", "location": "Lahore, Punjab" },
         { "name": "Kinnaird College for Women", "location": "Lahore, Punjab" },
         { "name": "Liaquat University of Medical and Health Sciences", "location": "Jamshoro, Sindh" },
-        { "name": "Peoples University of Medical and Health Sciences for Women", "location": "Nawabshah, Sindh" }
+        { "name": "Peoples University of Medical and Health Sciences for Women", "location": "Nawabshah, Sindh" },
+        { "name": "Karachi institute of economics and technology (KIET)", "location": "Karachi, Sindh" }
     ]
 
     export default universities;
