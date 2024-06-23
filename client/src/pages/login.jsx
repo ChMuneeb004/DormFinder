@@ -109,15 +109,18 @@ export default function LoginPage() {
                   />
                 </div>
                 <div className="form-check mb-3 w-100 d-flex justify-content-between align-items-center">
-                  <div className="d-flex align-items-center">
+                  <div className="d-flex align-center">
                     <input
                       type="checkbox"
                       className="form-check-input"
+                      style={{
+                        marginTop:'6px'
+                      }}
                       id="rememberMe"
                       checked={rememberMe}
                       onChange={(e) => setrememberme(e.target.checked)}
                     />
-                    <label className="form-check-label" htmlFor="rememberMe">
+                    <label className="form-check-label p-0" htmlFor="rememberMe">
                       Remember Me
                     </label>
                   </div>
@@ -133,7 +136,7 @@ export default function LoginPage() {
                     Login
                   </button>
                   <Link to="/signup">
-                    <button type="button" className="signup-button">
+                    <button type="button" className="signup-button mb-2">
                       Sign up
                     </button>
                   </Link>

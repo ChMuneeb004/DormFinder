@@ -57,9 +57,63 @@ const SearchBar = () => {
             navigate(`/hostelList?university=${selectedUniversity.name}`);
         }
     };
-    
+
     return (
         <div>
+            <style>
+                {`
+                    body {
+                        font-family: 'Helvetica Neue', Arial, sans-serif;
+                    }
+
+                    .search-heading {
+                        font-size: 2.3rem;
+                        color: #343a40;
+                        font-weight: 600;
+                        margin-bottom: 20px;
+                        font-family: 'Poppins', sans-serif;
+                    }
+
+                    .search-subheading {
+                        font-size: 1.25rem;
+                        color: #6c757d;
+                        margin-bottom: 20px;
+                        font-family: 'Poppins', sans-serif;
+                    }
+
+                    .search-input {
+                        padding: 10px;
+                        font-size: 1rem;
+                        border-radius: 20px 0 0 20px;
+                        font-family: 'Poppins', sans-serif;
+                    }
+
+                    .search-button {
+                        border-radius: 0 20px 20px 0;
+                        background-color: #f0ad4e;
+                        border: none;
+                        font-family: 'Poppins', sans-serif;
+                    }
+
+                    .search-button i {
+                        color: white;
+                    }
+
+                    .university-list {
+                        position: absolute;
+                        top: 100%;
+                        width: 100%;
+                        z-index: 1000;
+                        max-height: 200px;
+                        overflow-y: auto;
+                    }
+
+                    .university-item {
+                        font-family: 'Poppins', sans-serif;
+                        font-size: 1rem;
+                    }
+                `}
+            </style>
             <Container className="text-center my-4">
                 <Row className="justify-content-center align-items-center">
                     <Col xs={10} sm={10} md={6} lg={6} xl={6} className="text-md-left text-center mt-3 mt-md-0 order-2 order-md-1">
@@ -71,27 +125,26 @@ const SearchBar = () => {
                         </div>
                     </Col>
                     <Col xs={12} sm={12} md={6} lg={6} xl={6} className=" order-1 order-md-2">
-                        <h1 style={{ fontSize: '2.5rem', color: '#343a40', fontWeight: 'bold', marginBottom: '20px' }}>The home of student accommodation</h1>
-                        <p style={{ fontSize: '1.25rem', color: '#6c757d', marginBottom: '20px' }}>Search PK's No.1 Student Accommodation Website</p>
+                        <h1 className="search-heading">The Home of Student Accommodation</h1>
+                        <p className="search-subheading">Search PK's No.1 Student Accommodation Website</p>
                         <InputGroup className="mb-3">
-                        <FormControl
+                            <FormControl
                                 placeholder="Search by city or university"
                                 aria-label="Search by city or university"
-                                style={{ padding: '10px', fontSize: '1rem', borderRadius: '20px 0 0 20px' }}
+                                className="search-input"
                                 value={searchTerm}
                                 onChange={(e) => {
                                     setSearchTerm(e.target.value);
                                     setSelectedUniversity(null);
                                 }}
                             />
-                            
-                            <Button onClick={handleSearch} variant="warning" style={{ borderRadius: '0 20px 20px 0' }}> {/* Updated borderRadius */}
+                            <Button onClick={handleSearch} className="search-button">
                                 <i className='fa fa-search'></i>
                             </Button>
                             {filteredUniversities.length > 0 && (
-                                <ListGroup style={{ position: 'absolute', top: '100%', width: '100%', zIndex: '1000' }}>
+                                <ListGroup className="university-list rounded-3">
                                     {filteredUniversities.map((university, index) => (
-                                        <ListGroup.Item key={index} action onClick={() => handleSelectUniversity(university)}>
+                                        <ListGroup.Item key={index} action onClick={() => handleSelectUniversity(university)} className="university-item">
                                             {university.name} - {university.location}
                                         </ListGroup.Item>
                                     ))}
