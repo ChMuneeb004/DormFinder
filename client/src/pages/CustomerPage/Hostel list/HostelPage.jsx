@@ -83,10 +83,10 @@ const HostelPage = () => {
             <div className="container my-4">
                 <div></div>
                 <h2>Search Results</h2>
-                <div className="row">
+                <div className="row justify-content-center">
                     {hostels.length > 0 ? (
                         hostels.map((hostel, index) => (
-                            <div key={index} className="col-md-4 mb-4">
+                            <div key={index} className=" col-11 col-sm-6 col-md-4 col-lg-3 col-xl-4 col-xxl-3 mb-4">
                                 <HostelCard hostel={hostel} />
                             </div>
                         ))
