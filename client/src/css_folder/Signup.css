@@ -58,19 +58,6 @@ input[type="password"] {
   box-sizing: border-box; 
 }
 
-.button {
-  padding: 10px 20px; 
-  border: none;
-  border-radius:111px;
-  background-color: #F4BF96;
-  color: white;
-  cursor: pointer;
-  width: 100%; 
-  max-width: 300px; 
-  margin-bottom: 10px;
-  transition: background-color 0.3s; 
-}
-
 link {
   padding: 10px 20px; 
   border: none;
@@ -82,10 +69,6 @@ link {
   max-width: 300px; 
   margin-bottom: 10px;
   transition: background-color 0.3s; 
-}
-
-button:hover {
-  background-color: #fab885;
 }
 
 .select-container {
@@ -110,16 +93,10 @@ option {
   font-size: 16px;
 }
 
-
 select:focus {
   outline: none;
   border-color: #ccc;
 }
-
-.vectors {
-  margin-top: 38px;
-}
-
 
 .profile {
   width: 100%;
@@ -143,13 +120,20 @@ input::-webkit-inner-spin-button {
 margin: 0;
 }
 
-.border-image-box {
-width: 300px;
-height: 200px;
-border: 100px solid transparent;
-border-image: url('C:\Users\Public\COMMON\FYP\FYP DormFinder\client\src\media\Vectors.png') ; /* Replace with your image URL */
-/* Explanation:
- * '30' is the slice value (can be in percentage or pixels)
- * 'round' makes sure the image is repeated to fill the border area
- */
+input[type="date"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none; /* Removes default arrow button */
+  background-color: #ffffff; /* Set background color */
+  font-size: 16px;
+  outline: none; /* Remove default focus outline */
+}
+
+/* Style for when the date input is focused */
+input[type="date"]:focus {
+  border-color: #007bff; /* Example focus color */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Example focus shadow */
 }

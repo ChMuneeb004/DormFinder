@@ -28,7 +28,7 @@ body {
   font-size: 12px;
 }
 
-.login-button, .signup-button {
+.login-button, .signup-button, .Create-Acc {
   background-color: #F4BF96; /* Lighter peach color for a softer look */
   border-color: #F4BF96;
   width: 100%;
@@ -40,14 +40,14 @@ body {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-.login-button:hover, .signup-button:hover {
+.login-button:hover, .signup-button:hover, .Create-Acc:hover  {
   background-color: #F6635C; /* More vibrant color on hover */
   border-color: #ff6f61;
   transform: translateY(-3px); /* Slightly higher lift on hover */
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
 }
 
-.login-button:focus, .signup-button:focus {
+.login-button:focus, .signup-button:focus, .Create-Acc.focus {
   outline: none;
   box-shadow: 0 0 8px rgba(255, 105, 97, 0.5); /* Softer, colored focus shadow */
 }
