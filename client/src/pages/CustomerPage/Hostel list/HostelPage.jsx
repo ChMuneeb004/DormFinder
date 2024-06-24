@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import HostelCard from './HostelCard';
@@ -11,6 +11,7 @@ const HostelPage = () => {
     const [hostels, setHostels] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchHostels = async () => {
@@ -45,6 +46,7 @@ const HostelPage = () => {
                 console.log('Hostels response:', hostelsResponse.data);
 
                 const formattedHostels = hostelsResponse.data.map(hostel => ({
+                    hostel_id: hostel.hostel_id,
                     images: hostel.images.map(image => ({
                         contentType: image.contentType,
                         data: bufferToBase64(image.data.data)
@@ -69,6 +71,15 @@ const HostelPage = () => {
         fetchHostels();
     }, [location.search]);
 
+    const handleHostelClick = (hostelId) => {
+        if (hostelId) {
+          navigate(`/hostel-detail/${hostelId}`);
+        } else {
+          console.error('Invalid hostel ID');
+          // Optionally, handle this case by showing an error message to the user or redirecting
+        }
+      };  
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -86,7 +97,7 @@ const HostelPage = () => {
                 <div className="row justify-content-center">
                     {hostels.length > 0 ? (
                         hostels.map((hostel, index) => (
-                            <div key={index} className=" col-11 col-sm-6 col-md-4 col-lg-3 col-xl-4 col-xxl-3 mb-4">
+                            <div key={index} className="col-md-4 mb-4" onClick={() => handleHostelClick(hostel.hostel_id)}>
                                 <HostelCard hostel={hostel} />
                             </div>
                         ))

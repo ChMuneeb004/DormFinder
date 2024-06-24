@@ -59,6 +59,21 @@ function verifyToken(req, res, next) {
     }
 }
 
+app.get('/hostel-detail/:id', async (req, res) => {
+    const hostelId = req.params.id;
+    try {
+        const hostel = await HostelModel.findOne({ hostel_id: hostelId });
+        if (!hostel) {
+            return res.status(404).send('Hostel not found');
+        }
+        res.json(hostel);
+    } catch (error) {
+        console.error('Server error:', error);
+        res.status(500).send('Server error');
+        console.error('Hostel not found');
+    }
+});
+
 app.get('/searchHostels', async (req, res) => {
     let { latitude, longitude, radius } = req.query;
 
