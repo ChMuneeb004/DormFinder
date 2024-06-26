@@ -23,7 +23,6 @@ import HostelDetails from './dashbordComp/viewHostel.jsx';
 import HostelPage from './pages/CustomerPage/Hostel list/HostelPage.jsx';
 import Bookings from './dashbordComp/Bookings.jsx'
 import Payment from './dashbordComp/Payment.jsx'
-import Report from './dashbordComp/Report.jsx'
 import HostelDetail from './pages/CustomerPage/hostel details/HostelDetail.jsx';
 
 function App() {
@@ -44,7 +43,6 @@ function App() {
           <Route path="/hostelList" element={<HostelPage />} />
           <Route path="/bookings" element={<Bookings />}/> 
           <Route path="/payment" element={<Payment />}/> 
-          <Route path="/report" element={<Report />}/> 
           <Route path="/hostel-detail/:id" element={<HostelDetail />} />
         </Routes>
       </Router>
