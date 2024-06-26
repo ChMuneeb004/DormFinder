@@ -5,10 +5,9 @@ import booking from "../media/bookmark 1.png";
 import payment from "../media/usd-square 1.png";
 import user from "../media/Vector.png";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, CardBody, CardTitle, CardText } from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
 import { AuthContext } from '../contexts/AuthContext';
-
+import { Link } from 'react-router-dom';
 
 function Header() {
     const { auth } = useContext(AuthContext);
@@ -27,27 +26,9 @@ function Header() {
                         Authorization: `Bearer ${auth.token}`
                     }
                 });
-                // const paymentsResponse = await axios.get("http://localhost:3001/totalPayments", {
-                //     headers: {
-                //         Authorization: `Bearer ${auth.token}`
-                //     }
-                // });
-                // const bookingsResponse = await axios.get("http://localhost:3001/bookingAnalytics", {
-                //     headers: {
-                //         Authorization: `Bearer ${auth.token}`
-                //     }
-                // });
-                // const usersResponse = await axios.get("http://localhost:3001/userAnalytics", {
-                //     headers: {
-                //         Authorization: `Bearer ${auth.token}`
-                //     }
-                // });
 
                 setData({
                     hostelCount: hostelResponse.data.count,
-                    // totalPayments: paymentsResponse.data.total,
-                    // bookingAnalytics: bookingsResponse.data.count,
-                    // userAnalytics: usersResponse.data.count
                 });
             } catch (error) {
                 console.error("There was an error fetching the data!", error);
@@ -57,18 +38,23 @@ function Header() {
         fetchData();
     }, [auth.token]);
 
-
-
-
     const cardStyle = {
-        border: 'none',
-        borderRadius: '8px',
+        border: '1px solid #e0e0e0',
+        borderRadius: '10px',
         width: '100%',
         height: '100%',
         position: 'relative',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'flex-start',
-        padding: '10px',
+        padding: '15px',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+        backgroundColor: '#fff',
+    };
+
+    const cardHoverStyle = {
+        transform: 'translateY(-5px)',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
     };
 
     const imgStyle = {
@@ -76,16 +62,17 @@ function Header() {
     };
 
     const titleStyle = {
-        color: '#6C6C6C',
-        fontSize: '14px',
+        color: '#7a7a7a',
+        fontSize: '16px',
         fontFamily: 'Montserrat',
         fontWeight: '500',
-        marginTop: '30px',
+        marginTop: '15px',
+        marginBottom: '10px',
     };
 
     const textStyle = {
-        color: 'black',
-        fontSize: '30px',
+        color: '#333',
+        fontSize: '28px',
         fontFamily: 'Montserrat',
         fontWeight: '700',
         textTransform: 'uppercase',
@@ -100,43 +87,48 @@ function Header() {
             <Container className="mt-4">
                 <Row className="justify-content-center">
                     <Col xs="12" sm="6" md="5" lg="3" className="mb-3 d-flex">
-                        <button className="card btn btn-light" style={{ ...cardStyle, backgroundColor: '#F0F9FF' }}>
+                        <Link to="/hostel" className="card btn btn-light" style={{ ...cardStyle, backgroundColor: '#F0F9FF'  }}>
                             <div className="card-body">
-                                <img src={hostel} alt=".." style={imgStyle} />
-                                <h5 className="card-title " style={titleStyle}>Hostel</h5>
+                                <img src={hostel} alt="Hostel" style={imgStyle} />
+                                <h5 className="card-title" style={titleStyle}>Hostel</h5>
                                 <p className="card-text" style={textStyle}>{data.hostelCount}</p>
                             </div>
-                        </button>
+                        </Link>
                     </Col>
                     <Col xs="12" sm="6" md="5" lg="3" className="mb-3 d-flex">
-                        <button className="card btn btn-light" style={{ ...cardStyle, backgroundColor: '#FEFBEC' }}>
+                        <Link to="/Payment" className="card btn btn-light" style={{ ...cardStyle, backgroundColor: '#FEFBEC' }}>
                             <div className="card-body">
-                                <img src={payment} alt=".." style={imgStyle} />
+                                <img src={payment} alt="Payment" style={imgStyle} />
                                 <h5 className="card-title" style={titleStyle}>Payment Reports</h5>
                                 <p className="card-text" style={textStyle}>$1000</p>
                             </div>
-                        </button>
+                        </Link>
                     </Col>
                     <Col xs="12" sm="6" md="5" lg="3" className="mb-3 d-flex">
-                        <button className="card btn btn-light" style={{ ...cardStyle, backgroundColor: '#FEF6FB' }}>
+                        <Link to="/bookings" className="card btn btn-light" style={{ ...cardStyle, backgroundColor: '#FEF6FB'  }}>
                             <div className="card-body">
-                                <img src={booking} alt=".." style={imgStyle} />
+                                <img src={booking} alt="Booking" style={imgStyle} />
                                 <h5 className="card-title" style={titleStyle}>Booking Analytics</h5>
                                 <p className="card-text" style={textStyle}>50</p>
                             </div>
-                        </button>
+                        </Link>
                     </Col>
                     <Col xs="12" sm="6" md="5" lg="3" className="mb-3 d-flex">
-                        <button className="card btn btn-light" style={{ ...cardStyle, backgroundColor: '#F8D442' }}>
+                        <Link to="" className="card btn btn-light" style={{ ...cardStyle, backgroundColor: '#F8D442'  }}>
                             <div className="card-body">
-                                <img src={user} alt=".." style={imgStyle} />
+                                <img src={user} alt="User" style={imgStyle} />
                                 <h5 className="card-title" style={titleStyle}>User Analytics</h5>
                                 <p className="card-text" style={textStyle}>100</p>
                             </div>
-                        </button>
+                        </Link>
                     </Col>
                 </Row>
             </Container>
+            <style jsx>{`
+                .card:hover {
+                    ${Object.entries(cardHoverStyle).map(([key, value]) => `${key}: ${value};`).join(' ')}
+                }
+            `}</style>
         </header>
     );
 }

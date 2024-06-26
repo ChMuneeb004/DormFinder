@@ -16,7 +16,6 @@ const HostelCard = ({ hostel }) => {
         }
         return '';
     };
-    
 
     return (
         <>
@@ -84,7 +83,7 @@ const HostelCard = ({ hostel }) => {
                     <div className="mt-auto">
                         <p className="card-text mb-2"><strong>Location:</strong> {location}</p>
                         <p className="card-text mb-2"><strong>Number of Rooms:</strong> {number_of_rooms}</p>
-                        <p className="card-text mb-2"><strong>Contact:</strong> {'+'+contact}</p>
+                        <p className="card-text mb-2"><strong>Contact:</strong> {contact}</p>
                     </div>
                 </div>
             </div>
