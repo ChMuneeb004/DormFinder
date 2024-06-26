@@ -53,6 +53,35 @@ function verifyToken(req, res, next) {
     }
 }
 
+app.post('/stitch-room-images', upload.array('roomImages', 10), (req, res) => {
+    const roomImages = req.files;
+
+    if (roomImages.length < 2) {
+        return res.status(400).json({ error: 'Need at least two images to stitch' });
+    }
+
+    // Save the uploaded images to disk
+    const imagePaths = roomImages.map((file, index) => {
+        const filePath = path.join(__dirname, 'uploads', `room_image_${index}.jpg`);
+        fs.writeFileSync(filePath, file.buffer);
+        return filePath;
+    });
+
+    // Run the Python script for stitching
+    const pythonScript = path.join(__dirname, 'stitch_images.py');
+    const command = `python ${pythonScript} ${imagePaths.join(' ')}`;
+
+    exec(command, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error executing Python script: ${error.message}`);
+            return res.status(500).json({ error: 'Error stitching images' });
+        }
+
+        const outputPath = path.join(__dirname, 'uploads', 'stitched_panorama.jpg');
+        res.status(200).json({ panoramaUrl: `/uploads/stitched_panorama.jpg` });
+    });
+});
+
 app.get('/hostel-detail/:id', async (req, res) => {
     const hostelId = req.params.id;
     try {

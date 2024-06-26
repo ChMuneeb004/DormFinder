@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback  } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -47,7 +47,7 @@ const HostelDetail = () => {
     if (!hostel) {
         return <div>No hostel found</div>;
     }
-    const { images = [], name = '', description = '', location = '', number_of_rooms = '', contact = '', rooms = [], amenities = [] } = hostel;
+    const { images = [], roomImages = [], name = '', description = '', location = '', number_of_rooms = '', contact = '', rooms = [], amenities = [] } = hostel;
 
     // Adjust the way you call bufferToBase64 based on the structure of images[0].data
     // const DesData = description[0].data.data ? description[0].data.data : description[0].data;
@@ -87,6 +87,16 @@ const HostelDetail = () => {
                         </ul>
                         <p><strong>Description:</strong> {des}</p>
                     </div>
+                    {roomImages.length > 0 && (
+                        <div className="my-4">
+                            <h3>360 View</h3>
+                            <img
+                                className="d-block w-100"
+                                src={`http://localhost:3001/uploads/stitched_panorama.jpg`}
+                                alt="360 View"
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </>
