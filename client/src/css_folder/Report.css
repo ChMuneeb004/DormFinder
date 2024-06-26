@@ -1,0 +1,135 @@
+.container-fluid {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.overview-section, .key-metrics, .data-table, .graphs-container {
+    margin-bottom: 20px;
+}
+
+.overview-section p {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.key-metrics {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.metric {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    max-width: 200px;
+    transition: transform 0.3s;
+}
+
+.metric:hover {
+    transform: translateY(-5px);
+}
+
+.metric-title {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.data-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.data-table th {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.graphs-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.graph-container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    transition: transform 0.3s;
+}
+
+.graph-container:hover {
+    transform: translateY(-5px);
+}
+
+.graph-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.bar-chart {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 200px;
+    padding-top: 20px;
+}
+
+.bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bar-inner {
+    width: 40px;
+    background-color: #007bff;
+    transition: height 0.3s;
+}
+
+.bar-label {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.bar-value {
+    color: #fff;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+}
+
+.line-chart {
+    width: 100%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .graph-container {
+        max-width: 100%;
+    }
+}
