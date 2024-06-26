@@ -151,6 +151,7 @@ const styles = {
         transition: 'all 0.3s ease',
         boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
         textDecoration: 'none',
+        width: 'auto'
     },
     landlordsAgentsLink: {
         border: '1px solid #ccc',
