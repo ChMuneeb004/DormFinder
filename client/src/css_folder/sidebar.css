@@ -115,6 +115,42 @@ body {
     padding: 20px;
 }
 
+/* Ensure the link itself is flex and centered */
+.nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centers the content horizontally */
+    background-color: #F2EAE1;
+    border-radius: 5px;
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    width: 100%;
+    padding: 10px;
+}
+
+/* Center the icon within the link */
+.nav-link i {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+/* Ensure the text and icon are both centered */
+.nav-link span {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centers the content horizontally */
+}
+
+/* Apply hover and active states */
+.nav-link.active,
+.nav-link:hover {
+    background-color: #e9ecef;
+}
+
+
+
 /* Mobile-specific styles */
 @media (max-width: 767px) {
     .mobile-navbar .navbar-brand {

@@ -51,7 +51,7 @@ function Sidebar({ onProfileClick }) {
                         <p className='role'>Owner</p>
                     </div>
                 </Navbar.Brand>
-                <div className='text-center align-content-center' style={{ marginBottom: '0px', padding: '4px', borderWidth: '1px', border: '1px', borderStyle:'groove', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius:'5px' }}>
+                <div className='text-center align-content-center' style={{ marginBottom: '0px', padding: '4px', borderWidth: '1px', border: '1px', borderStyle: 'groove', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '5px' }}>
                     <img
                         src="Logo.png"
                         width="20"
@@ -84,7 +84,7 @@ function Sidebar({ onProfileClick }) {
     }
 
     return (
-        <div className="bg p-3 d-flex flex-column" style={{ minHeight: '100vh' }}>
+        <div className="fixed-bottom fixed-top navbar-nav-scroll w-25 bg p-3 d-flex flex-column" style={{ minHeight: '100vh' }}>
             <div className="text-center mb-4 p-2 border rounded d-flex align-items-center justify-content-center" style={{ borderWidth: '1px', borderStyle: 'groove' }}>
                 <img
                     src="Logo.png"
@@ -112,26 +112,27 @@ function Sidebar({ onProfileClick }) {
             </div>
 
             <Nav className="flex-column">
-                <Nav.Link href="/Dashboard/Home" className="d-flex align-items-center mb-3">
-                    <i className="fa fa-home mr-2"></i>
-                    Home
+                <Nav.Link as={Link} to="/Dashboard/Home" className="nav-link">
+                    <i className="fa fa-home"></i>
+                    <span>Home</span>
                 </Nav.Link>
-                <Nav.Link href="/bookings" className="d-flex align-items-center mb-3">
-                    <i className="fa fa-bookmark mr-2"></i>
-                    Booking
+                <Nav.Link as={Link} to="/bookings" className="nav-link">
+                    <i className="fa fa-bookmark"></i>
+                    <span>Booking</span>
                 </Nav.Link>
-                <Nav.Link href="/hostel" className="d-flex align-items-center mb-3">
-                    <i className="fa fa-building mr-2"></i>
-                    Hostel
+                <Nav.Link as={Link} to="/hostel" className="nav-link">
+                    <i className="fa fa-building"></i>
+                    <span>Hostel</span>
                 </Nav.Link>
-                <Nav.Link href="/payment" className="d-flex align-items-center mb-3">
-                    <i className="fa fa-dollar mr-2"></i>
-                    Payment
+                <Nav.Link as={Link} to="/payment" className="nav-link">
+                    <i className="fa fa-dollar"></i>
+                    <span>Payment</span>
                 </Nav.Link>
-                <Nav.Link href="/report" className="d-flex align-items-center mb-3">
-                    <i className="fa fa-file-text mr-2"></i>
-                    Report
+                <Nav.Link as={Link} to="/report" className="nav-link">
+                    <i className="fa fa-file-text"></i>
+                    <span>Report</span>
                 </Nav.Link>
+
             </Nav>
 
             <div className="mt-auto text-center">
