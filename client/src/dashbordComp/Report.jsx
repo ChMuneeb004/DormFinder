@@ -8,7 +8,7 @@ const Report = () => {
         const data = labels.map(() => Math.floor(Math.random() * 100)); // Random data for demo
         return { labels, data };
     }, []);
-
+    //..
     const { labels, data } = generateGraphData;
 
     const barGraph = useMemo(() => (
