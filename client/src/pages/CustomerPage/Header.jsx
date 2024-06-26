@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import profile from '../../media/Profile.jpg';
 
 const Header = () => {
     const [expanded, setExpanded] = useState(false);
@@ -46,7 +47,7 @@ const Header = () => {
                     <Dropdown alignRight>
                         <Dropdown.Toggle as="a" id="dropdown-custom-components" style={styles.profileToggle}>
                             <img
-                                src="Profile.jpg"
+                                src={profile}
                                 className="profile-icon"
                                 alt="Profile"
                                 style={styles.profileIcon}
