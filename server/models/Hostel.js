@@ -31,6 +31,10 @@ const HostelSchema = new mongoose.Schema({
         data: Buffer,
         contentType: String
     }],
+    roomImages: [{
+        data: Buffer,
+        contentType: String
+    }],
     number_of_rooms: {
         type: Number,
         required: [true, 'Number of rooms is required']
@@ -50,11 +54,11 @@ const HostelSchema = new mongoose.Schema({
         required: [true, 'Owner email is required']
     },
 
-    room:
-     [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }],
+    // room:
+    //  [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }],
 
-    amenities:
-     [{ type: mongoose.Schema.Types.ObjectId, ref: 'Amenities' }],
+    // amenities:
+    //  [{ type: mongoose.Schema.Types.ObjectId, ref: 'Amenities' }],
 
 
 

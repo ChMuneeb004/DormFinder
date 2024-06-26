@@ -62,17 +62,52 @@ function verifyToken(req, res, next) {
 app.get('/hostel-detail/:id', async (req, res) => {
     const hostelId = req.params.id;
     try {
+        // Find the hostel by hostel_id
         const hostel = await HostelModel.findOne({ hostel_id: hostelId });
         if (!hostel) {
             return res.status(404).send('Hostel not found');
         }
-        res.json(hostel);
+        const rooms = await RoomModel.find({ hostel_id: hostel._id });
+        const amenities = await amenitiesModel.find({ hostel_id: hostel._id });
+        const hostelDetails = {
+            _id: hostel._id,
+            hostel_id: hostel.hostel_id,
+            name: hostel.name,
+            location: hostel.location,
+            latitude: hostel.latitude,
+            longitude: hostel.longitude,
+            description: hostel.description,
+            images: hostel.images,
+            number_of_rooms: hostel.number_of_rooms,
+            contact: hostel.contact,
+            ownerEmail: hostel.ownerEmail,
+            createdAt: hostel.createdAt,
+            rooms: rooms,
+            amenities: amenities
+        };
+        // Send the response
+        res.json(hostelDetails);
     } catch (error) {
         console.error('Server error:', error);
         res.status(500).send('Server error');
-        console.error('Hostel not found');
     }
 });
+
+
+// app.get('/hostel-detail/:id', async (req, res) => {
+//     const hostelId = req.params.id;
+//     try {
+//         const hostel = await HostelModel.findOne({ hostel_id: hostelId });
+//         if (!hostel) {
+//             return res.status(404).send('Hostel not found');
+//         }
+//         res.json(hostel);
+//     } catch (error) {
+//         console.error('Server error:', error);
+//         res.status(500).send('Server error');
+//         console.error('Hostel not found');
+//     }
+// });
 
 app.get('/searchHostels', async (req, res) => {
     let { latitude, longitude, radius } = req.query;
@@ -103,8 +138,8 @@ app.get('/searchHostels', async (req, res) => {
     }
 });
 
-
-app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) => {
+const uploadFields = upload.fields([{ name: 'images', maxCount: 10 }, { name: 'roomImages', maxCount: 10 }]);
+app.post('/listHostel', verifyToken, uploadFields, async (req, res) => {
     if (req.userType !== 'owner') {
         return res.status(403).json({ error: 'Forbidden', message: 'Only owners can add hostels' });
     }
@@ -112,12 +147,25 @@ app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) =>
     try {
         const { name, location, description, number_of_rooms, contact } = req.body;
         let images = [];
-        
+        let roomImages = [];
 
-        if (req.files && req.files.length > 0) {
-            images = req.files.map(file => ({ data: file.buffer, contentType: file.mimetype }));
+        // if (req.files && req.files.length > 0) {
+        //     images = req.files.map(file => ({ data: file.buffer, contentType: file.mimetype }));
+        // } else {
+        //     return res.status(400).json({ error: 'No files were sent in the request.' });
+        // }
+
+        if (req.files['images'] && req.files['images'].length > 0) {
+            images = req.files['images'].map(file => ({ data: file.buffer, contentType: file.mimetype }));
         } else {
-            return res.status(400).json({ error: 'No files were sent in the request.' });
+            return res.status(400).json({ error: 'No files were sent in the request for images.' });
+        }
+
+        if (req.files['roomImages'] && req.files['roomImages'].length > 0) {
+            roomImages = req.files['roomImages'].map(file => ({ data: file.buffer, contentType: file.mimetype }));
+            
+        } else {
+            return res.status(400).json({ error: 'No files were sent in the request for room images.' });
         }
 
         // Fetch coordinates using Google Maps Geocoding API
@@ -141,6 +189,7 @@ app.post('/listHostel', verifyToken, upload.array('images'), async (req, res) =>
             longitude: lng,
             description,
             images,
+            roomImages: roomImages,
             number_of_rooms,
             contact,
             ownerEmail: req.email // associate hostel with the owner's email

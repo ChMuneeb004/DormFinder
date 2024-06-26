@@ -15,6 +15,7 @@ const AddHostel = () => {
         location: '',
         description: '',
         images: [],
+        roomImages: [],
         number_of_rooms: '',
         contact: '',
         rooms: [
@@ -97,6 +98,10 @@ const AddHostel = () => {
             formData.append('images', image);
         }
 
+        for (const roomImages of hostel.roomImages) {
+            formData.append('roomImages', roomImages);
+        }
+
         try {
             const hostelResponse = await axios.post("http://localhost:3001/listHostel", formData, {
                 headers: {
@@ -144,6 +149,19 @@ const AddHostel = () => {
             images: files
         }));
     };
+
+    const handleRoomImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        setHostel(prevState => ({
+            ...prevState,
+            roomImages: files
+        }));
+    };
+    
+    const handleCustomButtonClick1 = () => {
+        document.getElementById('roomImages').click();
+    };
+
 
     return (
         <div className="d-flex">
@@ -238,6 +256,7 @@ const AddHostel = () => {
                                 <Form.Group controlId="images">
                                     <Card className="mb-3">
                                         <Card.Body>
+                                            <Form.Label>Hostel Images</Form.Label>
                                             <Form.Control
                                                 type="file"
                                                 id="images"
@@ -259,7 +278,35 @@ const AddHostel = () => {
                                         </Card.Body>
                                     </Card>
                                 </Form.Group>
-                                
+
+                                <Form.Group controlId="roomImages">
+                                    <Card className="mb-3">
+                                        <Card.Body>
+                                            <Form.Label>Room Images</Form.Label>
+                                            <Form.Control
+                                                type="file"
+                                                id="roomImages"
+                                                style={{ display: 'none' }}
+                                                multiple
+                                                onChange={handleRoomImageChange}
+                                                required
+                                            />
+                                            <Button className="btn btn-primary text-white" variant="warning" onClick={handleCustomButtonClick1}>
+                                                Upload Room Images
+                                            </Button>
+                                            
+                                            {hostel.roomImages.length > 0 && (
+                                                <div className="mt-2">
+                                                    {hostel.roomImages.map((file, index) => (
+                                                        <div key={index}>{file.name}</div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </Card.Body>
+                                    </Card>
+                                </Form.Group>
+
+
                                 <Form.Group>
                                     <Form.Label>Room Types</Form.Label>
                                     {hostel.rooms.map((room, index) => (

@@ -44,7 +44,7 @@
         { "name": "Gomal University", "location": "Dera Ismail Khan, Khyber Pakhtunkhwa" },
         { "name": "International Islamic University Islamabad (IIUI)", "location": "Islamabad, Federal" },
         { "name": "University of Health Sciences", "location": "Lahore, Punjab" },
-        { "name": "University of Central Punjab", "location": "Lahore, Punjab" },
+        { "name": "University of Central Punjab (UCP)", "location": "Lahore, Punjab" },
         { "name": "Hamdard University", "location": "Karachi, Sindh" },
         { "name": "King Edward Medical University", "location": "Lahore, Punjab" },
         { "name": "Jinnah Sindh Medical University", "location": "Karachi, Sindh" },

@@ -16,6 +16,7 @@ const HostelCard = ({ hostel }) => {
         }
         return '';
     };
+    
 
     return (
         <>
