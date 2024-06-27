@@ -25,6 +25,7 @@ import Bookings from './dashbordComp/Bookings.jsx'
 import Payment from './dashbordComp/Payment.jsx'
 import Report from './dashbordComp/Report.jsx'
 import HostelDetail from './pages/CustomerPage/hostel details/HostelDetail.jsx';
+import AboutUs from './pages/CustomerPage/About us.jsx';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path="/payment" element={<Payment />}/> 
           <Route path="/report" element={<Report />}/> 
           <Route path="/hostel-detail/:id" element={<HostelDetail />} />
+          <Route path="/aboutus" element={<AboutUs />}/> 
         </Routes>
       </Router>
     </AuthProvider>

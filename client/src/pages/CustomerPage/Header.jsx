@@ -69,10 +69,9 @@ const Header = () => {
                 </div>
                 <Navbar.Collapse id="basic-navbar-nav" style={styles.navbarCollapse}>
                     <Nav className="ml-auto justify-content-end bg-white" style={styles.nav}>
-                        <Nav.Link href="#" style={styles.navLink}>Guides</Nav.Link>
-                        <Nav.Link href="#" style={styles.navLink}>Blog</Nav.Link>
-                        <Nav.Link href="#" style={styles.navLink}>Utilities</Nav.Link>
-                        <Nav.Link href="#" style={styles.navLink}>Advertise</Nav.Link>
+                        <Nav.Link href="/home" style={styles.navLink}>Home</Nav.Link>
+                        <Nav.Link href="/aboutus" style={styles.navLink}>About Us</Nav.Link>
+                        <Nav.Link href="#" style={styles.navLink}>Bookings</Nav.Link>
                         <Nav.Link href="#" style={{ ...styles.navLink, ...styles.landlordsAgentsLink }}>
                             Landlords / Agents
                         </Nav.Link>
