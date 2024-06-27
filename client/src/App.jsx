@@ -26,6 +26,9 @@ import Payment from './dashbordComp/Payment.jsx'
 import Report from './dashbordComp/Report.jsx'
 import HostelDetail from './pages/CustomerPage/hostel details/HostelDetail.jsx';
 import AboutUs from './pages/CustomerPage/About us.jsx';
+import UserProfile from './pages/CustomerPage/UserProfile.jsx';
+import ForgotPassword from './pages/forgot.jsx';
+
 
 function App() {
   return (
@@ -48,6 +51,8 @@ function App() {
           <Route path="/report" element={<Report />}/> 
           <Route path="/hostel-detail/:id" element={<HostelDetail />} />
           <Route path="/aboutus" element={<AboutUs />}/> 
+          <Route path="/forgot" element={<ForgotPassword />}/> 
+          <Route path="/UserProfile" element={<UserProfile />}/> 
         </Routes>
       </Router>
     </AuthProvider>

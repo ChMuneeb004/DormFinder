@@ -2,7 +2,6 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../CustomerPage/Header';
 import SearchBar from '../CustomerPage/SearchBar';
-import CityList from '../CustomerPage/CityList';
 import 'font-awesome/css/font-awesome.min.css';
 
 const SearchPage = () => {
@@ -69,10 +68,6 @@ const SearchPage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="text-center py-4">
-                <h2>Explore popular student cities</h2>
-                <CityList />
             </div>
             <style jsx>{`
                 .card {

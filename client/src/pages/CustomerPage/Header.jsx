@@ -2,10 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import profile from '../../media/Profile.jpg';
+import UserProfile from './UserProfile';
 
 const Header = () => {
     const [expanded, setExpanded] = useState(false);
     const navbarRef = useRef(null);
+    const [showModal, setShowModal] = useState(false);
+    
 
     const handleToggle = () => setExpanded(!expanded);
 
@@ -24,6 +27,7 @@ const Header = () => {
 
     return (
         <>
+            <UserProfile show={showModal} onHide={() => setShowModal(false)} />
             <Navbar ref={navbarRef} bg="white" expand={false} expanded={expanded} style={styles.navbar}>
                 <Navbar.Brand href="#" style={styles.brand}>
                     <img
@@ -55,7 +59,9 @@ const Header = () => {
                             <span className="profile-text" style={styles.profileText}>Dawood</span>
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={styles.dropdownMenu}>
-                            <Dropdown.Item href="#/action-1" style={styles.dropdownItem}>
+                            <Dropdown.Item
+                                onClick={() => setShowModal(true)}
+                                style={styles.dropdownItem}>
                                 <i className="fa fa-user" style={styles.dropdownIcon}></i> Profile
                             </Dropdown.Item>
                             <Dropdown.Item href="#/action-2" style={styles.dropdownItem}>
@@ -72,8 +78,8 @@ const Header = () => {
                         <Nav.Link href="/home" style={styles.navLink}>Home</Nav.Link>
                         <Nav.Link href="/aboutus" style={styles.navLink}>About Us</Nav.Link>
                         <Nav.Link href="#" style={styles.navLink}>Bookings</Nav.Link>
-                        <Nav.Link href="#" style={{ ...styles.navLink, ...styles.landlordsAgentsLink }}>
-                            Landlords / Agents
+                        <Nav.Link href="#" style={{ ...styles.navLink, ...styles.ContactUS }}>
+                            Contact Us
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
@@ -151,13 +157,13 @@ const styles = {
         transition: 'all 0.3s ease',
         boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
         textDecoration: 'none',
-        width: 'auto'
+        width: 'auto',
+        alignItems: 'center'
     },
-    landlordsAgentsLink: {
+    ContactUS: {
         border: '1px solid #ccc',
         borderRadius: '20px',
         padding: '5px 15px',
-        marginLeft: '10px',
         background: 'linear-gradient(45deg, #ff6f61, #de2d4f)',
         color: 'white',
         boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
