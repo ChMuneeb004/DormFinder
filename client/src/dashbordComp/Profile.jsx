@@ -1,183 +1,153 @@
-import React, { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css';
-import '../css_folder/sidebar.css';
-import ProfileImg from '../media/Profile.jpg';
-import { Navbar, Nav, Modal } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import { AuthContext } from '../contexts/AuthContext';
+import Sidebar from '../dashbordComp/Sidebar';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Sidebar() {
-    const [username, setUsername] = useState('');
-    const [isMobile, setIsMobile] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [userDetails, setUserDetails] = useState({
-        fullName: '',
+const Profile = () => {
+    const { auth } = useContext(AuthContext);
+    const [userData, setUserData] = useState({
         email: '',
-        bio: ''
+        username: '',
+        password: '',
+        contactNumber: '',
+        dateOfBirth: '',
+        cnic: '',
+        userType: ''
     });
+    const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
-        const fetchUserDetails = async () => {
+        const fetchUserProfile = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:3001/getUserDetails', {
+                const response = await axios.get('http://localhost:3001/profile', {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        'Authorization': `Bearer ${auth.token}`
                     }
                 });
-                if (response.data) {
-                    setUserDetails({
-                        fullName: response.data.fullName,
-                        email: response.data.email,
-                        bio: response.data.bio
-                    });
-                    setUsername(response.data.username);
-                }
+                setUserData({
+                    email: response.data.email,
+                    username: response.data.username,
+                    contactNumber: response.data.contactNumber,
+                    dateOfBirth: response.data.dateOfBirth,
+                    cnic: response.data.cnic,
+                    userType: response.data.userType,
+                    password: ''
+                });
             } catch (error) {
-                console.error(error);
+                console.error('Error fetching user profile:', error);
             }
         };
-        fetchUserDetails();
 
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 767);
-        };
+        fetchUserProfile();
+    }, [auth.token]);
 
-        window.addEventListener('resize', handleResize);
-        handleResize();
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUserData({
+            ...userData,
+            [name]: value
+        });
+    };
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.put('http://localhost:3001/profile', userData, {
+                headers: {
+                    'Authorization': `Bearer ${auth.token}`
+                }
+            });
+            alert('Profile updated successfully!');
+            setModalShow(false);
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            alert('Failed to update profile');
+        }
+    };
 
-    const profileImageClasses = "img-thumbnail rounded-circle mx-auto d-block";
+    const ProfileForm = () => (
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label>Email:</label>
+                <input type="text" value={userData.email} readOnly />
+            </div>
+            <div>
+                <label>Username:</label>
+                <input type="text" name="username" value={userData.username} onChange={handleChange} />
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" value={userData.password} onChange={handleChange} />
+            </div>
+            <div>
+                <label>Contact Number:</label>
+                <input type="text" name="contactNumber" value={userData.contactNumber} onChange={handleChange} />
+            </div>
+            <div>
+                <label>Date of Birth:</label>
+                <input type="date" name="dateOfBirth" value={userData.dateOfBirth} onChange={handleChange} />
+            </div>
+            <div>
+                <label>CNIC:</label>
+                <input type="text" value={userData.cnic} readOnly />
+            </div>
+            <div>
+                <label>User Type:</label>
+                <input type="text" value={userData.userType} readOnly />
+            </div>
+            <button type="submit">Save Changes</button>
+        </form>
+    );
 
-    const modalContent = (
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
+    const MyVerticallyCenteredModal = (props) => (
+        <Modal
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+        >
             <Modal.Header closeButton>
-                <Modal.Title>{userDetails.fullName}'s Profile</Modal.Title>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Edit Profile
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="profile-modal-content">
-                    <img src={ProfileImg} alt="profile" className={profileImageClasses} style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
-                    <h3>{userDetails.fullName}</h3>
-                    <p>Email: {userDetails.email}</p>
-                    <p>{userDetails.bio}</p>
-                </div>
+                <ProfileForm />
             </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={props.onHide}>Close</Button>
+            </Modal.Footer>
         </Modal>
     );
 
-    if (isMobile) {
-        return (
-            <>
-                {modalContent}
-                <Navbar expand="lg" className="mobile-navbar p-0">
-                    <Navbar.Brand className="p-2 d-flex align-items-center" onClick={() => setShowModal(true)} style={{ cursor: 'pointer' }}>
-                        <img src={ProfileImg} alt="profile" className={profileImageClasses} style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
-                        <div className="profile-info m-2">
-                            <h3 className='username text-black'>{username}</h3>
-                            <p className='role'>Owner</p>
-                        </div>
-                    </Navbar.Brand>
-                    <div className='text-center align-content-center' style={{ marginBottom: '0px', padding: '4px', borderWidth: '1px', border: '1px', borderStyle: 'groove', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '5px' }}>
-                        <img
-                            src="Logo.png"
-                            width="20"
-                            height="20"
-                            className="d-inline-block align-center"
-                            alt="Logo"
-                            style={{ verticalAlign: 'middle' }}
-                        />
-                        <span style={{ display: 'inline-block', fontSize: '15px', marginLeft: '8px' }}>
-                            Dorm Finder
-                        </span>
-                    </div>
-                    <Navbar.Toggle className="m-2 btn btn-primary text-white" aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="ml-auto">
-                            <Nav.Link as={Link} to="/Dashboard/Home"><i className='fa fa-home'></i>Home</Nav.Link>
-                            <Nav.Link as={Link} to="/bookings"><i className='fa fa-bookmark'></i>Booking</Nav.Link>
-                            <Nav.Link as={Link} to="/hostel"><i className='fa fa-building'></i>Hostel</Nav.Link>
-                            <Nav.Link as={Link} to="/Payment"><i className='fa fa-dollar'></i>Payment</Nav.Link>
-                            <Nav.Link as={Link} to="/report"><i className='fa fa-file-text'></i>Report</Nav.Link>
-                        </Nav>
-                        <Nav className="logout-button">
-                            <Nav.Link as={Link} to="/login" className="btn btn-danger">
-                                <i className="fa fa-sign-out"></i> Logout
-                            </Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
-            </>
-        );
-    }
-
     return (
-        <>
-            {modalContent}
-            <div className="fixed-bottom fixed-top navbar-nav-scroll w-25 bg p-3 d-flex flex-column" style={{ minHeight: '100vh' }}>
-                <div className="text-center mb-4 p-2 border rounded d-flex align-items-center justify-content-center" style={{ borderWidth: '1px', borderStyle: 'groove' }}>
-                    <img
-                        src="Logo.png"
-                        width="25"
-                        height="25"
-                        className="d-inline-block align-center"
-                        alt="Logo"
-                        style={{ verticalAlign: 'middle' }}
-                    />
-                    <span className="ml-2" style={{ fontSize: '22px' }}>
-                        Dorm Finder
-                    </span>
-                </div>
-
-                <div
-                    className="text-center mb-4"
-                    onClick={() => setShowModal(true)}
-                    role="button"
-                    tabIndex="0"
-                    style={{ cursor: 'pointer' }}
-                >
-                    <img src={ProfileImg} alt="profile" className={profileImageClasses} style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
-                    <h3 className="font-weight-bold">{username}</h3>
-                    <p className="text-warning">Owner</p>
-                </div>
-
-                <Nav className="flex-column">
-                    <Nav.Link as={Link} to="/Dashboard/Home" className="nav-link">
-                        <i className="fa fa-home"></i>
-                        <span>Home</span>
-                    </Nav.Link>
-                    <Nav.Link as={Link} to="/bookings" className="nav-link">
-                        <i className="fa fa-bookmark"></i>
-                        <span>Booking</span>
-                    </Nav.Link>
-                    <Nav.Link as={Link} to="/hostel" className="nav-link">
-                        <i className="fa fa-building"></i>
-                        <span>Hostel</span>
-                    </Nav.Link>
-                    <Nav.Link as={Link} to="/payment" className="nav-link">
-                        <i className="fa fa-dollar"></i>
-                        <span>Payment</span>
-                    </Nav.Link>
-                    <Nav.Link as={Link} to="/report" className="nav-link">
-                        <i className="fa fa-file-text"></i>
-                        <span>Report</span>
-                    </Nav.Link>
-                </Nav>
-
-                <div className="mt-auto text-center">
-                    <Link to="/login">
-                        <button className="btn btn-danger btn-block">
-                            <i className="fa fa-sign-out mr-2"></i> Logout
-                        </button>
-                    </Link>
+        <div className="d-flex">
+            <div className="container-fluid">
+                <div className="row justify-content-center">
+                    <div className="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3">
+                        <Sidebar onProfileClick={() => setModalShow(true)} />
+                    </div>
+                    <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 ">
+                        <div className="row">
+                            <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                                <h1>User Profile</h1>
+                                <Button variant="primary" onClick={() => setModalShow(true)}>
+                                    Edit Profile
+                                </Button>
+                                <MyVerticallyCenteredModal
+                                    show={modalShow}
+                                    onHide={() => setModalShow(false)}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </>
+        </div>
     );
-}
+};
 
-export default Sidebar;
+export default Profile;
