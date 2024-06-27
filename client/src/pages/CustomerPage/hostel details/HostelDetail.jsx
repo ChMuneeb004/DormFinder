@@ -11,6 +11,7 @@ const HostelDetail = () => {
     const [hostel, setHostel] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [stitchedImageUrl, setStitchedImageUrl] = useState('');
 
     useEffect(() => {
 
@@ -26,6 +27,7 @@ const HostelDetail = () => {
                 }
 
                 setHostel(response.data);
+                setStitchedImageUrl(response.data.panoramaUrl);
             } catch (error) {
                 setError('Error fetching hostel details');
             } finally {
@@ -35,6 +37,8 @@ const HostelDetail = () => {
 
         fetchHostel();
     }, [id]);
+
+    
 
     if (loading) {
         return <div>Loading...</div>;
@@ -55,6 +59,13 @@ const HostelDetail = () => {
 
     const des = `data:${description.contentType};base64,${bufferToBase64(description.data)}`
 
+    const getImageUrl = (image) => {
+        if (image && image.data) {
+            return `data:${image.contentType};base64,${image.data}`;
+        }
+        return '';
+    };
+
     return (
         <>
             <Header />
@@ -66,9 +77,9 @@ const HostelDetail = () => {
                             {images.map((image, index) => (
                                 <Carousel.Item key={index}>
                                     <img
+                                        src={getImageUrl(image)}
                                         className="d-block w-100"
-                                        src={`data:${image.contentType};base64,${bufferToBase64(image.data.data)}`}
-                                        alt={`${name} - Image ${index}`}
+                                        alt={`Slide ${index}`}
                                     />
                                 </Carousel.Item>
                             ))}
@@ -87,14 +98,20 @@ const HostelDetail = () => {
                         </ul>
                         <p><strong>Description:</strong> {des}</p>
                     </div>
-                    {roomImages.length > 0 && (
+                    {stitchedImageUrl && (
                         <div className="my-4">
                             <h3>360 View</h3>
-                            <img
-                                className="d-block w-100"
-                                src={`http://localhost:3001/uploads/stitched_panorama.jpg`}
-                                alt="360 View"
-                            />
+                            <div id="panorama"></div>
+                            <script src="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js"></script>
+                            <script dangerouslySetInnerHTML={{
+                                __html: `
+                                    pannellum.viewer('panorama', {
+                                        "type": "equirectangular",
+                                        "panorama": "${stitchedImageUrl}",
+                                        "autoLoad": true
+                                    });
+                                `
+                            }} />
                         </div>
                     )}
                 </div>
