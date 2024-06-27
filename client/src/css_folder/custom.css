@@ -1,0 +1,35 @@
+
+
+.custom-modal-style {
+  padding: 20px;
+}
+
+.modal-body-custom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-form {
+  width: 100%;
+  max-width: 500px; /* Restrict form size for better readability */
+}
+
+.form-control {
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.read-only {
+  background-color: #f3f3f3; /* Light grey background for read-only fields */
+}
+
+.editable {
+  background-color: #ffffff; /* White background for editable fields */
+}
+
+.btn-custom {
+  width: 100%;
+  padding: 10px;
+}

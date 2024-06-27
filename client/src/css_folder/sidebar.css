@@ -2,6 +2,13 @@
 body {
     font-family: Arial, sans-serif;
 }
+.modal-top {
+  margin-top: 15px !important; 
+  transform: translate(0, 0) !important; 
+  padding: 0px;
+}
+
+
 
 .bg{
     background-color: #F2EAE1;
