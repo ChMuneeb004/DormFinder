@@ -51,7 +51,7 @@ const HostelPage = () => {
             });
 
             const formattedHostels = hostelsResponse.data.hostels.map(hostel => ({
-                hostel_id: hostel.hostel_id,
+                id: hostel._id,
                 images: hostel.images.map(image => ({
                     contentType: image.contentType,
                     data: image.data // This should be a base64 encoded string
@@ -102,7 +102,7 @@ const HostelPage = () => {
                           ))
                         : hostels.length > 0 ? (
                             hostels.map((hostel, index) => (
-                                <div key={index} className="col-11 col-sm-6 col-md-4 col-lg-3 col-xl-4 col-xxl-3 mb-4" onClick={() => handleHostelClick(hostel.hostel_id)}>
+                                <div key={index} className="col-11 col-sm-6 col-md-4 col-lg-3 col-xl-4 col-xxl-3 mb-4" onClick={() => handleHostelClick(hostel.id)}>
                                     <HostelCard hostel={hostel} />
                                 </div>
                             ))

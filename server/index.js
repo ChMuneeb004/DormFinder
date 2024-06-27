@@ -135,25 +135,39 @@ app.post('/stitch-room-images', upload.array('roomImages', 10), async (req, res)
     });
 });
 
+// app.get('/hostel-detail/:id', async (req, res) => {
+//     const hostelId = req.params.id;
+//     try {
+//         const hostel = await HostelModel.findById(hostelId);
+//         if (!hostel) {
+//             return res.status(404).send('Hostel not found');
+//         }
+//         res.json(hostel);
+//     } catch (error) {
+//         res.status(500).send('Server error');
+//     }
+// });
+
 app.get('/hostel-detail/:id', async (req, res) => {
     const hostelId = req.params.id;
     try {
-        debugger;
-        const hostel = await HostelModel.findOne({ hostel_id: hostelId }).lean();
+        const hostel = await HostelModel.findById(hostelId).lean();
         if (!hostel) {
             return res.status(404).send('Hostel not found');
         }
-        const rooms = await RoomModel.find({ hostel_id: hostel._id }).lean();
-        const amenities = await amenitiesModel.find({ hostel_id: hostel._id }).lean();
-        // const stitched_images = await RoomImages.find({ hostel_id: hostel._id }).lean();
+        const Room = await RoomModel.find({ hostel_id: hostelId }).lean();
+        const amenities = await amenitiesModel.find({ hostel_id: hostelId }).lean();
+        const stitchedImages = await RoomImages.find({ hostel_id: hostelId }).lean();
+        
         const hostelDetails = {
             ...hostel,
-            rooms,
-            amenities
-            // stitched_images
+            Room,
+            amenities,
+            stitchedImages
         };
         res.json(hostelDetails);
     } catch (error) {
+        console.error('Error fetching hostel details:', error);
         res.status(500).send('Server error');
     }
 });
