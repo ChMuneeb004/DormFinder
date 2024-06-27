@@ -76,9 +76,9 @@ const Header = () => {
                 <Navbar.Collapse id="basic-navbar-nav" style={styles.navbarCollapse}>
                     <Nav className="ml-auto justify-content-end bg-white" style={styles.nav}>
                         <Nav.Link href="/home" style={styles.navLink}>Home</Nav.Link>
-                        <Nav.Link href="/aboutus" style={styles.navLink}>About Us</Nav.Link>
                         <Nav.Link href="#" style={styles.navLink}>Bookings</Nav.Link>
-                        <Nav.Link href="#" style={{ ...styles.navLink, ...styles.ContactUS }}>
+                        <Nav.Link href="/aboutus" style={styles.navLink}>About Us</Nav.Link>
+                        <Nav.Link href="/contactus" style={{ ...styles.navLink, ...styles.ContactUS }}>
                             Contact Us
                         </Nav.Link>
                     </Nav>
