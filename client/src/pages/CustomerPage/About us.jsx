@@ -19,7 +19,7 @@ const AboutUs = () => {
                         <p className="text-muted">At Dorm Finder, our mission is to provide students with a seamless and reliable platform to find the best accommodation options. We are committed to helping students make informed decisions and find a place they can call home during their academic journey. Our team works tirelessly to ensure that every student has access to safe, affordable, and comfortable housing, tailored to their unique needs and preferences.</p>
                     </div>
                     <div className="col-md-6 mb-4">
-                        <img src="../../../public/AB2.jpg" alt="Our Mission" className="img-fluid rounded shadow" />
+                        <img src="../../../public/AB2.jpg" alt="Our Mission" className="img-fluid rounded shadow" loading="lazy" />
                     </div>
                 </div>
                 <div className="row mb-5 align-items-center">
@@ -28,7 +28,7 @@ const AboutUs = () => {
                         <p className="text-muted">We envision a world where every student has access to safe, affordable, and comfortable accommodation. By connecting students with trusted providers, we aim to enhance the student experience and contribute to their academic success. Our goal is to revolutionize the student housing market through innovation, transparency, and unwavering commitment to quality.</p>
                     </div>
                     <div className="col-md-6 order-md-1 mb-4">
-                        <img src="../../../public/AB3.jpg" alt="Our Vision" className="img-fluid rounded shadow" />
+                        <img src="../../../public/AB3.jpg" alt="Our Vision" className="img-fluid rounded shadow" loading="lazy" />
                     </div>
                 </div>
                 <div className="row mb-5 align-items-center">
@@ -43,7 +43,7 @@ const AboutUs = () => {
                         </ul>
                     </div>
                     <div className="col-md-6 mb-4">
-                        <img src="../../../public/AB4.jpg" alt="Our Values" className="img-fluid rounded shadow" />
+                        <img src="../../../public/AB4.jpg" alt="Our Values" className="img-fluid rounded shadow" loading="lazy" />
                     </div>
                 </div>
             </div>

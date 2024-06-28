@@ -104,7 +104,7 @@ function Sidebar() {
                             <Nav.Link as={Link} to="/bookings"><i className='fa fa-bookmark'></i>Booking</Nav.Link>
                             <Nav.Link as={Link} to="/hostel"><i className='fa fa-building'></i>Hostel</Nav.Link>
                             <Nav.Link as={Link} to="/Payment"><i className='fa fa-dollar'></i>Payment</Nav.Link>
-                            <Nav.Link as={Link} to="/report"><i className='fa fa-file-text'></i>Report</Nav.Link>
+                            <Nav.Link as={Link} to="/Query"><i className='fa fa-file-text'></i>Report</Nav.Link>
                         </Nav>
                         <Nav className="logout-button">
                             <Nav.Link as={Link} to="/login" className="btn btn-danger">
@@ -166,7 +166,7 @@ function Sidebar() {
                     </Nav.Link>
                     <Nav.Link as={Link} to="/report" className="nav-link">
                         <i className="fa fa-file-text"></i>
-                        <span>Report</span>
+                        <span>Query</span>
                     </Nav.Link>
                 </Nav>
 

@@ -146,7 +146,7 @@ export default function LoginPage() {
                       Login
                     </button>
                     <Link to="/signup">
-                      <button type="button" className="signup-button mb-2">
+                      <button type="button" className="signup-button mb-2 w-75">
                         Sign up
                       </button>
                     </Link>

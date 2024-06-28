@@ -122,62 +122,11 @@ const ContactUs = () => {
                     height: 3px;
                     background-color: #3498db;
                 }
-                .text-muted {
-                    color: #6c757d;
-                    font-size: 1.1rem;
-                    line-height: 1.7;
-                }
-                .img-fluid {
-                    max-width: 100%;
-                    height: auto;
-                }
                 .shadow-lg {
                     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
                 }
-                .rounded {
-                    border-radius: 0.5rem;
-                }
                 .text-primary {
                     color: #3498db;
-                }
-                .list-unstyled {
-                    padding-left: 0;
-                    list-style: none;
-                }
-                .list-unstyled li {
-                    font-size: 1.1rem;
-                    line-height: 1.7;
-                    color: #2c3e50;
-                }
-                .fa-check-circle, .fa-map-marker-alt, .fa-phone, .fa-envelope {
-                    color: #3498db;
-                }
-                .mr-2 {
-                    margin-right: 0.5rem;
-                }
-                .mb-4 {
-                    margin-bottom: 1.5rem;
-                }
-                .btn-primary {
-                    background-color: #3498db;
-                    border-color: #3498db;
-                    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-                }
-                .btn-primary:hover {
-                    background-color: #2980b9;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-                }
-                .card {
-                    transition: transform 0.3s ease;
-                }
-                .card:hover {
-                    transform: translateY(-10px);
-                }
-                .card-body {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
                 }
                 .icon-responsive {
                     font-size: 3rem;

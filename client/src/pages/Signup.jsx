@@ -6,7 +6,7 @@ import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 const Popup = ({ message, onClose }) => {
   return (
     <div className="popup">
@@ -231,6 +231,11 @@ export default function SignupPage() {
                   />
                 </div>
                 <button type="submit" className="Create-Acc">Create Account</button>
+                <Link to="/login">
+                  <button type="button" className="login-button mb-2 mt-3 w-75">
+                    Login Instead
+                  </button>
+                </Link>
               </form>
               {showPopup && <Popup message={message} onClose={() => setShowPopup(false)} />}
             </div>

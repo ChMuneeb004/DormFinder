@@ -3,7 +3,7 @@ import { Container, Row, Col, InputGroup, FormControl, Button, ListGroup } from 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import universities from './universities.jsx';
 
 const SearchBar = () => {
@@ -11,6 +11,8 @@ const SearchBar = () => {
     const [hostels, setHostels] = useState([]);
     const [filteredUniversities, setFilteredUniversities] = useState([]);
     const [selectedUniversity, setSelectedUniversity] = useState(null);
+    const [activeIndex, setActiveIndex] = useState(-1);
+    const listRef = useRef(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,32 +31,45 @@ const SearchBar = () => {
         setSelectedUniversity(university);
         setSearchTerm(university.name);
         setFilteredUniversities([]);
+        setActiveIndex(-1);
     };
 
     const handleSearch = async () => {
-        // try {
-        //     const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-        //         params: {
-        //             address: searchTerm,
-        //             key: 'AIzaSyB9ehHDgZXPz2uOE6Tjfwiapo329zBVsKI'
-        //         }
-        //     });
-        //     const { lat, lng } = response.data.results[0].geometry.location;
-
-        //     const hostelsResponse = await axios.get('http://localhost:3001/searchHostels', {
-        //         params: {
-        //             latitude: lat,
-        //             longitude: lng,
-        //             radius: 1.5 // radius in kilometers
-        //         }
-        //     });
-
-        //     setHostels(hostelsResponse.data);
-        // } catch (error) {
-        //     console.error('Error fetching hostels:', error);
-        // }
         if (selectedUniversity) {
             navigate(`/hostelList?university=${selectedUniversity.name}`);
+        }
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'ArrowDown') {
+            setActiveIndex((prevIndex) => {
+                const newIndex = Math.min(prevIndex + 1, filteredUniversities.length - 1);
+                scrollToActiveItem(newIndex);
+                return newIndex;
+            });
+        } else if (e.key === 'ArrowUp') {
+            setActiveIndex((prevIndex) => {
+                const newIndex = Math.max(prevIndex - 1, 0);
+                scrollToActiveItem(newIndex);
+                return newIndex;
+            });
+        } else if (e.key === 'Enter') {
+            if (activeIndex >= 0 && activeIndex < filteredUniversities.length) {
+                handleSelectUniversity(filteredUniversities[activeIndex]);
+            } else {
+                handleSearch();
+            }
+        }
+    };
+
+    const scrollToActiveItem = (index) => {
+        const list = listRef.current;
+        if (list && list.children[index]) {
+            list.children[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'start',
+            });
         }
     };
 
@@ -112,6 +127,11 @@ const SearchBar = () => {
                         font-family: 'Poppins', sans-serif;
                         font-size: 1rem;
                     }
+
+                    .university-item.active {
+                        background-color: #f0ad4e;
+                        color: white;
+                    }
                 `}
             </style>
             <Container className="text-center my-4">
@@ -126,7 +146,7 @@ const SearchBar = () => {
                     </Col>
                     <Col xs={12} sm={12} md={6} lg={6} xl={6} className=" order-1 order-md-2">
                         <h1 className="search-heading">The Home of Student Accommodation</h1>
-                        <p className="search-subheading">Search PK's No.1 Student Accommodation Website</p>
+                        <p className="search-subheading">Find your perfect student home with ease</p>
                         <InputGroup className="mb-3">
                             <FormControl
                                 placeholder="Search by city or university"
@@ -136,15 +156,22 @@ const SearchBar = () => {
                                 onChange={(e) => {
                                     setSearchTerm(e.target.value);
                                     setSelectedUniversity(null);
+                                    setActiveIndex(-1);
                                 }}
+                                onKeyDown={handleKeyDown}
                             />
                             <Button onClick={handleSearch} className="search-button">
                                 <i className='fa fa-search'></i>
                             </Button>
                             {filteredUniversities.length > 0 && (
-                                <ListGroup className="university-list rounded-3">
+                                <ListGroup ref={listRef} className="university-list rounded-3">
                                     {filteredUniversities.map((university, index) => (
-                                        <ListGroup.Item key={index} action onClick={() => handleSelectUniversity(university)} className="university-item">
+                                        <ListGroup.Item 
+                                            key={index} 
+                                            action 
+                                            onClick={() => handleSelectUniversity(university)} 
+                                            className={`university-item ${index === activeIndex ? 'active' : ''}`}
+                                        >
                                             {university.name} - {university.location}
                                         </ListGroup.Item>
                                     ))}

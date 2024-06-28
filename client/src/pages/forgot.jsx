@@ -46,7 +46,7 @@ const ForgotPassword = ({ show, onHide }) => {
             onChange={handleChange}
             required
           />
-          <Button variant="primary" type="submit" className="btn-block btn-custom">Send Reset Link</Button>
+          <Button variant="primary" type="submit" className="btn-block btn-custom text-white">Send Reset Link</Button>
         </form>
         {message && <div className="alert alert-info mt-3">{message}</div>}
       </Modal.Body>
