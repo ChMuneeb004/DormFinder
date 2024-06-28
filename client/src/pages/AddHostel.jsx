@@ -257,6 +257,9 @@ const AddHostel = () => {
                 <Row>
                   <Col md={6}>
                     <Form.Group controlId="name">
+                      <Form.Text className="text-muted">
+                        Enter your Hostel name
+                      </Form.Text>
                       <Form.Control
                         type="text"
                         placeholder="Enter your Hostel name"
@@ -264,13 +267,13 @@ const AddHostel = () => {
                         onChange={handleChange}
                         required
                       />
-                      <Form.Text className="text-muted">
-                        Enter your Hostel name
-                      </Form.Text>
                     </Form.Group>
                   </Col>
                   <Col md={6}>
                     <Form.Group controlId="location">
+                      <Form.Text className="text-muted">
+                        Enter Hostel location
+                      </Form.Text>
                       <Form.Control
                         type="text"
                         placeholder="Enter Hostel location"
@@ -278,14 +281,14 @@ const AddHostel = () => {
                         onChange={handleChange}
                         required
                       />
-                      <Form.Text className="text-muted">
-                        Enter Hostel location
-                      </Form.Text>
                     </Form.Group>
                   </Col>
                 </Row>
 
                 <Form.Group controlId="description">
+                  <Form.Text className="text-muted">
+                    Provide a brief description of the hostel (at least 50 characters)
+                  </Form.Text>
                   <Form.Control
                     as="textarea"
                     placeholder="Your text goes here"
@@ -294,14 +297,14 @@ const AddHostel = () => {
                     required
                     style={{ width: '100%', height: '150px' }}
                   />
-                  <Form.Text className="text-muted">
-                    Provide a brief description of the hostel (at least 50 characters)
-                  </Form.Text>
                 </Form.Group>
 
                 <Row>
                   <Col md={6}>
                     <Form.Group controlId="number_of_rooms">
+                      <Form.Text className="text-muted">
+                        Number of Rooms
+                      </Form.Text>
                       <Form.Control
                         type="number"
                         placeholder="Number of Rooms"
@@ -309,13 +312,13 @@ const AddHostel = () => {
                         onChange={handleChange}
                         required
                       />
-                      <Form.Text className="text-muted">
-                        Number of Rooms
-                      </Form.Text>
                     </Form.Group>
                   </Col>
                   <Col md={6}>
                     <Form.Group controlId="contact">
+                      <Form.Text className="text-muted">
+                        Enter your Hostel contact number
+                      </Form.Text>
                       <PhoneInput
                         country={'pk'}
                         value={hostel.contact}
@@ -325,9 +328,6 @@ const AddHostel = () => {
                           required: true,
                         }}
                       />
-                      <Form.Text className="text-muted">
-                        Enter your Hostel contact number
-                      </Form.Text>
                     </Form.Group>
                   </Col>
                 </Row>
@@ -373,7 +373,7 @@ const AddHostel = () => {
                       <Button className="btn btn-primary text-white" variant="warning" onClick={handleCustomButtonClick1}>
                         Upload Room Images
                       </Button>
-                      
+
                       {hostel.roomImages.length > 0 && (
                         <div className="mt-2">
                           {hostel.roomImages.map((file, index) => (
@@ -386,7 +386,9 @@ const AddHostel = () => {
                 </Form.Group>
 
                 <Form.Group>
-                  <Form.Label>Room Types</Form.Label>
+                  <Form.Text className="text-muted">
+                    Room Types
+                  </Form.Text>
                   {hostel.rooms.map((room, index) => (
                     <Card key={index} className="mb-3">
                       <Card.Body>
@@ -413,7 +415,9 @@ const AddHostel = () => {
                 </Form.Group>
 
                 <Form.Group>
-                  <Form.Label>Amenities</Form.Label>
+                  <Form.Text className="text-muted">
+                    Amenities
+                  </Form.Text>
                   <Row>
                     {Object.keys(hostel.amenities).map((amenity, index) => (
                       <Col xs={6} md={4} key={index}>

@@ -76,15 +76,7 @@ function Sidebar() {
         return (
             <>
                 <Profile show={showModal} onHide={() => setShowModal(false)} />
-                <Navbar expand="lg" className="mobile-navbar p-0">
-                    <Navbar.Brand className="p-2 d-flex align-items-center" onClick={() => setShowModal(true)} style={{ cursor: 'pointer' }}>
-                        <img src={ProfileImg} alt="profile" className={profileImageClasses} style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
-                        <div className="profile-info m-2">
-                            <h3 className='username text-black'>{username || 'Loading...'}</h3>
-                            <p className='role'>Owner</p>
-                        </div>
-                    </Navbar.Brand>
-                    <div className='text-center align-content-center' style={{ marginBottom: '0px', padding: '4px', borderWidth: '1px', border: '1px', borderStyle: 'groove', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '5px' }}>
+                <div className='text-center align-content-center' style={{ margin: '5px', padding: '3px', borderWidth: '1px', border: '1px', borderStyle: 'groove', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '5px' }}>
                         <img
                             src="Logo.png"
                             width="20"
@@ -97,6 +89,14 @@ function Sidebar() {
                             Dorm Finder
                         </span>
                     </div>
+                <Navbar expand="lg" className="mobile-navbar p-0">
+                    <Navbar.Brand className="p-2 d-flex align-items-center" onClick={() => setShowModal(true)} style={{ cursor: 'pointer' }}>
+                        <img src={ProfileImg} alt="profile" className={profileImageClasses} style={{ width: '70px', height: '70px', objectFit: 'cover' }} />
+                        <div className="profile-info m-2">
+                            <h3 className='username text-black'>{username || 'Loading...'}</h3>
+                            <p className='role'>Owner</p>
+                        </div>
+                    </Navbar.Brand>
                     <Navbar.Toggle className="m-2 btn btn-primary text-white" aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">
@@ -112,6 +112,7 @@ function Sidebar() {
                             </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
+                    
                 </Navbar>
             </>
         );
@@ -128,7 +129,7 @@ function Sidebar() {
                         height="25"
                         className="d-inline-block align-center"
                         alt="Logo"
-                        style={{ verticalAlign: 'middle' }}
+                        style={{ verticalAlign: 'middle',marginBottom:'7px'}}
                     />
                     <span className="ml-2" style={{ fontSize: '22px' }}>
                         Dorm Finder
