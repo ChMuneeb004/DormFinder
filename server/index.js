@@ -155,13 +155,18 @@ app.get('/hostel-detail/:id', async (req, res) => {
         if (!hostel) {
             return res.status(404).send('Hostel not found');
         }
-        const Room = await RoomModel.find({ hostel_id: hostelId }).lean();
-        const amenities = await amenitiesModel.find({ hostel_id: hostelId }).lean();
-        const stitchedImages = await RoomImages.find({ hostel_id: hostelId }).lean();
+
+        // Fetch rooms, amenities, and stitched images using hostel._id
+        const rooms = await RoomModel.find({ hostel_id: hostel._id }).lean();
+        console.log('Rooms fetched for hostel_id:', hostel._id, rooms);
+        const amenities = await amenitiesModel.find({ hostel_id: hostel._id }).lean();
+        console.log('Amenities fetched for hostel_id:', hostel._id, amenities);
+        const stitchedImages = await RoomImages.find({ hostel_id: hostel._id }).lean();
+        console.log('Stitched images fetched for hostel_id:', hostel._id, stitchedImages);
         
         const hostelDetails = {
             ...hostel,
-            Room,
+            rooms,
             amenities,
             stitchedImages
         };
@@ -171,6 +176,7 @@ app.get('/hostel-detail/:id', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+
 
 
 app.get('/searchHostels', async (req, res) => {
