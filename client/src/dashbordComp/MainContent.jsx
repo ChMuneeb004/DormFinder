@@ -30,19 +30,19 @@ function MainContent() {
               </thead>
               <tbody>
                 <tr>
-                  <td>Bilal</td>
-                  <td>SOMthin@gmnaill.com</td>
-                  <td>03054777605</td>
-                  <td>08-Dec, 2021</td>
+                  <td>Hashir</td>
+                  <td>hashir01@gmail.com</td>
+                  <td>+923054777605</td>
+                  <td>08-Dec, 2023</td>
                   <td><input type="text" className="form-control" placeholder="Token" style={{ minWidth: "170px", width: "100%" }} /></td>
                   <td><button className="btn btn-success text-white">Check</button></td>
                   <td><button style={{ backgroundColor: 'transparent', border: 'transparent' }}><i className="fa fa-trash-o" aria-hidden="true" style={{ color: 'red', fontSize: 25 }}></i></button></td>
                 </tr>
                 <tr>
-                  <td>Bilal</td>
-                  <td>SOMthin@gmnaill.com</td>
-                  <td>03054777605</td>
-                  <td>08-Dec, 2021</td>
+                  <td>Ali Raza</td>
+                  <td>ali.raza44@gmail.com</td>
+                  <td>+923132471210</td>
+                  <td>02-Oct, 2023</td>
                   <td><input type="text" className="form-control" placeholder="Token" style={{ minWidth: "170px", width: "100%" }} /></td>
                   <td><button className="btn btn-success text-white">Check</button></td>
                   <td><button style={{ backgroundColor: 'transparent', border: 'transparent' }}><i className="fa fa-trash-o" aria-hidden="true" style={{ color: 'red', fontSize: 25 }}></i></button></td>

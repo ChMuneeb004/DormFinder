@@ -93,19 +93,19 @@ const Bookings = () => {
                                     <Table hover>
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Location</th>
-                                                <th>Phone</th>
-                                                <th>Rooms</th>
-                                                <th>Price</th>
-                                                <th>Actions</th>
+                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Hostel Name</th>
+                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Location</th>
+                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Phone</th>
+                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Rooms</th>
+                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Price</th>
+                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1', textAlign: 'center' }}>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {loading
                                                 ? Array.from({ length: itemsPerPage }).map((_, index) => (
                                                     <SkeletonRow key={index} />
-                                                  ))
+                                                ))
                                                 : hostels.map((hostel) => (
                                                     <tr key={hostel._id}>
                                                         <td>{hostel.name}</td>
@@ -147,7 +147,7 @@ const Bookings = () => {
                                                             </Button>
                                                         </td>
                                                     </tr>
-                                                  ))}
+                                                ))}
                                         </tbody>
                                     </Table>
                                 </div>
