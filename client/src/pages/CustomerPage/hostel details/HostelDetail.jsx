@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Carousel from 'react-bootstrap/Carousel';
 import Header from '../Header';
 import panorama from './imagestitching2.jpg';
+import panorama2 from './stitchedOutput.jpg';
+
 
 
 const HostelDetail = () => {
@@ -52,7 +54,7 @@ const HostelDetail = () => {
                 script.onload = () => {
                     pannellum.viewer('panorama', {
                         "type": "equirectangular",
-                        "panorama": panorama,
+                        "panorama": panorama2,
                         "autoLoad": true
                     });
                 };
