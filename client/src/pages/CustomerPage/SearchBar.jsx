@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
 import universities from './universities.jsx';
+import Student from '../../../public/Student Image.png'
 
 const SearchBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -138,7 +139,7 @@ const SearchBar = () => {
                 <Row className="justify-content-center align-items-center">
                     <Col xs={10} sm={10} md={6} lg={6} xl={6} className="text-md-left text-center mt-3 mt-md-0 order-2 order-md-1">
                         <div className="d-flex justify-content-center justify-content-md-start">
-                            <img src="Student Image.png" alt="Image" className="img-fluid mr-2" />
+                            <img src={Student} alt="Image" className="img-fluid mr-2" />
                             <div className="d-flex flex-column justify-content-center">
                                 {/* You can add additional content here if needed */}
                             </div>
