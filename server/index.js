@@ -13,8 +13,11 @@ const amenitiesModel = require("./models/facility");
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const fs = require('fs');
-const { exec } = require('child_process'); 
+const { exec } = require('child_process');
 const RoomImages = require('./models/uploadRooms');
+const { Readable } = require('stream');
+const FormData = require('form-data');
+
 
 const app = express();
 app.use(express.json());
@@ -116,13 +119,15 @@ app.post('/stitch-room-images', upload.array('roomImages', 10), async (req, res)
                     contentType: 'image/jpeg'
                 }
             });
+            // console.log('Room images and stitched image:', newRoomImages);
+            
 
             await newRoomImages.save().then(() => {
                 console.log('Room images and stitched image saved successfully.');
                 // Clean up the temporary images
                 imagePaths.forEach(filePath => fs.unlinkSync(filePath));
                 fs.unlinkSync(outputPath);
-        
+
                 res.status(200).json({ panoramaUrl: `/uploads/stitched_panorama.jpg` });
             }).catch(err => {
                 console.error('Error saving room images and stitched image:', err);
@@ -158,12 +163,12 @@ app.get('/hostel-detail/:id', async (req, res) => {
 
         // Fetch rooms, amenities, and stitched images using hostel._id
         const rooms = await RoomModel.find({ hostel_id: hostel._id }).lean();
-        console.log('Rooms fetched for hostel_id:', hostel._id, rooms);
+        // console.log('Rooms fetched for hostel_id:', hostel_id, rooms);
         const amenities = await amenitiesModel.find({ hostel_id: hostel._id }).lean();
-        console.log('Amenities fetched for hostel_id:', hostel._id, amenities);
+        // console.log('Amenities fetched for hostel_id:', hostel._id, amenities);
         const stitchedImages = await RoomImages.find({ hostel_id: hostel._id }).lean();
-        console.log('Stitched images fetched for hostel_id:', hostel._id, stitchedImages);
-        
+        // console.log('Stitched images fetched for hostel_id:', hostel._id, stitchedImages);
+
         const hostelDetails = {
             ...hostel,
             rooms,
@@ -201,9 +206,9 @@ app.get('/searchHostels', async (req, res) => {
             latitude: { $gte: latitude - latRadius, $lte: latitude + latRadius },
             longitude: { $gte: longitude - longRadius, $lte: longitude + longRadius }
         })
-        .skip(skip)
-        .limit(limit)
-        .lean();
+            .skip(skip)
+            .limit(limit)
+            .lean();
 
         const totalHostels = await HostelModel.countDocuments({
             latitude: { $gte: latitude - latRadius, $lte: latitude + latRadius },
@@ -241,6 +246,7 @@ app.post('/listHostel', verifyToken, uploadFields, async (req, res) => {
             return res.status(400).json({ error: 'No files were sent in the request for room images.' });
         }
 
+
         const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
             params: {
                 address: location,
@@ -266,20 +272,8 @@ app.post('/listHostel', verifyToken, uploadFields, async (req, res) => {
             contact,
             ownerEmail: req.email
         });
-
-        //  // Trigger the stitching process for room images
-        //  const roomImagesToStitch = roomImages.map(file => ({
-        //     buffer: file.data,
-        //     mimetype: file.contentType
-        // }));
-
-        // const stitchResponse = await axios.post('http://localhost:3001/stitch-room-images', {
-        //     hostel_id: hostel._id,
-        //     roomImages: roomImagesToStitch
-        // });
-
-        // res.status(201).json({ hostel, panoramaUrl: stitchResponse.data.panoramaUrl });
         res.status(201).json(hostel);
+       
     } catch (err) {
         if (err.name === 'ValidationError') {
             return res.status(400).json({ error: 'Validation Error', message: err.message });
@@ -492,7 +486,7 @@ app.put('/profile', verifyToken, async (req, res) => {
     }
 });
 
-app.post("/login", async (req, res) =>{ 
+app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
         const owner = await OwnerModel.findOne({ email }).lean();
@@ -521,7 +515,7 @@ app.post("/login", async (req, res) =>{
     }
 });
 
-app.listen (3001, (err) => {
+app.listen(3001, (err) => {
     if (err) {
         console.error('Error starting server:', err);
     } else {

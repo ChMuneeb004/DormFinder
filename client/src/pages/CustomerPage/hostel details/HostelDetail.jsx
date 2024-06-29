@@ -59,6 +59,17 @@ const HostelDetail = () => {
 
     const des = `data:${description.contentType};base64,${bufferToBase64(description.data)}`
 
+    function getAmenityNames(amenity) {
+        let amenityNames = [];
+        if (amenity.air_condition_check) amenityNames.push("Air Condition");
+        if (amenity.air_cooler_check) amenityNames.push("Air Cooler");
+        if (amenity.kitchen_check) amenityNames.push("Kitchen");
+        if (amenity.gasoline_check) amenityNames.push("Gasoline");
+        if (amenity.water_cooler_check) amenityNames.push("Water Cooler");
+        if (amenity.attached_bathroom_check) amenityNames.push("Attached Bathroom");
+        return amenityNames;
+    }
+
     const getImageUrl = (image) => {
         if (image && image.data) {
             return `data:${image.contentType};base64,${image.data}`;
@@ -90,13 +101,23 @@ const HostelDetail = () => {
                         <p><strong>Location:</strong> {location}</p>
                         <p><strong>Number of Rooms:</strong> {number_of_rooms}</p>
                         <p><strong>Contact:</strong> {contact}</p>
+                        <p><strong>Description:</strong> {des}</p>
                         <p><strong>Amenities:</strong></p>
                         <ul>
                             {amenities.map((amenity, index) => (
-                                <li key={index}>{amenity.name}</li>
+                                getAmenityNames(amenity).map((name, nameIndex) => (
+                                    <li key={`${index}-${nameIndex}`}>{name}</li>
+                                ))
                             ))}
                         </ul>
-                        <p><strong>Description:</strong> {des}</p>
+                        <h3>Room Types and Prices</h3>
+                        <ul>
+                            {rooms.map((room, index) => (
+                                <li key={index}>
+                                    Type: {room.room_type}, Price: {room.price}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                     {stitchedImageUrl && (
                         <div className="my-4">

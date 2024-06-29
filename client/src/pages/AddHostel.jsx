@@ -130,16 +130,20 @@ const AddHostel = () => {
     });
     return messages;
   };
+  
+  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const validationMessages = validateForm();
     if (validationMessages.length > 0) {
       setPopupMessage(validationMessages.join(' '));
       setShowPopup(true);
       return;
     }
+
+    // const stitchedRoomImages = await stitchRoomImages();
 
     const formData = new FormData();
     formData.append('name', hostel.name);
@@ -149,13 +153,14 @@ const AddHostel = () => {
     formData.append('contact', hostel.contact);
     formData.append('rooms', JSON.stringify(hostel.rooms));
     formData.append('amenities', JSON.stringify(hostel.amenities));
+    // formData.append('stitchedRoomImages', JSON.stringify(stitchedRoomImages))
 
     for (const image of hostel.images) {
       formData.append('images', image);
     }
-
     for (const roomImages of hostel.roomImages) {
       formData.append('roomImages', roomImages);
+      
     }
 
     try {
@@ -165,8 +170,18 @@ const AddHostel = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-
+      // debugger;
       const hostelId = hostelResponse.data._id;
+      // await axios.post("http://localhost:3001/stitch-room-images", {
+      //   hostelId,
+      //   roomImages: hostel.roomImages
+      // }, {
+      //   headers: {
+      //     Authorization: `Bearer ${auth.token}`,
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // });
+
 
       // Create Rooms
       await axios.post("http://localhost:3001/listRooms", {
@@ -217,6 +232,31 @@ const AddHostel = () => {
       setShowPopup(true);
     }
   };
+
+  // const stitchRoomImages = async () => {
+  //   try {
+  //     debugger;
+  //     const hostelId = hostelResponse.data._id;
+  //     const formData = new FormData();
+  //     formData.append('hostelId', hostelId); // Assuming hostel.id contains the hostelId
+  //     for (const roomImages of hostel.roomImages) {
+  //       formData.append('roomImages', roomImages);
+  //     }
+
+  //     const response = await axios.post("http://localhost:3001/stitch-room-images", formData, {
+  //       headers: {
+  //         Authorization: `Bearer ${auth.token}`,
+  //         'Content-Type': 'multipart/form-data'
+  //       }
+  //     });
+
+  //     return response.data.stitchedRoomImages;
+  //   } catch (error) {
+  //     setPopupMessage('Error stitching room images!');
+  //     setShowPopup(true);
+  //     return [];
+  //   }
+  // };
 
   const handleCustomButtonClick = () => {
     document.getElementById('images').click();
