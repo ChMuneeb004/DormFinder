@@ -4,6 +4,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Carousel from 'react-bootstrap/Carousel';
 import Header from '../Header';
+import panorama from './imagestitching2.jpg';
 
 
 const HostelDetail = () => {
@@ -38,7 +39,29 @@ const HostelDetail = () => {
         fetchHostel();
     }, [id]);
 
-    
+    useEffect(() => {
+        if (!loading && hostel) {
+            const loadPannellum = async () => {
+                const css = document.createElement('link');
+                css.rel = 'stylesheet';
+                css.href = 'https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css';
+                document.head.appendChild(css);
+
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js';
+                script.onload = () => {
+                    pannellum.viewer('panorama', {
+                        "type": "equirectangular",
+                        "panorama": panorama,
+                        "autoLoad": true
+                    });
+                };
+                document.body.appendChild(script);
+            };
+
+            loadPannellum();
+        }
+    }, [loading, hostel]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -77,27 +100,28 @@ const HostelDetail = () => {
         return '';
     };
 
+
     return (
         <>
-            <Header />
-            <div className="container my-4">
-
-                <div className="row">
-                    <div className="col-md-6">
-                        <Carousel>
-                            {images.map((image, index) => (
-                                <Carousel.Item key={index}>
-                                    <img
-                                        src={getImageUrl(image)}
-                                        className="d-block w-100"
-                                        alt={`Slide ${index}`}
-                                    />
-                                </Carousel.Item>
-                            ))}
-                        </Carousel>
-                    </div>
-                    <h2>{name}</h2>
-                    <div className="col-md-6">
+        <Header />
+        <div className="container my-4">
+            <div className="row mb-4">
+                <div className="col-md-7">
+                    <Carousel>
+                        {images.map((image, index) => (
+                            <Carousel.Item key={index}>
+                                <img
+                                    src={getImageUrl(image)}
+                                    className="d-block w-100"
+                                    alt={`Slide ${index}`}
+                                />
+                            </Carousel.Item>
+                        ))}
+                    </Carousel>
+                </div>
+                <div className="col-md-5">
+                    <h2 className="mb-3">{name}</h2>
+                    <div className="card p-3">
                         <p><strong>Location:</strong> {location}</p>
                         <p><strong>Number of Rooms:</strong> {number_of_rooms}</p>
                         <p><strong>Contact:</strong> {contact}</p>
@@ -119,25 +143,68 @@ const HostelDetail = () => {
                             ))}
                         </ul>
                     </div>
-                    {stitchedImageUrl && (
-                        <div className="my-4">
-                            <h3>360 View</h3>
-                            <div id="panorama"></div>
-                            <script src="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js"></script>
-                            <script dangerouslySetInnerHTML={{
-                                __html: `
-                                    pannellum.viewer('panorama', {
-                                        "type": "equirectangular",
-                                        "panorama": "${stitchedImageUrl}",
-                                        "autoLoad": true
-                                    });
-                                `
-                            }} />
-                        </div>
-                    )}
                 </div>
             </div>
-        </>
+            <div className="row mb-4">
+                <div className="col-12">
+                    <h3>360° View</h3>
+                    <div id="panorama" style={{ width: '100%', height: '500px' }}></div>
+                </div>
+            </div>
+            <div className="row mb-4">
+                <div className="col-12">
+                    <h3>Overview</h3>
+                    <p>{des}</p>
+                </div>
+            </div>
+            <div className="row mb-4">
+                <div className="col-12">
+                    <h3>Location</h3>
+                    <div>
+                        <iframe
+                            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyB9ehHDgZXPz2uOE6Tjfwiapo329zBVsKI&q=${encodeURIComponent(location)}`}
+                            width="100%"
+                            height="450"
+                            allowFullScreen=""
+                            loading="lazy"
+                            title="Google Maps"
+                        ></iframe>
+                    </div>
+                </div>
+            </div>
+            
+            <div className="row mb-4">
+                <div className="col-12">
+                    <h3>Amenities</h3>
+                    <ul>
+                        {amenities.map((amenity, index) => (
+                            getAmenityNames(amenity).map((name, nameIndex) => (
+                                <li key={`${index}-${nameIndex}`}>{name}</li>
+                            ))
+                        ))}
+                    </ul>
+                </div>
+            </div>
+            <div className="row mb-4">
+                <div className="col-12">
+                    <h3>Bedrooms</h3>
+                    <div className="row">
+                        {rooms.map((room, index) => (
+                            <div key={index} className="col-md-6 mb-3">
+                                <div className="card p-3">
+                                    <h5>{`Bedroom ${index + 1}`}</h5>
+                                    <p>Type: {room.room_type}</p>
+                                    <p>Price: {room.price}</p>
+                                    <p>Deposit: £{room.deposit}</p>
+                                    <button className="btn btn-primary">Book now</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </>
     );
 };
 
