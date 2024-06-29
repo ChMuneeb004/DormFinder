@@ -8,7 +8,6 @@ import panorama from './imagestitching2.jpg';
 import panorama2 from './stitchedOutput.jpg';
 
 
-
 const HostelDetail = () => {
     const { id } = useParams();
     const [hostel, setHostel] = useState(null);
