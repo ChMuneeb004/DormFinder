@@ -57,7 +57,7 @@ const Header = () => {
                                 alt="Profile"
                                 style={styles.profileIcon}
                             />
-                            <span className="profile-text" style={styles.profileText}>Dawood</span>
+                            <span className="profile-text" style={styles.profileText}>Hamza</span>
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={styles.dropdownMenu}>
                             <Dropdown.Item
@@ -65,9 +65,9 @@ const Header = () => {
                                 style={styles.dropdownItem}>
                                 <i className="fa fa-user" style={styles.dropdownIcon}></i> Profile
                             </Dropdown.Item>
-                            <Dropdown.Item href="#/action-2" style={styles.dropdownItem}>
+                            {/* <Dropdown.Item href="#/action-2" style={styles.dropdownItem}>
                                 <i className="fa fa-gear" style={styles.dropdownIcon}></i> Settings
-                            </Dropdown.Item>
+                            </Dropdown.Item> */}
                             <Dropdown.Item href="/login" style={styles.dropdownItem}>
                                 <i className="fa fa-sign-out" style={styles.dropdownIcon}></i> Logout
                             </Dropdown.Item>
