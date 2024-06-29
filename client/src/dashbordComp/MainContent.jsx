@@ -19,13 +19,13 @@ function MainContent() {
             <table className="table table-hover">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Date of Booking</th>
-                  <th>Token</th>
-                  <th></th>
-                  <th></th>
+                  <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Name</th>
+                  <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Email</th>
+                  <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Phone</th>
+                  <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Date of Booking</th>
+                  <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Token</th>
+                  <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}></th>
+                  <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}></th>
                 </tr>
               </thead>
               <tbody>

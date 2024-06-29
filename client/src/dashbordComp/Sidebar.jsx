@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import '../css_folder/sidebar.css';
+import logo from '../../public/Logo.png';
 import ProfileImg from '../media/Profile.jpg';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -77,18 +78,18 @@ function Sidebar() {
             <>
                 <Profile show={showModal} onHide={() => setShowModal(false)} />
                 <div className='text-center align-content-center' style={{ margin: '5px', padding: '3px', borderWidth: '1px', border: '1px', borderStyle: 'groove', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '5px' }}>
-                        <img
-                            src="Logo.png"
-                            width="20"
-                            height="20"
-                            className="d-inline-block align-center"
-                            alt="Logo"
-                            style={{ verticalAlign: 'middle' }}
-                        />
-                        <span style={{ display: 'inline-block', fontSize: '15px', marginLeft: '8px' }}>
-                            Dorm Finder
-                        </span>
-                    </div>
+                    <img
+                        src={logo}
+                        width="20"
+                        height="20"
+                        className="d-inline-block align-center"
+                        alt="Logo"
+                        style={{ verticalAlign: 'middle' }}
+                    />
+                    <span style={{ display: 'inline-block', fontSize: '15px', marginLeft: '8px' }}>
+                        Dorm Finder
+                    </span>
+                </div>
                 <Navbar expand="lg" className="mobile-navbar p-0">
                     <Navbar.Brand className="p-2 d-flex align-items-center" onClick={() => setShowModal(true)} style={{ cursor: 'pointer' }}>
                         <img src={ProfileImg} alt="profile" className={profileImageClasses} style={{ width: '70px', height: '70px', objectFit: 'cover' }} />
@@ -112,7 +113,7 @@ function Sidebar() {
                             </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
-                    
+
                 </Navbar>
             </>
         );
@@ -124,12 +125,12 @@ function Sidebar() {
             <div className="fixed-bottom fixed-top navbar-nav-scroll w-25 bg p-3 d-flex flex-column" style={{ minHeight: '100vh' }}>
                 <div className="text-center mb-4 p-2 border rounded d-flex align-items-center justify-content-center" style={{ borderWidth: '1px', borderStyle: 'groove' }}>
                     <img
-                        src="Logo.png"
+                        src={logo}
                         width="25"
                         height="25"
                         className="d-inline-block align-center"
                         alt="Logo"
-                        style={{ verticalAlign: 'middle',marginBottom:'7px'}}
+                        style={{ verticalAlign: 'middle', marginBottom: '7px' }}
                     />
                     <span className="ml-2" style={{ fontSize: '22px' }}>
                         Dorm Finder

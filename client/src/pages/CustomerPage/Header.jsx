@@ -3,6 +3,7 @@ import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import profile from '../../media/Profile.jpg';
 import UserProfile from './UserProfile';
+import logo from '../../../public/Logo.png';
 
 const Header = () => {
     const [expanded, setExpanded] = useState(false);
@@ -31,7 +32,7 @@ const Header = () => {
             <Navbar ref={navbarRef} bg="white" expand={false} expanded={expanded} style={styles.navbar}>
                 <Navbar.Brand href="#" style={styles.brand}>
                     <img
-                        src="Logo.png"
+                        src={logo}
                         width="30"
                         height="30"
                         className="d-inline-block align-center"
