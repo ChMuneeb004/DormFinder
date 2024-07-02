@@ -17,6 +17,7 @@ const { exec } = require('child_process');
 const RoomImages = require('./models/uploadRooms');
 const { Readable } = require('stream');
 const FormData = require('form-data');
+const BookingModel = require('./models/Bookings');
 
 
 const app = express();
@@ -60,6 +61,57 @@ function verifyToken(req, res, next) {
         return res.status(401).json({ error: 'Unauthorized', message: 'Invalid token' });
     }
 }
+
+app.post('/book-room/:id', async (req, res) => {
+    const { name, roomType, address, cnic, token_number } = req.body;
+    const { id } = req.params; // Hostel ID passed as a route parameter
+
+    try {
+        // Fetch hostel details by ID
+        const hostel = await HostelModel.findById(id);
+        if (!hostel) {
+            return res.status(404).json({ error: 'Hostel not found' });
+        }
+
+        // Fetch room details for the hostel
+        const room = await RoomModel.findOne({ hostel_id: id });
+        if (!room) {
+            return res.status(404).json({ error: 'Room not found for this hostel' });
+        }
+
+        // Generate a token (example: DFTK0011)
+        // const tokenNumber = `DFTK${Math.floor(1000 + Math.random() * 9000)}`;
+
+        // Create new booking instance
+        const newBooking = new BookingModel({
+            token_number,
+            customer_name: name,
+            room_type: roomType,
+            address: address,
+            cnic: cnic,
+            // customer_id: req.user._id, // Assuming user is authenticated and customer ID is obtained from authentication
+            hostel_id: id,
+            room_id: room._id
+        });
+
+        // Save booking to database
+        await newBooking.save();
+
+        // Respond with success message and booking details
+        res.status(201).json({
+            message: 'Booking successful',
+            booking: {
+                _id: newBooking._id,
+                hostelName: hostel.name, // Adjust according to your model structure
+                roomPrice: room.price // Adjust according to your model structure
+            }
+        });
+    } catch (error) {
+        console.error('Error booking room:', error);
+        res.status(500).json({ error: 'Booking failed' });
+    }
+});
+
 
 app.post('/stitch-room-images', upload.array('roomImages', 10), async (req, res) => {
     const { hostelId } = req.body;
@@ -230,7 +282,7 @@ app.post('/listHostel', verifyToken, uploadFields, async (req, res) => {
     }
 
     try {
-        const { name, location, description, number_of_rooms, contact } = req.body;
+        const { name, location, description, number_of_rooms, contact, hostel_type } = req.body;
         let images = [];
         let roomImages = [];
 
@@ -270,6 +322,7 @@ app.post('/listHostel', verifyToken, uploadFields, async (req, res) => {
             roomImages: roomImages,
             number_of_rooms,
             contact,
+            hostel_type,
             ownerEmail: req.email
         });
         res.status(201).json(hostel);

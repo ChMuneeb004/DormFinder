@@ -7,6 +7,8 @@ import '../css_folder/AddHostel.css';
 import { AuthContext } from '../contexts/AuthContext';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import MapComponent from './MapComponent';
+
 
 const Popup = ({ message, onClose }) => (
   <div className="popup">
@@ -27,6 +29,9 @@ const AddHostel = () => {
     roomImages: [],
     number_of_rooms: '',
     contact: '',
+    hostel_type: '',
+    latitude: null,
+    longitude: null,
     rooms: [
       { type: 'double', price: '', availability: false },
       { type: 'triple', price: '', availability: false },
@@ -123,6 +128,9 @@ const AddHostel = () => {
     if (hostel.roomImages.length === 0) {
       messages.push('Please upload at least one image of the rooms.');
     }
+    if (!hostel.hostel_type) { // Added validation for hostel_type
+      messages.push('Please select a hostel type.');
+    }
     hostel.rooms.forEach((room, index) => {
       if (room.availability && (!room.price || isNaN(room.price) || room.price <= 0)) {
         messages.push(`Please enter a valid price for the ${room.type} room.`);
@@ -154,6 +162,7 @@ const AddHostel = () => {
     formData.append('rooms', JSON.stringify(hostel.rooms));
     formData.append('amenities', JSON.stringify(hostel.amenities));
     // formData.append('stitchedRoomImages', JSON.stringify(stitchedRoomImages))
+    formData.append('hostel_type', hostel.hostel_type);
 
     for (const image of hostel.images) {
       formData.append('images', image);
@@ -213,6 +222,9 @@ const AddHostel = () => {
         roomImages: [],
         number_of_rooms: '',
         contact: '',
+        hostel_type: '',
+        latitude: null,
+        longitude: null,
         rooms: [
           { type: 'double', price: '', availability: false },
           { type: 'triple', price: '', availability: false },
@@ -282,6 +294,16 @@ const AddHostel = () => {
     document.getElementById('roomImages').click();
   };
 
+  // const handleMarkerDragEnd = (position) => {
+  //   setHostel(prevState => ({
+  //     ...prevState,
+  //     latitude: position.lat,
+  //     longitude: position.lng,
+  //     location: `${position.lat}, ${position.lng}`
+
+  //   }));
+  // };
+
   return (
     <div className="d-flex">
       <Container fluid>
@@ -324,7 +346,11 @@ const AddHostel = () => {
                     </Form.Group>
                   </Col>
                 </Row>
-
+                {/* <Row>
+                  <Col>
+                    <MapComponent onMarkerDragEnd={handleMarkerDragEnd} />
+                  </Col>
+                </Row> */}
                 <Form.Group controlId="description">
                   <Form.Text className="text-muted">
                     Provide a brief description of the hostel (at least 50 characters)
@@ -369,6 +395,22 @@ const AddHostel = () => {
                         }}
                       />
                     </Form.Group>
+                    <Form.Group controlId="hostel_type">
+                      <Form.Text className="text-muted">
+                        Hostel Type
+                      </Form.Text>
+                        <Form.Control
+                          as="select"
+                          id="hostel_type"
+                          value={hostel.hostel_type}
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="">Select Hostel Type</option>
+                          <option value="Boys">Boys Hostel</option>
+                          <option value="Girls">Girls Hostel</option>
+                        </Form.Control>
+                      </Form.Group>
                   </Col>
                 </Row>
 

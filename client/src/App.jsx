@@ -29,6 +29,7 @@ import AboutUs from './pages/CustomerPage/About us.jsx';
 import ContactUs from './pages/CustomerPage/Contact us.jsx';
 import UserProfile from './pages/CustomerPage/UserProfile.jsx';
 import ForgotPassword from './pages/forgot.jsx';
+import BookingPage from './pages/CustomerPage/Bookings/BookingPage.jsx';
 
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
           <Route path="/contactus" element={<ContactUs />}/> 
           <Route path="/forgot" element={<ForgotPassword />}/> 
           <Route path="/UserProfile" element={<UserProfile />}/> 
+          <Route path="/roomBooking/:id" element={<BookingPage />} />
         </Routes>
       </Router>
     </AuthProvider>

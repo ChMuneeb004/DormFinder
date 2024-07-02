@@ -20,6 +20,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    debugger;
     await login(email, password);
     // Redirect based on userType after login
     const token = localStorage.getItem('token');

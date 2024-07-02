@@ -23,7 +23,7 @@ const HostelSchema = new mongoose.Schema({
         required: true
     },
     description: {
-        type: [Buffer],
+        type: String,
         required: [true, 'Description is required'],
         minlength: [50, 'Description should be at least 50 characters long']
     },
@@ -53,6 +53,12 @@ const HostelSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Owner email is required']
     },
+    hostel_type: {
+        type: String,
+        required: [true, 'hostel type is required'],
+        enum: ['Boys', 'Girls']
+    },
+
 
     // room:
     //  [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }],

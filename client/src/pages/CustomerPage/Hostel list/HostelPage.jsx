@@ -49,7 +49,6 @@ const HostelPage = () => {
                 },
                 responseType: 'json'
             });
-
             const formattedHostels = hostelsResponse.data.hostels.map(hostel => ({
                 id: hostel._id,
                 images: hostel.images.map(image => ({
@@ -57,7 +56,7 @@ const HostelPage = () => {
                     data: image.data // This should be a base64 encoded string
                 })),
                 name: hostel.name || '',
-                description: hostel.description.join(' ') || '', // Convert array to string
+                description: Array.isArray(hostel.description) ? hostel.description.join(' ') : hostel.description || '', // Handle both array and string cases
                 location: hostel.location || '',
                 number_of_rooms: hostel.number_of_rooms || '',
                 contact: hostel.contact || ''

@@ -7,7 +7,7 @@ import Header from '../Header';
 import panorama from './imagestitching2.jpg';
 import panorama2 from './stitchedOutput.jpg';
 import panorama3 from './Stiched.jpg';
-
+import { Link } from 'react-router-dom';
 
 const HostelDetail = () => {
     const { id } = useParams();
@@ -76,7 +76,7 @@ const HostelDetail = () => {
     if (!hostel) {
         return <div>No hostel found</div>;
     }
-    const { images = [], roomImages = [], name = '', description = '', location = '', number_of_rooms = '', contact = '', rooms = [], amenities = [] } = hostel;
+    const { images = [], roomImages = [], name = '', description = '', location = '', number_of_rooms = '', contact = '', hostel_type = '', rooms = [], amenities = [] } = hostel;
 
     // Adjust the way you call bufferToBase64 based on the structure of images[0].data
     // const DesData = description[0].data.data ? description[0].data.data : description[0].data;
@@ -105,30 +105,80 @@ const HostelDetail = () => {
 
     return (
         <>
-        <Header />
-        <div className="container my-4">
-            <div className="row mb-4">
-                <div className="col-md-7">
-                    <Carousel>
-                        {images.map((image, index) => (
-                            <Carousel.Item key={index}>
-                                <img
-                                    src={getImageUrl(image)}
-                                    className="d-block w-100"
-                                    alt={`Slide ${index}`}
-                                />
-                            </Carousel.Item>
-                        ))}
-                    </Carousel>
+            <Header />
+            <div className="container my-4">
+                <div className="row mb-4">
+                    <div className="col-md-7">
+                        <Carousel>
+                            {images.map((image, index) => (
+                                <Carousel.Item key={index}>
+                                    <img
+                                        src={getImageUrl(image)}
+                                        className="d-block w-100"
+                                        alt={`Slide ${index}`}
+                                    />
+                                </Carousel.Item>
+                            ))}
+                        </Carousel>
+                    </div>
+                    <div className="col-md-5">
+                        <h2 className="mb-3">{name}</h2>
+                        <div className="card p-3">
+                            <p><strong>Location:</strong> {location}</p>
+                            <p><strong>Number of Rooms:</strong> {number_of_rooms}</p>
+                            <p><strong>Contact:</strong> {contact}</p>
+                            <p><strong>Description:</strong> {description}</p>
+                            <p><strong>Hostel Type:</strong> {hostel_type}</p>
+                            <p><strong>Amenities:</strong></p>
+                            <ul>
+                                {amenities.map((amenity, index) => (
+                                    getAmenityNames(amenity).map((name, nameIndex) => (
+                                        <li key={`${index}-${nameIndex}`}>{name}</li>
+                                    ))
+                                ))}
+                            </ul>
+                            <h3>Room Types and Prices</h3>
+                            <ul>
+                                {rooms.map((room, index) => (
+                                    <li key={index}>
+                                        Type: {room.room_type}, Price: {room.price}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div className="col-md-5">
-                    <h2 className="mb-3">{name}</h2>
-                    <div className="card p-3">
-                        <p><strong>Location:</strong> {location}</p>
-                        <p><strong>Number of Rooms:</strong> {number_of_rooms}</p>
-                        <p><strong>Contact:</strong> {contact}</p>
-                        <p><strong>Description:</strong> {des}</p>
-                        <p><strong>Amenities:</strong></p>
+                <div className="row mb-4">
+                    <div className="col-12">
+                        <h3>360° View</h3>
+                        <div id="panorama" style={{ width: '100%', height: '500px' }}></div>
+                    </div>
+                </div>
+                <div className="row mb-4">
+                    <div className="col-12">
+                        <h3>Overview</h3>
+                        <p>{des}</p>
+                    </div>
+                </div>
+                <div className="row mb-4">
+                    <div className="col-12">
+                        <h3>Location</h3>
+                        <div>
+                            <iframe
+                                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyB9ehHDgZXPz2uOE6Tjfwiapo329zBVsKI&q=${encodeURIComponent(location)}`}
+                                width="100%"
+                                height="450"
+                                allowFullScreen=""
+                                loading="lazy"
+                                title="Google Maps"
+                            ></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="row mb-4">
+                    <div className="col-12">
+                        <h3>Amenities</h3>
                         <ul>
                             {amenities.map((amenity, index) => (
                                 getAmenityNames(amenity).map((name, nameIndex) => (
@@ -136,77 +186,42 @@ const HostelDetail = () => {
                                 ))
                             ))}
                         </ul>
-                        <h3>Room Types and Prices</h3>
-                        <ul>
-                            {rooms.map((room, index) => (
-                                <li key={index}>
-                                    Type: {room.room_type}, Price: {room.price}
-                                </li>
-                            ))}
-                        </ul>
                     </div>
                 </div>
-            </div>
-            <div className="row mb-4">
-                <div className="col-12">
-                    <h3>360° View</h3>
-                    <div id="panorama" style={{ width: '100%', height: '500px' }}></div>
-                </div>
-            </div>
-            <div className="row mb-4">
-                <div className="col-12">
-                    <h3>Overview</h3>
-                    <p>{des}</p>
-                </div>
-            </div>
-            <div className="row mb-4">
-                <div className="col-12">
-                    <h3>Location</h3>
-                    <div>
-                        <iframe
-                            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyB9ehHDgZXPz2uOE6Tjfwiapo329zBVsKI&q=${encodeURIComponent(location)}`}
-                            width="100%"
-                            height="450"
-                            allowFullScreen=""
-                            loading="lazy"
-                            title="Google Maps"
-                        ></iframe>
+                <div className="row mb-4">
+                    <div className="col-12">
+                        <h3>Bedrooms</h3>
+                        <div className="table-responsive">
+                            <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Availability</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {rooms.map((room, index) => (
+                                        <tr key={index}>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>{room.room_type}</td>
+                                            <td>Rs {room.price}</td>
+                                            <td>{room.availability ? 'Available' : 'Not Available'}</td>
+                                        </tr>
+                                    ))}
+                                    <Link to={`/roomBooking/${id}`}>
+                                        <button className="btn btn-primary text-white">Book Now</button>
+                                    </Link>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div className="row mb-4">
-                <div className="col-12">
-                    <h3>Amenities</h3>
-                    <ul>
-                        {amenities.map((amenity, index) => (
-                            getAmenityNames(amenity).map((name, nameIndex) => (
-                                <li key={`${index}-${nameIndex}`}>{name}</li>
-                            ))
-                        ))}
-                    </ul>
-                </div>
-            </div>
-            <div className="row mb-4">
-                <div className="col-12">
-                    <h3>Bedrooms</h3>
-                    <div className="row">
-                        {rooms.map((room, index) => (
-                            <div key={index} className="col-md-6 mb-3">
-                                <div className="card p-3">
-                                    <h5>{`Bedroom ${index + 1}`}</h5>
-                                    <p>Type: {room.room_type}</p>
-                                    <p>Price: {room.price}</p>
-                                    <p>Deposit: £{room.deposit}</p>
-                                    <button className="btn btn-primary">Book now</button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </>
+        </>
     );
 };
 

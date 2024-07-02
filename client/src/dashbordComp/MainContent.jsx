@@ -4,6 +4,8 @@ import "../css_folder/MainContent.css";
 import { BrowserRouter as Route, Link} from 'react-router-dom';
 
 function MainContent() {
+  
+
   return (
     <main className="container-fluid">
       <div className="row my-4">
