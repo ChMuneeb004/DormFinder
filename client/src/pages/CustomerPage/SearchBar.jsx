@@ -1,15 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, InputGroup, FormControl, Button, ListGroup } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useState, useEffect, useRef } from 'react';
 import universities from './universities.jsx';
-import Student from '../../../public/Student Image.png'
+import Student from '../../../public/Student Image.png';
 
 const SearchBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [hostels, setHostels] = useState([]);
     const [filteredUniversities, setFilteredUniversities] = useState([]);
     const [selectedUniversity, setSelectedUniversity] = useState(null);
     const [activeIndex, setActiveIndex] = useState(-1);
@@ -33,11 +30,13 @@ const SearchBar = () => {
         setSearchTerm(university.name);
         setFilteredUniversities([]);
         setActiveIndex(-1);
+        handleSearch(university); // Directly trigger search and navigation
     };
 
-    const handleSearch = async () => {
-        if (selectedUniversity) {
-            navigate(`/hostelList?university=${selectedUniversity.name}`);
+    const handleSearch = async (university) => {
+        if (university || selectedUniversity) {
+            setSearchTerm(''); // Clear the search bar
+            navigate(`/hostelList?university=${(university || selectedUniversity).name}`);
         }
     };
 
@@ -161,7 +160,7 @@ const SearchBar = () => {
                                 }}
                                 onKeyDown={handleKeyDown}
                             />
-                            <Button onClick={handleSearch} className="search-button">
+                            <Button onClick={() => handleSearch(selectedUniversity)} className="search-button">
                                 <i className='fa fa-search'></i>
                             </Button>
                             {filteredUniversities.length > 0 && (
