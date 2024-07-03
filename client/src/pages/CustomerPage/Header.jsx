@@ -4,11 +4,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import profile from '../../media/Profile.jpg';
 import UserProfile from './UserProfile';
 import logo from '../../../public/Logo.png';
+import axios from 'axios';
+import { AuthContext } from '../../contexts/AuthContext';
+import { useContext } from 'react';
 
 const Header = () => {
     const [expanded, setExpanded] = useState(false);
     const navbarRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
+    const [username, setUsername] = useState('');
+    const { auth } = useContext(AuthContext);
     
 
     const handleToggle = () => setExpanded(!expanded);
@@ -25,6 +30,27 @@ const Header = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    useEffect(() => {
+        const fetchUsername = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/getUsername', {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}`
+                    }
+                });
+                if (response.data && response.data.username) {
+                    setUsername(response.data.username);
+                }
+            } catch (error) {
+                console.error('Error fetching username:', error);
+            }
+        };
+
+        if (auth && auth.token) {
+            fetchUsername();
+        }
+    }, [auth]);
 
     return (
         <>
@@ -57,7 +83,7 @@ const Header = () => {
                                 alt="Profile"
                                 style={styles.profileIcon}
                             />
-                            <span className="profile-text" style={styles.profileText}>Hamza</span>
+                            <span className="profile-text" style={styles.profileText}>{username || 'Loading...'}</span>
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={styles.dropdownMenu}>
                             <Dropdown.Item

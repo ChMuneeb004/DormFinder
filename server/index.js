@@ -62,8 +62,100 @@ function verifyToken(req, res, next) {
     }
 }
 
+app.delete('/bookings/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Check if the ID is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid booking ID' });
+        }
+
+        // Find the booking by ID and delete it
+        const booking = await BookingModel.findByIdAndDelete(id);
+
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        res.status(200).json({ message: 'Booking deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting booking:', error);
+        res.status(500).json({ message: 'Server error. Please try again later.' });
+    }
+});
+
+
+app.post('/verifyToken', async (req, res) => {
+    const { token_number } = req.body;
+    console.log('Received request to verify token with token_number:', token_number);
+
+    try {
+        // Fetch the booking from database based on token_number
+        const booking = await BookingModel.findOne({ token_number });
+        console.log('Booking found:', booking);
+
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+        console.log(`Comparing booking token: ${booking.token_number} with provided token: ${token_number}`);
+
+        if (booking.token_number === token_number) {
+            // Token matches, update booking status or perform actions
+            // For example, update booking status to verified
+            booking.booking_status = 'confirmed';
+            if (!booking.hostel_name) {
+                const hostel = await HostelModel.findById(booking.hostel_id);
+                if (hostel) {
+                    booking.hostel_name = hostel.name;
+                } else {
+                    return res.status(500).json({ message: 'Hostel not found for booking' });
+                }
+            }
+            await booking.save();
+
+            res.status(200).json({ message: 'Token verified successfully' });
+        } else {
+            // Token does not match
+            res.status(400).json({ message: 'Invalid token' });
+        }
+    } catch (error) {
+        console.error('Error verifying token:', error);
+        res.status(500).json({ message: 'Server error. Please try again later.' });
+    }
+});
+
+
+app.get('/Customerbookings', async (req, res) => {
+    try {
+        const bookings = await BookingModel.find();
+        res.status(200).json(bookings);
+    } catch (error) {
+        console.error('Error fetching bookings:', error);
+        res.status(500).json({ message: 'Server error. Please try again later.' });
+    }
+});
+
+
+
+// app.get('/bookings/:id', async (req, res) => {
+//     try {
+//         const { hostelId } = req.params;
+//         const bookings = await BookingModel.find({ hostelId }).populate('hostelId');
+
+//         if (!bookings) {
+//             return res.status(404).json({ message: 'No bookings found for this hostel.' });
+//         }
+
+//         res.status(200).json(bookings);
+//     } catch (error) {
+//         console.error('Error fetching bookings:', error);
+//         res.status(500).json({ message: 'Server error. Please try again later.' });
+//     }
+// });
+
 app.post('/book-room/:id', async (req, res) => {
-    const { name, roomType, address, cnic, token_number } = req.body;
+    const { name, roomType, cnic, token_number, contact, customer_email } = req.body; // Including email in the request body
     const { id } = req.params; // Hostel ID passed as a route parameter
 
     try {
@@ -79,19 +171,25 @@ app.post('/book-room/:id', async (req, res) => {
             return res.status(404).json({ error: 'Room not found for this hostel' });
         }
 
-        // Generate a token (example: DFTK0011)
-        // const tokenNumber = `DFTK${Math.floor(1000 + Math.random() * 9000)}`;
+        // Find customer by email
+        const customer = await CustomerModel.findOne({ email: customer_email });
+        if (!customer) {
+            return res.status(404).json({ error: 'Customer not found' });
+        }
+        console.log('Customer found:', customer);
 
         // Create new booking instance
         const newBooking = new BookingModel({
             token_number,
             customer_name: name,
             room_type: roomType,
-            address: address,
             cnic: cnic,
-            // customer_id: req.user._id, // Assuming user is authenticated and customer ID is obtained from authentication
+            contact: contact,
+            customer_email: customer_email, // Assign customer email
             hostel_id: id,
-            room_id: room._id
+            room_id: room._id,
+            hostel_name: hostel.name
+
         });
 
         // Save booking to database
@@ -102,8 +200,8 @@ app.post('/book-room/:id', async (req, res) => {
             message: 'Booking successful',
             booking: {
                 _id: newBooking._id,
-                hostelName: hostel.name, // Adjust according to your model structure
-                roomPrice: room.price // Adjust according to your model structure
+                hostelName: hostel.name,
+                roomPrice: room.price
             }
         });
     } catch (error) {
@@ -111,6 +209,7 @@ app.post('/book-room/:id', async (req, res) => {
         res.status(500).json({ error: 'Booking failed' });
     }
 });
+
 
 
 app.post('/stitch-room-images', upload.array('roomImages', 10), async (req, res) => {
@@ -440,8 +539,13 @@ app.put('/hostels/:id', async (req, res) => {
 
 app.get('/getUsername', verifyToken, async (req, res) => {
     try {
-        const { email } = req;
-        const user = await OwnerModel.findOne({ email }).lean();
+        const { email, userType } = req;
+        let user;
+        if (userType === 'owner') {
+            user = await OwnerModel.findOne({ email }).lean();
+        } else if (userType === 'customer') {
+            user = await CustomerModel.findOne({ email }).lean();
+        }
         if (!user) {
             return res.status(404).json({ error: 'Not Found', message: 'User not found' });
         }

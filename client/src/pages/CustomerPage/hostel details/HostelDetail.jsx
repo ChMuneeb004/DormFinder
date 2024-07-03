@@ -92,9 +92,9 @@ const HostelDetail = () => {
         amenities = [],
     } = hostel;
 
-    const des = `data:${description.contentType};base64,${bufferToBase64(
-        description.data
-    )}`;
+    // const des = `data:${description.contentType};base64,${bufferToBase64(
+    //     description.data
+    // )}`;
 
     function getAmenityNames(amenity) {
         let amenityNames = [];
@@ -155,10 +155,10 @@ const HostelDetail = () => {
                                 <strong style={styles.label}><i className="fa fa-map-marker" style={styles.icon}></i> Location:</strong>{" "}
                                 <span style={styles.text}>{location}</span>
                             </p>
-                            <p>
+                            {/* <p>
                                 <strong style={styles.label}><i className="fa fa-info-circle" style={styles.icon}></i> Description:</strong>{" "}
                                 <span style={styles.text}>{description}</span>
-                            </p>
+                            </p> */}
                         </div>
                     </div>
                 </div>
@@ -187,7 +187,7 @@ const HostelDetail = () => {
                             )}
                         </div>
                         <h3 style={styles.subtitle}>Overview</h3>
-                        <p style={styles.text}>{des}</p>
+                        <p style={styles.text}>{description}</p>
                     </div>
                 </div>
                 <div className="row mb-4">

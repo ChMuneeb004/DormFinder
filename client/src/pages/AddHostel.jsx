@@ -171,6 +171,8 @@ const AddHostel = () => {
       formData.append('roomImages', roomImages);
       
     }
+    
+  
 
     try {
       const hostelResponse = await axios.post("http://localhost:3001/listHostel", formData, {
@@ -181,6 +183,13 @@ const AddHostel = () => {
       });
       // debugger;
       const hostelId = hostelResponse.data._id;
+
+      // for (const roomImage of hostel.roomImages) {
+      //   const rImages = `data:${roomImage.contentType};base64,${roomImages.data}`;
+      //   formData.append('roomImages', rImages ); // Append File object to formData
+      // }
+      
+      // Stitch Room Images
       // await axios.post("http://localhost:3001/stitch-room-images", {
       //   hostelId,
       //   roomImages: hostel.roomImages

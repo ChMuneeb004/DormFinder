@@ -20,17 +20,25 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    debugger;
-    await login(email, password);
-    // Redirect based on userType after login
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decoded = jwtDecode(token);
-      if (decoded.userType === 'owner') {
-        navigate("/dashboard");
-      } else if (decoded.userType === 'customer') {
-        navigate("/home");
+    try {
+      //debugger;
+      await login(email, password);
+      // After successful login, check user type and redirect
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decoded = jwtDecode(token);
+        if (decoded.userType === 'owner') {
+          navigate('/dashboard');
+        } else if (decoded.userType === 'customer') {
+          navigate('/home');
+        }
       }
+    } catch (error) {
+      console.error('Login error:', error);
+      // Handle specific error messages or status codes
+      // For example, show an alert or error message to the user
+      // Here you can clear any state related to authentication like token
+      // localStorage.removeItem('token'); // Optionally clear token on login failure
     }
   };
 

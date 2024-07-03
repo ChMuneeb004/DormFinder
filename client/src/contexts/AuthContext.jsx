@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        console.log('Tokesdndbsjn:', token);
+        console.log('Token:', token);
         if (token) {
             const decoded = jwtDecode(token);
             setAuth({
@@ -26,21 +26,29 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
+            // debugger;
             const response = await axios.post('http://localhost:3001/login', { email, password });
             if (response.data.message === 'success') {
                 const { token, userType } = response.data;
                 localStorage.setItem('token', token);
                 const decoded = jwtDecode(token);
                 setAuth({ token, userType, email: decoded.email });
+                return true; // Indicate success
+            } else {
+                // Handle login failure (e.g., invalid credentials)
+                console.error('Login failed: Invalid credentials');
+                return false; // Indicate failure
             }
         } catch (error) {
             console.error('Login error:', error);
+            return false; // Indicate failure
         }
     };
 
     const logout = () => {
         localStorage.removeItem('token');
         setAuth({ token: null, userType: null, email: null });
+        console.log(token);
     };
 
     return (

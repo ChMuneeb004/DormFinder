@@ -7,53 +7,88 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 
 const Bookings = () => {
-    const [hostels, setHostels] = useState([]);
+    const [bookings, setBookings] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
-    const [totalHostels, setTotalHostels] = useState(0);
+    const [totalBookings, setTotalBookings] = useState(0);
     const [loading, setLoading] = useState(true);
-    const { auth } = useContext(AuthContext);
 
     useEffect(() => {
-        fetchHostels();
-    }, [auth.token, currentPage]);
+        fetchBookings();
+    }, [currentPage]);
 
-    const fetchHostels = useCallback(async () => {
-        setLoading(true);
-        try {
-            const response = await axios.get('http://localhost:3001/gethostels', {
-                headers: {
-                    'Authorization': `Bearer ${auth.token}`
-                },
-                params: {
-                    page: currentPage,
-                    limit: itemsPerPage
+    const fetchBookings = async () => {
+                try {
+                    const response = await axios.get('http://localhost:3001/Customerbookings');
+                    setBookings(response.data);
+                    setLoading(false);
+
+                } catch (error) {
+                    console.error('Error fetching bookings:', error);
+                    setLoading(false);
                 }
-            });
-            setHostels(response.data.hostels);
-            setTotalHostels(response.data.count);
-        } catch (error) {
-            console.error('Error fetching hostels:', error);
-        } finally {
-            setLoading(false);
-        }
-    }, [auth.token, currentPage, itemsPerPage]);
+    };
 
-    const handleDelete = async (id) => {
+    const handleVerifyToken = async (token_number) => {
+        debugger;
+        if (!token_number) {
+            console.error('Token number is required');
+            return; // Exit the function if token_number is not provided
+        }
         try {
-            await axios.delete(`http://localhost:3001/hostels/${id}`);
-            setHostels(prevHostels => prevHostels.filter(hostel => hostel._id !== id));
+            const response = await axios.post('http://localhost:3001/verifyToken', {
+                token_number
+            });
+            if (response.status === 200 && response.data && response.data.message === 'Token verified successfully') {
+                console.log('Token verified:', response.data);
+                fetchBookings(); // Refresh bookings after verification
+            } else {
+                // Handle cases where the token verification is not successful
+                console.error('Token verification failed:', response.data.message);
+            }
         } catch (error) {
-            console.error('Error deleting hostel:', error);
+            console.error('Error verifying token:', error);
         }
     };
+
+    const handleDeleteBooking = async (id) => {
+        try {
+            const response = await axios.delete(`http://localhost:3001/bookings/${id}`);
+            console.log('Booking deleted:', response.data);
+            // Refresh the bookings list after deletion
+            fetchBookings();
+        } catch (error) {
+            console.error('Error deleting booking:', error);
+        }
+    };
+        
+    // const fetchBookings = useCallback(async () => {
+    //     setLoading(true);
+    //     try {
+    //         const response = await axios.get(`http://localhost:3001//Customerbookings`, {
+    //             // headers: {
+    //             //     'Authorization': `Bearer ${auth.token}`
+    //             // },
+    //             params: {
+    //                 page: currentPage,
+    //                 limit: itemsPerPage
+    //             }
+    //         });
+    //         setBookings(response.data);
+    //         setTotalBookings(response.data.length); // Assuming response.data is an array of bookings
+    //     } catch (error) {
+    //         console.error('Error fetching bookings:', error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }, [currentPage, itemsPerPage]);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
     const renderPaginationItems = useMemo(() => {
-        const totalPages = Math.ceil(totalHostels / itemsPerPage);
+        const totalPages = Math.ceil(totalBookings / itemsPerPage);
         let items = [];
         for (let number = 1; number <= totalPages; number++) {
             items.push(
@@ -67,8 +102,9 @@ const Bookings = () => {
             );
         }
         return items;
-    }, [totalHostels, itemsPerPage, currentPage]);
+    }, [totalBookings, itemsPerPage, currentPage]);
 
+    
     return (
         <div className="d-flex">
             <div className="container-fluid">
@@ -93,12 +129,14 @@ const Bookings = () => {
                                     <Table hover>
                                         <thead>
                                             <tr>
+                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Customer Name</th>
                                                 <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Hostel Name</th>
-                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Location</th>
                                                 <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Phone</th>
-                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Rooms</th>
-                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Price</th>
+                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1' }}>Room</th>
                                                 <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1', textAlign: 'center' }}>Actions</th>
+                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1', textAlign: 'center' }}></th>
+                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1', textAlign: 'center' }}></th>
+                                                <th className='m-5 p-3 px-2 text-black' style={{fontFamily: 'sans-serif', fontSize: '14px', backgroundColor: '#F2EAE1', textAlign: 'center' }}></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -106,46 +144,16 @@ const Bookings = () => {
                                                 ? Array.from({ length: itemsPerPage }).map((_, index) => (
                                                     <SkeletonRow key={index} />
                                                 ))
-                                                : hostels.map((hostel) => (
-                                                    <tr key={hostel._id}>
-                                                        <td>{hostel.name}</td>
-                                                        <td>{hostel.location}</td>
-                                                        <td>{hostel.contact}</td>
-                                                        <td>{hostel.number_of_rooms}</td>
-                                                        <td>{hostel.price} Rs</td>
-                                                        <td>
-                                                            <Button
-                                                                href={`/view-hostel/${hostel._id}`}
-                                                                className="butons text-white"
-                                                            >
-                                                                View
-                                                            </Button>
-                                                            <Button
-                                                                href={`/edit-hostel/${hostel._id}`}
-                                                                className="butons m-2 text-white"
-                                                            >
-                                                                <svg
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16"
-                                                                    height="16"
-                                                                    fill="currentColor"
-                                                                    className="bi bi-pencil-square"
-                                                                    viewBox="0 0 16 16"
-                                                                >
-                                                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                                                    <path
-                                                                        fillRule="evenodd"
-                                                                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
-                                                                    />
-                                                                </svg>
-                                                            </Button>
-                                                            <Button
-                                                                onClick={() => handleDelete(hostel._id)}
-                                                                className="butons text-white"
-                                                            >
-                                                                <i className="fa fa-trash-o" aria-hidden="true" style={{ color: 'red', fontSize: 20 }}></i>
-                                                            </Button>
-                                                        </td>
+                                                : bookings.map((booking) => (
+                                                    <tr key={booking._id}>
+                                                        <td>{booking.customer_name}</td>
+                                                        <td>{booking.hostel_name}</td>
+                                                        <td>{booking.contact}</td>
+                                                        <td>{booking.room_type}</td>
+                                                        <td>{booking.booking_status}</td>
+                                                        <td><input type="text" className="form-control" placeholder="Token" style={{ minWidth: "170px", width: "100%" }} /></td>
+                                                        <td><button className="btn btn-success text-white" onClick={() => handleVerifyToken(booking.token_number)}>Check</button></td>
+                                                        <td><button style={{ backgroundColor: 'transparent', border: 'transparent' }} onClick={() => handleDeleteBooking(booking._id)} ><i className="fa fa-trash-o" aria-hidden="true" style={{ color: 'red', fontSize: 25 }}></i></button></td>
                                                     </tr>
                                                 ))}
                                         </tbody>
@@ -238,3 +246,79 @@ const styleSheet = document.createElement("style");
 styleSheet.type = "text/css";
 styleSheet.innerText = styles;
 document.head.appendChild(styleSheet);
+
+
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
+// import { Table, Button } from 'react-bootstrap';
+// // import SkeletonRow from './SkeletonRow'; // Assume you have a SkeletonRow component for loading state
+
+// const Bookings = () => {
+//     const [bookings, setBookings] = useState([]);
+//     const [loading, setLoading] = useState(true);
+
+//     useEffect(() => {
+//         fetchBookings();
+//     }, []);
+
+//     const fetchBookings = async () => {
+//         try {
+//             const response = await axios.get('http://localhost:3001/Customerbookings');
+//             setBookings(response.data);
+//             setLoading(false);
+//         } catch (error) {
+//             console.error('Error fetching bookings:', error);
+//             setLoading(false);
+//         }
+//     };
+
+//     const handleDelete = async (id) => {
+//         try {
+//             await axios.delete(`http://localhost:3001/Customerbookings/${id}`);
+//             // Remove deleted booking from state
+//             setBookings(bookings.filter(booking => booking._id !== id));
+//         } catch (error) {
+//             console.error('Error deleting booking:', error);
+//         }
+//     };
+
+//     return (
+//         <div className="container mt-4">
+//             <h2>Bookings</h2>
+//             {/* {loading ? (
+//                 <SkeletonRow />
+//             ) : ( */}
+//                 <Table striped bordered hover>
+//                     <thead>
+//                         <tr>
+//                             <th>Booking ID</th>
+//                             <th>Hostel Name</th>
+//                             <th>Room Type</th>
+//                             <th>Customer Name</th>
+//                             <th>Booking Status</th>
+//                             <th>Actions</th>
+//                         </tr>
+//                     </thead>
+//                     <tbody>
+//                         {bookings.map((booking) => (
+//                             <tr key={booking._id}>
+//                                 <td>{booking.booking_id}</td>
+//                                 <td>{booking.hostel_id.name}</td>
+//                                 <td>{booking.room_type}</td>
+//                                 <td>{booking.customer_name}</td>
+//                                 <td>{booking.booking_status}</td>
+//                                 <td>
+//                                     <Button variant="info" href={`/edit-booking/${booking._id}`}>Edit</Button>{' '}
+//                                     <Button variant="danger" onClick={() => handleDelete(booking._id)}>Delete</Button>
+//                                 </td>
+//                             </tr>
+//                         ))}
+//                     </tbody>
+//                 </Table>
+//             {/* )} */}
+//         </div>
+//     );
+// };
+
+// export default Bookings;
+

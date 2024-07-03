@@ -4,9 +4,12 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Form, Container, Row, Col, Alert } from 'react-bootstrap';
 import Header from "../Header";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const BookingPage = () => {
     const { id: hostelId } = useParams(); // Get hostel ID from route parameters
+    // const {cid: CustomerId } = useParams(); // Get customer ID from route parameters
     const navigate = useNavigate();
 
     const generateToken = () => {
@@ -16,8 +19,9 @@ const BookingPage = () => {
     // State for form inputs
     const [name, setName] = useState('');
     const [roomType, setRoomType] = useState('');
-    const [address, setAddress] = useState('');
+    const [customer_email, setcustomer_email] = useState('');
     const [cnic, setCnic] = useState('');
+    const [contact, setContact] = useState('');
     const [token, setToken] = useState(generateToken());
 
     // State for modal
@@ -28,6 +32,7 @@ const BookingPage = () => {
         hostelName: '',
         roomType: '',
         roomPrice: '',
+        contact: ''
     });
 
     // State for errors
@@ -45,15 +50,20 @@ const BookingPage = () => {
             newErrors.name = 'Name must contain only letters and spaces';
         }
         if (!roomType) newErrors.roomType = 'Room type is required';
-        if (!address) {
-            newErrors.address = 'Address is required';
-        } else if (!/^.{10,}$/.test(address)) { // Adjust the regex as needed for address validation
-            newErrors.address = 'Address must be at least 10 characters long';
+        if (!customer_email) {
+            newErrors.customer_email = 'Your account email is required';
+        } else if (!customer_email.includes('@') || !customer_email.includes('.')) {
+            newErrors.customer_email = 'Invalid email format';
         }
         if (!cnic) {
             newErrors.cnic = 'CNIC is required';
         } else if (!/^\d{13}$/.test(cnic)) {
             newErrors.cnic = 'CNIC must be exactly 13 digits';
+        }
+        if (!contact) {
+            newErrors.contact = 'Contact is required';
+        } else if (!/^(\+?\d{1,4}|\d{1,4})?\s?\d{10,14}$/.test(contact)) {
+            newErrors.contact = 'Contact must be exactly 11 digits';
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -63,7 +73,7 @@ const BookingPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmissionError(null);
-        
+
         if (!validateForm()) return;
 
         try {
@@ -71,9 +81,10 @@ const BookingPage = () => {
             const response = await axios.post(`http://localhost:3001/book-room/${hostelId}`, {
                 name,
                 roomType,
-                address,
                 cnic,
-                token_number: token
+                token_number: token,
+                contact,
+                customer_email
             });
 
             console.log('Booking successful:', response.data);
@@ -83,7 +94,9 @@ const BookingPage = () => {
                 name,
                 hostelName: response.data.booking.hostelName, // Adjust according to your response structure
                 roomType,
-                roomPrice: response.data.booking.roomPrice // Adjust according to your response structure
+                roomPrice: response.data.booking.roomPrice, // Adjust according to your response structure
+                contact,
+                customer_email
             });
             // Show the modal
             setShowModal(true);
@@ -93,9 +106,13 @@ const BookingPage = () => {
         }
     };
 
+    const handlePhoneChange = (value) => {
+        setContact(value);
+    };
+
     return (
         <>
-        <Header/>
+        <Header />
         <Container fluid className="d-flex justify-content-center align-items-center vh-100" style={{ backgroundColor: '#f8f9fa' }}>
             <style>
                 {`
@@ -159,11 +176,26 @@ const BookingPage = () => {
                                 </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Address</Form.Label>
+                                <Form.Label>Contact</Form.Label>
+                                <PhoneInput
+                                    country={'pk'}
+                                    value={contact}
+                                    onChange={handlePhoneChange} // Correctly update the state
+                                    inputStyle={{ width: '100%' }}
+                                    inputProps={{
+                                        required: true,
+                                    }}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.contact}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
+                                    value={customer_email}
+                                    onChange={(e) => setcustomer_email(e.target.value)}
                                     isInvalid={!!errors.address}
                                     required
                                 />
@@ -206,9 +238,11 @@ const BookingPage = () => {
                 <Modal.Body>
                     <p><strong>Token Number:</strong> {bookingDetails.token}</p>
                     <p><strong>Name:</strong> {bookingDetails.name}</p>
+                    <p><strong>Email:</strong> {bookingDetails.customer_email}</p>
                     <p><strong>Hostel Name:</strong> {bookingDetails.hostelName}</p>
                     <p><strong>Room Type:</strong> {bookingDetails.roomType}</p>
                     <p><strong>Room Price:</strong> {bookingDetails.roomPrice}</p>
+                    <p><strong>Contact:</strong> {bookingDetails.contact}</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>

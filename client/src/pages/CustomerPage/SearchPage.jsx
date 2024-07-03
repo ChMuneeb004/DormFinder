@@ -3,8 +3,22 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../CustomerPage/Header';
 import SearchBar from '../CustomerPage/SearchBar';
 import 'font-awesome/css/font-awesome.min.css';
+// import { AuthContext } from '../../contexts/AuthContext';
+// import { useNavigate, useContext } from 'react-router-dom';
 
 const SearchPage = () => {
+    // const navigate = useNavigate();
+    // const { auth } = useContext(AuthContext);
+
+    // useEffect(() => {
+    //     // Check if token exists in local storage
+    //     const token = localStorage.getItem('token');
+    //     if (!token) {
+    //         // If no token, redirect to login page
+    //         navigate('/login');
+    //     }
+    // }, [navigate]);
+
     return (
         <div>
             <Header />

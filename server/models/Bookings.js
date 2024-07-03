@@ -24,19 +24,19 @@ const BookingSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Room type is required']
     },
-    address: {
-        type: String,
-        required: [true, 'Address is required']
-    },
     cnic: {
         type: String,
         required: [true, 'CNIC is required']
     },
-    // customer_id: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Customer',
-    //     required: [true, 'Customer ID is required']
-    // },
+    customer_email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    contact: {
+        type: Number,
+        required: [true, 'Contact is required']
+    },
     hostel_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Hostel',
@@ -46,6 +46,10 @@ const BookingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room',
         required: [true, 'Room ID is required']
+    },
+    hostel_name: {
+        type: String,
+        required: [true, 'Hostel name is required']
     },
     booking_date: {
         type: Date,
