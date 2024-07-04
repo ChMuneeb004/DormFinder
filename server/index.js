@@ -705,8 +705,7 @@ app.put('/profile', verifyToken, async (req, res) => {
         };
 
         if (password) {
-            const salt = await bcrypt.genSalt(10);
-            updateData.password = await bcrypt.hash(password, salt);
+            updateData.password = password
         }
 
         let user;

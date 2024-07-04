@@ -30,6 +30,7 @@ export default function SignupPage() {
   const [securityQuestion, setSecurityQuestion] = useState('');
   const [message, setMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
@@ -163,14 +164,19 @@ export default function SignupPage() {
                 </div>
                 <div className="form-group">
                   <label className=' pull-left'>What's your Password?</label>
-                  <input
-                    placeholder="Password"
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+                  <div className="password-container">
+                    <input
+                      placeholder="Password"
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <span className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <i className='fa fa-eye-slash'></i> : <i className='fa fa-eye'></i>}
+                    </span>
+                  </div>
                 </div>
                 <div className="form-group">
                   <label className=' pull-left' htmlFor="profile">Choose a Profile</label>

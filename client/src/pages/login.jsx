@@ -1,29 +1,25 @@
-import { useState, useContext } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import React, { useState, useContext } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css_folder/App.css';
 import { BrowserRouter, useNavigate as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from '../contexts/AuthContext';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 import ForgotPassword from './forgot.jsx';
 
-
 export default function LoginPage() {
-  const [email, setemail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setrememberme] = useState(false);
-  const navigate = useNavigate();
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
+  const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      //debugger;
       await login(email, password);
-      // After successful login, check user type and redirect
       const token = localStorage.getItem('token');
       if (token) {
         const decoded = jwtDecode(token);
@@ -36,51 +32,8 @@ export default function LoginPage() {
     } catch (error) {
       console.error('Login error:', error);
       // Handle specific error messages or status codes
-      // For example, show an alert or error message to the user
-      // Here you can clear any state related to authentication like token
-      // localStorage.removeItem('token'); // Optionally clear token on login failure
     }
   };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   // Prepare the request body
-  //   const requestData = {
-  //     email: email,
-  //     password: password
-  //   };
-
-  //   // Make a POST request to the login endpoint
-  //   axios.post("http://localhost:3001/login", requestData)
-  //     .then((response) => {
-  //       const data = response.data;
-  //       if (data.userType === 'owner') {
-  //         // Successful login for owner, redirect to owner dashboard
-  //         console.log('Login successful as owner');
-  //         // Save the JWT token in local storage
-  //         localStorage.setItem('token', data.token);
-  //         navigate("/Dashboard");
-  //       } else if (data.userType === 'customer') {
-  //         // Successful login for customer, redirect to customer search page
-  //         console.log('Login successful as customer');
-  //         // Save the JWT token in local storage
-  //         localStorage.setItem('token', data.token);
-  //         navigate("/home");
-  //       } else {
-  //         // Login failed
-  //         console.log('Login failed:', data.message);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       // Handle errors
-  //       console.error('Error during login:', error);
-  //     });
-
-  //   // Reset email and password fields
-  //   setemail("");
-  //   setPassword("");
-  // };
 
   return (
     <>
@@ -102,49 +55,49 @@ export default function LoginPage() {
                   style={{ alignItems: "center", placeItems: "center" }}
                   className="text-center align-items-center"
                 >
-                  {" "}
                   <div className="form-group mb-4">
                     <input
                       type="email"
                       className="form-control"
                       placeholder="Enter email"
                       value={email}
-                      onChange={(e) => setemail(e.target.value)}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="form-group mb-3">
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <div className="password-container">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className="form-control"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                      <span className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+                        {showPassword ? <i className='fa fa-eye-slash'></i>: <i className='fa fa-eye'></i> }
+                      </span>
+                    </div>
                   </div>
                   <div className="form-check mb-3 w-100 d-flex justify-content-between align-items-center">
                     <div className="d-flex align-center">
                       <input
                         type="checkbox"
                         className="form-check-input"
-                        style={{
-                          marginTop: '6px'
-                        }}
+                        style={{ marginTop: '6px' }}
                         id="rememberMe"
                         checked={rememberMe}
-                        onChange={(e) => setrememberme(e.target.checked)}
+                        onChange={(e) => setRememberMe(e.target.checked)}
                       />
                       <label className="form-check-label p-0" htmlFor="rememberMe">
                         Remember Me
                       </label>
                     </div>
                     <div
-                      to="/Forgot"
                       className="forgot-password float-end"
                       onClick={() => setShowModal(true)}
                       role="button"
                       tabIndex="0"
                       style={{ cursor: 'pointer' }}
-
                     >
                       Forgot password?
                     </div>
