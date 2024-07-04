@@ -33,9 +33,13 @@ const CustomerSchema = new mongoose.Schema({
         maxlength: 13,
         minlength: 13
     },
-    userType:{
+    userType: {
         type: String,
-        require: true
+        required: true
+    },
+    securityQuestion: {
+        type: String,
+        required: true
     },
     createdAt: {
         type: Date,
@@ -43,6 +47,5 @@ const CustomerSchema = new mongoose.Schema({
     }
 });
 
-
 const CustomerModel = mongoose.model("customer", CustomerSchema);
-module.exports = CustomerModel
+module.exports = CustomerModel;

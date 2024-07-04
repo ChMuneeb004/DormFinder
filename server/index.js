@@ -755,6 +755,49 @@ app.post("/login", async (req, res) => {
     }
 });
 
+//Muneeb
+app.post('/verify-user', async (req, res) => {
+    const { email, DOB, securityQuestion, userType } = req.body;
+    try {
+        let user;
+        if (userType === 'customer') {
+            user = await CustomerModel.findOne({ email, DOB, securityQuestion }).lean();
+        } else if (userType === 'owner') {
+            user = await OwnerModel.findOne({ email, DOB, securityQuestion }).lean();
+        }
+
+        if (!user) {
+            return res.status(404).json({ message: 'User details do not match' });
+        }
+
+        res.status(200).json({ message: 'User verified', email: user.email });
+    } catch (error) {
+        console.error('Error verifying user:', error);
+        res.status(500).json({ message: 'Server error. Please try again later.' });
+    }
+});
+
+app.post('/reset-password', async (req, res) => {
+    const { email, newPassword, userType } = req.body;
+    try {
+        let user;
+        if (userType === 'customer') {
+            user = await CustomerModel.findOneAndUpdate({ email }, { password: newPassword });
+        } else if (userType === 'owner') {
+            user = await OwnerModel.findOneAndUpdate({ email }, { password: newPassword });
+        }
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'Password reset successfully' });
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        res.status(500).json({ message: 'Server error. Please try again later.' });
+    }
+});
+
 app.listen(3001, (err) => {
     if (err) {
         console.error('Error starting server:', err);

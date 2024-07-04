@@ -103,7 +103,6 @@ export default function LoginPage() {
                   className="text-center align-items-center"
                 >
                   {" "}
-                  {/* Add text-center class */}
                   <div className="form-group mb-4">
                     <input
                       type="email"

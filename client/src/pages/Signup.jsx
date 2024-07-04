@@ -7,6 +7,7 @@ import PhoneInput from 'react-phone-number-input';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+
 const Popup = ({ message, onClose }) => {
   return (
     <div className="popup">
@@ -26,6 +27,7 @@ export default function SignupPage() {
   const [CNIC, setCNIC] = useState('');
   const [DOB, setDOB] = useState('');
   const [Phone, setPhone] = useState('');
+  const [securityQuestion, setSecurityQuestion] = useState('');
   const [message, setMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ export default function SignupPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!CNIC || !Phone || !email || !password || !username || !DOB) {
+    if (!CNIC || !Phone || !email || !password || !username || !DOB || !securityQuestion) {
       setMessage('Please fill in all required fields.');
       setShowPopup(true);
       return;
@@ -90,6 +92,7 @@ export default function SignupPage() {
       DOB,
       CNIC,
       Phone,
+      securityQuestion,
       userType: profile,
     };
 
@@ -132,6 +135,7 @@ export default function SignupPage() {
     setDOB('');
     setPhone('');
     setProfile('');
+    setSecurityQuestion('');
   };
 
   const handleProfileChange = (e) => {
@@ -228,6 +232,17 @@ export default function SignupPage() {
                     defaultCountry="PK"
                     value={Phone}
                     onChange={setPhone}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className=' pull-left'>What is your favorite food?</label>
+                  <input
+                    placeholder="Security Question"
+                    type="text"
+                    id="securityQuestion"
+                    name="securityQuestion"
+                    value={securityQuestion}
+                    onChange={(e) => setSecurityQuestion(e.target.value)}
                   />
                 </div>
                 <button type="submit" className="Create-Acc">Create Account</button>
