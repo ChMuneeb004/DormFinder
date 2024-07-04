@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const RoomImagesSchema = new mongoose.Schema({
-    RoomImages: [{
+    roomImages: [{
         data: Buffer,
         contentType: String
     }],

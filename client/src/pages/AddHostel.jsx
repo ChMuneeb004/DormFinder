@@ -167,6 +167,7 @@ const AddHostel = () => {
     for (const image of hostel.images) {
       formData.append('images', image);
     }
+
     for (const roomImages of hostel.roomImages) {
       formData.append('roomImages', roomImages);
       
@@ -175,20 +176,28 @@ const AddHostel = () => {
   
 
     try {
+      
       const hostelResponse = await axios.post("http://localhost:3001/listHostel", formData, {
         headers: {
           Authorization: `Bearer ${auth.token}`,
           'Content-Type': 'multipart/form-data'
         }
       });
-      // debugger;
       const hostelId = hostelResponse.data._id;
 
-      // for (const roomImage of hostel.roomImages) {
-      //   const rImages = `data:${roomImage.contentType};base64,${roomImages.data}`;
-      //   formData.append('roomImages', rImages ); // Append File object to formData
-      // }
-      
+      const stitchFormData = new FormData();
+      stitchFormData.append('hostelId', hostelId);
+      for (const roomImage of hostel.roomImages) {
+        stitchFormData.append('roomImages', roomImage);
+      }
+
+      const stitchResponse = await axios.post("http://localhost:3001/stitch-room-images", stitchFormData, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
       // Stitch Room Images
       // await axios.post("http://localhost:3001/stitch-room-images", {
       //   hostelId,
@@ -198,6 +207,14 @@ const AddHostel = () => {
       //     Authorization: `Bearer ${auth.token}`,
       //     'Content-Type': 'multipart/form-data'
       //   }
+      // });
+
+      console.log('Stitched Room Images Response:', stitchResponse.data);
+      // .then(response => {
+      //   console.log('Stitched image URL:', response.data.stitchedRoomImages);
+      // })
+      // .catch(error => {
+      //   console.error('Error uploading images:', error);
       // });
 
 

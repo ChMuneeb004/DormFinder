@@ -137,8 +137,8 @@ const HostelPage = () => {
         }
     };
 
-    useEffect(() => {
-        fetchHostels();
+    useEffect( () => {
+         fetchHostels();
     }, [location.search, currentPage]);
 
     const fetchHostels = useCallback(async () => {
@@ -180,6 +180,7 @@ const HostelPage = () => {
                 },
                 responseType: 'json'
             });
+            
             const formattedHostels = hostelsResponse.data.hostels.map(hostel => ({
                 id: hostel._id,
                 images: hostel.images.map(image => ({

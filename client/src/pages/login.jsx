@@ -19,8 +19,13 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(email, password);
+      const res = await login(email, password);
+      if (!res) {
+        alert('Invalid email or password');
+        return;
+      }
       const token = localStorage.getItem('token');
+      
       if (token) {
         const decoded = jwtDecode(token);
         if (decoded.userType === 'owner') {

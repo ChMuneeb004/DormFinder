@@ -7,17 +7,6 @@ import 'font-awesome/css/font-awesome.min.css';
 // import { useNavigate, useContext } from 'react-router-dom';
 
 const SearchPage = () => {
-    // const navigate = useNavigate();
-    // const { auth } = useContext(AuthContext);
-
-    // useEffect(() => {
-    //     // Check if token exists in local storage
-    //     const token = localStorage.getItem('token');
-    //     if (!token) {
-    //         // If no token, redirect to login page
-    //         navigate('/login');
-    //     }
-    // }, [navigate]);
 
     return (
         <div>

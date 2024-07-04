@@ -24,14 +24,26 @@ const HostelDetail = () => {
                 }
 
                 const response = await axios.get(
-                    `http://localhost:3001/hostel-detail/${id}`
-                );
-                if (!response.data) {
-                    throw new Error("Hostel not found");
-                }
+                    `http://localhost:3001/hostel-detail/${id}`,
+                    {
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache',
+                            'Expires': '0'
+                        }
+                    }
+                ).catch((error) => {
+                    console.error("Hostel detail API error:", error);
+                    throw new Error("Error fetching hostel details");
+                });
 
+                if (!response.data || !response.data.stitchedImages) {
+                    throw new Error("Hostel data or stitchedImages not found");
+                }
                 setHostel(response.data);
-                setStitchedImageUrl(response.data.panoramaUrl);
+                setStitchedImageUrl(response.data.stitchedImages);
+                console.log("Hostel detail API response:", response.data);  // Log full response
+                console.log("Stitched images:", response.data.stitchedImages);  // Log stitchedImages specifically
             } catch (error) {
                 setError("Error fetching hostel details");
             } finally {
@@ -42,8 +54,18 @@ const HostelDetail = () => {
         fetchHostel();
     }, [id]);
 
+    const getstitchedImageUrl = (stitchedimage) => {
+        if (stitchedimage && stitchedimage.data) {
+            return `data:${stitchedimage.contentType};base64,${stitchedimage.data}`;
+        }
+        return "";
+    };
+
+    const panoramaUrl = getstitchedImageUrl(stitchedImageUrl);
+    console.log("Panorama URL:", panoramaUrl);
+
     useEffect(() => {
-        if (!loading && hostel) {
+        if (!loading && hostel && stitchedImageUrl) {
             const loadPannellum = async () => {
                 const css = document.createElement("link");
                 css.rel = "stylesheet";
@@ -51,12 +73,12 @@ const HostelDetail = () => {
                 document.head.appendChild(css);
 
                 const script = document.createElement("script");
-                script.src =
-                    "https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js";
+                script.src = "https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js";
                 script.onload = () => {
+                    const panoramaUrl = getstitchedImageUrl(stitchedImageUrl);
                     pannellum.viewer("panorama", {
                         type: "equirectangular",
-                        panorama: panorama3,
+                        panorama: panoramaUrl,
                         autoLoad: true,
                     });
                 };
@@ -65,7 +87,8 @@ const HostelDetail = () => {
 
             loadPannellum();
         }
-    }, [loading, hostel]);
+    }, [loading, hostel, stitchedImageUrl]);
+
 
     if (loading) {
         return <div>Loading...</div>;
@@ -162,6 +185,7 @@ const HostelDetail = () => {
                         </div>
                     </div>
                 </div>
+                
                 <div className="row mb-4">
                     <div className="col-md-6">
                         <h3 style={styles.subtitle}>Room Types and Prices</h3>
@@ -190,7 +214,7 @@ const HostelDetail = () => {
                         <p style={styles.text}>{description}</p>
                     </div>
                 </div>
-                <div className="row mb-4">
+                {/* <div className="row mb-4">
                     <div className="col-12">
                         <h3 style={styles.subtitle}>360° View</h3>
                         <div className="card p-1" style={{ ...styles.card, ...styles.hoverEffect }}>
@@ -200,7 +224,14 @@ const HostelDetail = () => {
                             ></div>
                         </div>
                     </div>
+                </div> */}
+                <div className="row mb-4">
+                    <div className="col-12">
+                        <h3>360° View</h3>
+                        <div id="panorama" style={{ width: "100%", height: "500px" }}></div>
+                    </div>
                 </div>
+
                 <div className="row mb-4">
                     <div className="col-12">
                         <h3 style={styles.subtitle}>Location</h3>
