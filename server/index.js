@@ -41,7 +41,32 @@ const upload = multer({
     },
 });
 
-mongoose.connect("mongodb://127.0.0.1:27017/Dormfinder");
+// const { MongoClient, ServerApiVersion } = require('mongodb');
+// const uri = "mongodb+srv://dormfinder2023:dormfinder@dormfinder.3vddaef.mongodb.net/?appName=dormfinder";
+// // Create a MongoClient with a MongoClientOptions object to set the Stable API version
+// const client = new MongoClient(uri, {
+//   serverApi: {
+//     version: ServerApiVersion.v1,
+//     strict: true,
+//     deprecationErrors: true,
+//   }
+// });
+// async function run() {
+//   try {
+//     // Connect the client to the server	(optional starting in v4.7)
+//     await client.connect();
+//     // Send a ping to confirm a successful connection
+//     await client.db("admin").command({ ping: 1 });
+//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+//   } finally {
+//     // Ensures that the client will close when you finish/error
+//     await client.close();
+//   }
+// }
+// run().catch(console.dir);
+
+
+mongoose.connect("mongodb+srv://dormfinder2023:dormfinder@dormfinder.3vddaef.mongodb.net/Dormfinder?retryWrites=true&w=majority&appName=dormfinder");
 
 const secretKey = 'secret_key';
 
@@ -210,6 +235,81 @@ app.post('/book-room/:id', async (req, res) => {
     }
 });
 
+app.post('/stitch-room-images', upload.array('roomImages', 10), async (req, res) => {
+    const { hostelId } = req.body;
+    const roomImages = req.files;
+
+    if (!hostelId) {
+        return res.status(400).json({ error: 'hostelId is required' });
+    }
+
+    if (!roomImages || roomImages.length < 2) {
+        return res.status(400).json({ error: 'Need at least two images to stitch' });
+    }
+
+    const uploadsDir = path.join(__dirname, 'uploads');
+
+    // Ensure the uploads directory exists
+    if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir);
+    }
+
+    // Save the uploaded images to disk
+    const imagePaths = roomImages.map((file, index) => {
+        const filePath = path.join(uploadsDir, `room_image_${index}.jpg`);
+        try {
+            fs.writeFileSync(filePath, file.buffer);
+            return filePath;
+        } catch (err) {
+            console.error(`Error writing file ${filePath}: ${err.message}`);
+            throw err;
+        }
+    });
+
+    // Run the Python script for stitching
+    const pythonScript = path.join(__dirname, '360view.py');
+    const command = `python ${pythonScript} ${imagePaths.join(' ')}`;
+
+    exec(command, async (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error executing Python script: ${error.message}`);
+            return res.status(500).json({ error: 'Error stitching images' });
+        }
+
+        // Reading stitched image from disk
+        const outputPath = path.join(uploadsDir, 'stitched_panorama.jpg');
+        try {
+            const stitchedImageData = fs.readFileSync(outputPath);
+
+            // Save the room images and stitched image to the database using RoomImages model
+            const newRoomImages = new RoomImages({
+                hostel_id: hostelId,
+                roomImages: roomImages.map(file => ({
+                    data: file.buffer,
+                    contentType: file.mimetype
+                })),
+                stitchedImages: {
+                    data: stitchedImageData,
+                    contentType: 'image/jpeg'
+                }
+            });
+
+            await newRoomImages.save();
+
+            console.log('Room images and stitched image saved successfully.');
+
+            // Clean up the temporary images
+            imagePaths.forEach(filePath => fs.unlinkSync(filePath));
+            fs.unlinkSync(outputPath);
+
+            res.status(200).json({ panoramaUrl: `/uploads/stitched_panorama.jpg` });
+        } catch (err) {
+            console.error(`Error reading file ${outputPath}: ${err.message}`);
+            res.status(500).json({ error: 'Error reading stitched image' });
+        }
+    });
+});
+
 // app.post('/stitch-room-images', (req, res) => {
 //     upload.array('roomImages', 10)(req, res, async (err) => {
 //       if (err instanceof multer.MulterError) {
@@ -266,7 +366,7 @@ app.post('/book-room/:id', async (req, res) => {
 //           // Save the room images and stitched image to the database using RoomImages model
 //           const newRoomImages = new RoomImages({
 //             hostel_id: hostelId,
-//             RoomImages: roomImages.map(file => ({
+//             roomImages: roomImages.map(file => ({
 //               data: file.buffer,
 //               contentType: file.mimetype
 //             })),
@@ -295,84 +395,84 @@ app.post('/book-room/:id', async (req, res) => {
 //     });
 //   });
 
-app.post('/stitch-room-images', upload.array('roomImages', 10), async (req, res) => {
-    const { hostelId } = req.body;
-    const roomImages = req.files;
+// app.post('/stitch-room-images', upload.array('roomImages', 10), async (req, res) => {
+//     const { hostelId } = req.body;
+//     const roomImages = req.files;
 
-    if (!hostelId) {
-        return res.status(400).json({ error: 'hostelId is required' });
-    }
+//     if (!hostelId) {
+//         return res.status(400).json({ error: 'hostelId is required' });
+//     }
 
-    if (!roomImages || roomImages.length < 2) {
-        return res.status(400).json({ error: 'Need at least two images to stitch' });
-    }
+//     if (!roomImages || roomImages.length < 2) {
+//         return res.status(400).json({ error: 'Need at least two images to stitch' });
+//     }
 
-    const uploadsDir = path.join(__dirname, 'uploads');
+//     const uploadsDir = path.join(__dirname, 'uploads');
 
-    // Ensure the uploads directory exists
-    if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir);
-    }
+//     // Ensure the uploads directory exists
+//     if (!fs.existsSync(uploadsDir)) {
+//         fs.mkdirSync(uploadsDir);
+//     }
 
-    // Save the uploaded images to disk (if needed for stitching)
-    const imagePaths = roomImages.map((file, index) => {
-        const filePath = path.join(uploadsDir, `room_image_${index}.jpg`);
-        try {
-            fs.writeFileSync(filePath, file.buffer);
-            return filePath;
-        } catch (err) {
-            console.error(`Error writing file ${filePath}: ${err.message}`);
-            throw err;
-        }
-    });
+//     // Save the uploaded images to disk (if needed for stitching)
+//     const imagePaths = roomImages.map((file, index) => {
+//         const filePath = path.join(uploadsDir, `room_image_${index}.jpg`);
+//         try {
+//             fs.writeFileSync(filePath, file.buffer);
+//             return filePath;
+//         } catch (err) {
+//             console.error(`Error writing file ${filePath}: ${err.message}`);
+//             throw err;
+//         }
+//     });
 
-    // Run the Python script for stitching (example)
-    const pythonScript = path.join(__dirname, '360view.py');
-    const command = `python ${pythonScript} ${imagePaths.join(' ')}`;
+//     // Run the Python script for stitching (example)
+//     const pythonScript = path.join(__dirname, '360feature.py');
+//     const command = `python ${pythonScript} ${imagePaths.join(' ')}`;
 
-    exec(command, async (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error executing Python script: ${error.message}`);
-            return res.status(500).json({ error: 'Error stitching images' });
-        }
+//     exec(command, async (error, stdout, stderr) => {
+//         if (error) {
+//             console.error(`Error executing Python script: ${error.message}`);
+//             return res.status(500).json({ error: 'Error stitching images' });
+//         }
 
-        // Example: Reading stitched image from disk
-        const outputPath = path.join(uploadsDir, 'stitched_panorama.jpg');
-        try {
-            const stitchedImageData = fs.readFileSync(outputPath);
+//         // Example: Reading stitched image from disk
+//         const outputPath = path.join(uploadsDir, 'stitched_panorama.jpg');
+//         try {
+//             const stitchedImageData = fs.readFileSync(outputPath);
 
-            // Save the room images and stitched image to the database using RoomImages model
-            const newRoomImages = new RoomImages({
-                hostel_id: hostelId,
-                roomImages: roomImages.map(file => ({
-                    data: file.buffer,
-                    contentType: file.mimetype
-                })),
-                stitchedImages: {
-                    data: stitchedImageData,
-                    contentType: 'image/jpeg'
-                }
-            });
-            // console.log('Room images and stitched image:', newRoomImages);
+//             // Save the room images and stitched image to the database using RoomImages model
+//             const newRoomImages = new RoomImages({
+//                 hostel_id: hostelId,
+//                 roomImages: roomImages.map(file => ({
+//                     data: file.buffer,
+//                     contentType: file.mimetype
+//                 })),
+//                 stitchedImages: {
+//                     data: stitchedImageData,
+//                     contentType: 'image/jpeg'
+//                 }
+//             });
+//             // console.log('Room images and stitched image:', newRoomImages);
             
 
-            await newRoomImages.save().then(() => {
-                console.log('Room images and stitched image saved successfully.');
-                // Clean up the temporary images
-                imagePaths.forEach(filePath => fs.unlinkSync(filePath));
-                fs.unlinkSync(outputPath);
+//             await newRoomImages.save().then(() => {
+//                 console.log('Room images and stitched image saved successfully.');
+//                 // Clean up the temporary images
+//                 imagePaths.forEach(filePath => fs.unlinkSync(filePath));
+//                 fs.unlinkSync(outputPath);
 
-                res.status(200).json({ panoramaUrl: `/uploads/stitched_panorama.jpg` });
-            }).catch(err => {
-                console.error('Error saving room images and stitched image:', err);
-                res.status(500).json({ error: 'Error saving images to the database' });
-            });
-        } catch (err) {
-            console.error(`Error reading file ${outputPath}: ${err.message}`);
-            res.status(500).json({ error: 'Error reading stitched image' });
-        }
-    });
-});
+//                 res.status(200).json({ panoramaUrl: `/uploads/stitched_panorama.jpg` });
+//             }).catch(err => {
+//                 console.error('Error saving room images and stitched image:', err);
+//                 res.status(500).json({ error: 'Error saving images to the database' });
+//             });
+//         } catch (err) {
+//             console.error(`Error reading file ${outputPath}: ${err.message}`);
+//             res.status(500).json({ error: 'Error reading stitched image' });
+//         }
+//     });
+// });
 
 // app.get('/hostel-detail/:id', async (req, res) => {
 //     const hostelId = req.params.id;
@@ -401,7 +501,7 @@ app.get('/hostel-detail/:id', async (req, res) => {
         const amenities = await amenitiesModel.find({ hostel_id: hostel._id }).lean();
         // console.log('Amenities fetched for hostel_id:', hostel._id, amenities);
         const stitchedImages = await RoomImages.find({ hostel_id: hostel._id }).lean();
-        // console.log('Stitched images fetched for hostel_id:', hostel._id, stitchedImages);
+        console.log('Stitched images fetched for hostel_id:', hostel._id, stitchedImages);
 
         const hostelDetails = {
             ...hostel,
@@ -443,15 +543,24 @@ app.get('/searchHostels', async (req, res) => {
             .skip(skip)
             .limit(limit)
             .lean();
-
-        const totalHostels = await HostelModel.countDocuments({
-            latitude: { $gte: latitude - latRadius, $lte: latitude + latRadius },
-            longitude: { $gte: longitude - longRadius, $lte: longitude + longRadius }
-        });
+        
+            const hostelIds = hostels.map(hostel => hostel._id);
+            const rooms = await RoomModel.find({ hostel_id: { $in: hostelIds } }).lean();
+    
+            const hostelsWithRooms = hostels.map(hostel => {
+                hostel.rooms = rooms.filter(room => room.hostel_id.equals(hostel._id));
+                return hostel;
+            });
+    
+            const totalHostels = await HostelModel.countDocuments({
+                latitude: { $gte: latitude - latRadius, $lte: latitude + latRadius },
+                longitude: { $gte: longitude - longRadius, $lte: longitude + longRadius }
+            });
+    
 
         const totalPages = Math.ceil(totalHostels / limit);
 
-        res.status(200).json({ hostels, totalPages });
+        res.status(200).json({ hostels: hostelsWithRooms, totalPages });
     } catch (err) {
         return res.status(500).json({ error: 'Internal Server Error' });
     }

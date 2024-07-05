@@ -51,6 +51,7 @@ document.head.appendChild(styleSheet);
 
 const HostelPage = () => {
     const location = useLocation();
+    const [hostelsData, setHostelsData] = useState([]);
     const [hostels, setHostels] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -137,8 +138,8 @@ const HostelPage = () => {
         }
     };
 
-    useEffect( () => {
-         fetchHostels();
+    useEffect(() => {
+        fetchHostels();
     }, [location.search, currentPage]);
 
     const fetchHostels = useCallback(async () => {
@@ -180,7 +181,10 @@ const HostelPage = () => {
                 },
                 responseType: 'json'
             });
+
             
+
+
             const formattedHostels = hostelsResponse.data.hostels.map(hostel => ({
                 id: hostel._id,
                 images: hostel.images.map(image => ({
@@ -191,10 +195,29 @@ const HostelPage = () => {
                 description: Array.isArray(hostel.description) ? hostel.description.join(' ') : hostel.description || '', // Handle both array and string cases
                 location: hostel.location || '',
                 number_of_rooms: hostel.number_of_rooms || '',
-                contact: hostel.contact || ''
+                contact: hostel.contact || '',
+                hostel_type: hostel.hostel_type || ''
+
             }));
 
+            
+
+
             setHostels(formattedHostels);
+            setHostelsData(
+                hostelsResponse.data.hostels.map(hostel => ({
+                    id: hostel._id,
+                    images: hostel.images.map(image => ({
+                        contentType: image.contentType,
+                        data: image.data // This should be a base64 encoded string
+                    })),
+                    name: hostel.name || '',
+                    description: Array.isArray(hostel.description) ? hostel.description.join(' ') : hostel.description || '', // Handle both array and string cases
+                    location: hostel.location || '',
+                    number_of_rooms: hostel.number_of_rooms || '',
+                    contact: hostel.contact || ''
+                }))
+            )
             setTotalPages(hostelsResponse.data.totalPages);
         } catch (error) {
             setError('Error fetching hostels');

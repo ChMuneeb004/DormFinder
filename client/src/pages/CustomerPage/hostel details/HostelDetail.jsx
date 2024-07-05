@@ -54,41 +54,6 @@ const HostelDetail = () => {
         fetchHostel();
     }, [id]);
 
-    const getstitchedImageUrl = (stitchedimage) => {
-        if (stitchedimage && stitchedimage.data) {
-            return `data:${stitchedimage.contentType};base64,${stitchedimage.data}`;
-        }
-        return "";
-    };
-
-    const panoramaUrl = getstitchedImageUrl(stitchedImageUrl);
-    console.log("Panorama URL:", panoramaUrl);
-
-    useEffect(() => {
-        if (!loading && hostel && stitchedImageUrl) {
-            const loadPannellum = async () => {
-                const css = document.createElement("link");
-                css.rel = "stylesheet";
-                css.href = "https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css";
-                document.head.appendChild(css);
-
-                const script = document.createElement("script");
-                script.src = "https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js";
-                script.onload = () => {
-                    const panoramaUrl = getstitchedImageUrl(stitchedImageUrl);
-                    pannellum.viewer("panorama", {
-                        type: "equirectangular",
-                        panorama: panoramaUrl,
-                        autoLoad: true,
-                    });
-                };
-                document.body.appendChild(script);
-            };
-
-            loadPannellum();
-        }
-    }, [loading, hostel, stitchedImageUrl]);
-
 
     if (loading) {
         return <div>Loading...</div>;
