@@ -99,9 +99,9 @@ export default function SignupPage() {
 
     let signupEndpoint = '';
     if (profile === 'Customer') {
-      signupEndpoint = 'https://dorm-finder.vercel.app/signupCustomer';
+      signupEndpoint = 'http://localhost:3001/signupCustomer';
     } else if (profile === 'Owner') {
-      signupEndpoint = 'https://dorm-finder.vercel.app/signupOwner';
+      signupEndpoint = 'http://localhost:3001/signupOwner';
     } else {
       setMessage('Invalid profile type selected.');
       setShowPopup(true);
