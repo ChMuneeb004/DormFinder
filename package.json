@@ -1,1 +1,5 @@
-{}
+{
+  "dependencies": {
+    "python": "^0.0.4"
+  }
+}

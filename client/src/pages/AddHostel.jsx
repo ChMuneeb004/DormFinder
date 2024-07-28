@@ -185,18 +185,18 @@ const AddHostel = () => {
       });
       const hostelId = hostelResponse.data._id;
 
-      const stitchFormData = new FormData();
-      stitchFormData.append('hostelId', hostelId);
-      for (const roomImage of hostel.roomImages) {
-        stitchFormData.append('roomImages', roomImage);
-      }
+      // const stitchFormData = new FormData();
+      // stitchFormData.append('hostelId', hostelId);
+      // for (const roomImage of hostel.roomImages) {
+      //   stitchFormData.append('roomImages', roomImage);
+      // }
 
-      const stitchResponse = await axios.post("http://localhost:3001/stitch-room-images", stitchFormData, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      // const stitchResponse = await axios.post("http://localhost:3001/stitch-room-images", stitchFormData, {
+      //   headers: {
+      //     Authorization: `Bearer ${auth.token}`,
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // });
 
       // Stitch Room Images
       // await axios.post("http://localhost:3001/stitch-room-images", {
@@ -209,7 +209,7 @@ const AddHostel = () => {
       //   }
       // });
 
-      console.log('Stitched Room Images Response:', stitchResponse.data);
+      // console.log('Stitched Room Images Response:', stitchResponse.data);
       // .then(response => {
       //   console.log('Stitched image URL:', response.data.stitchedRoomImages);
       // })
