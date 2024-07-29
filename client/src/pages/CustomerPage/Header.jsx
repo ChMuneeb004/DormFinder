@@ -94,7 +94,7 @@ const Header = () => {
                             {/* <Dropdown.Item href="#/action-2" style={styles.dropdownItem}>
                                 <i className="fa fa-gear" style={styles.dropdownIcon}></i> Settings
                             </Dropdown.Item> */}
-                            <Dropdown.Item href="/login" style={styles.dropdownItem}>
+                            <Dropdown.Item to="/login" style={styles.dropdownItem}>
                                 <i className="fa fa-sign-out" style={styles.dropdownIcon}></i> Logout
                             </Dropdown.Item>
                         </Dropdown.Menu>
