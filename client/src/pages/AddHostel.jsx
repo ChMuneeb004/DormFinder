@@ -190,7 +190,7 @@ const AddHostel = () => {
       for (const roomImage of hostel.roomImages) {
         stitchFormData.append('roomImages', roomImage);
       }
-
+      
       const stitchResponse = await axios.post("http://localhost:3001/stitch-room-images", stitchFormData, {
         headers: {
           Authorization: `Bearer ${auth.token}`,

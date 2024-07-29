@@ -54,6 +54,50 @@ const HostelDetail = () => {
         fetchHostel();
     }, [id]);
 
+    
+    // function getstitchImageUrl (image) {
+    //     if (image && image[0]?.stitchedImages[0]?.data) {
+    //         const img = `data:${"image/jpeg"};base64,${image[0]?.stitchedImages[0]?.data}`;
+    //         return img
+    //     }
+    //     return "";
+    // };
+
+    function getStitchImageUrl(image) {
+        if (image && image[0]?.stitchedImages[0]?.data) {
+            const img = `data:${image[0]?.stitchedImages[0]?.contentType};base64,${image[0]?.stitchedImages[0]?.data}`;
+            return img;
+        }
+        return "";
+    }
+
+    const panoramaUrl = getStitchImageUrl(stitchedImageUrl);
+    console.log("Panorama URL:", panoramaUrl);
+
+    useEffect(() => {
+        if (!loading && hostel) {
+            const loadPannellum = async () => {
+                const css = document.createElement("link");
+                css.rel = "stylesheet";
+                css.href = "https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css";
+                document.head.appendChild(css);
+
+                const script = document.createElement("script");
+                script.src = "https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js";
+                script.onload = () => {
+                    const panoramaUrl = getStitchImageUrl(stitchedImageUrl);
+                    pannellum.viewer("panorama", {
+                        type: "equirectangular",
+                        panorama: panoramaUrl,
+                        autoLoad: true,
+                    });
+                };
+                document.body.appendChild(script);
+            };
+
+            loadPannellum();
+        }
+    }, [loading, hostel]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -102,6 +146,7 @@ const HostelDetail = () => {
         return "";
     };
 
+    
     return (
         <>
             <Header />
@@ -179,7 +224,7 @@ const HostelDetail = () => {
                         <p style={styles.text}>{description}</p>
                     </div>
                 </div>
-                {/* <div className="row mb-4">
+                 <div className="row mb-4">
                     <div className="col-12">
                         <h3 style={styles.subtitle}>360° View</h3>
                         <div className="card p-1" style={{ ...styles.card, ...styles.hoverEffect }}>
@@ -189,13 +234,13 @@ const HostelDetail = () => {
                             ></div>
                         </div>
                     </div>
-                </div> */}
-                <div className="row mb-4">
+                </div>
+                {/* <div className="row mb-4">
                     <div className="col-12">
                         <h3>360° View</h3>
                         <div id="panorama" style={{ width: "100%", height: "500px" }}></div>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="row mb-4">
                     <div className="col-12">
