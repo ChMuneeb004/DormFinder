@@ -43,7 +43,7 @@ function Sidebar() {
 
         const fetchUsername = async () => {
             try {
-                const response = await axios.get('dorm-finder-api.vercel.app/getUsername', {
+                const response = await axios.get('http://localhost:3001/getUsername', {
                     headers: {
                         Authorization: `Bearer ${auth.token}`
                     }
