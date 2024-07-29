@@ -21,7 +21,7 @@ function Header() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const hostelResponse = await axios.get("http://localhost:3001/gethostels", {
+                const hostelResponse = await axios.get("dorm-finder-api.vercel.app/gethostels", {
                     headers: {
                         Authorization: `Bearer ${auth.token}`
                     }

@@ -76,9 +76,9 @@ const upload = multer({
 
 // mongoose.connect("mongodb+srv://dormfinder2023:dormfinder@dormfinder.3vddaef.mongodb.net/Dormfinder?retryWrites=true&w=majority&appName=dormfinder");
 
-// mongoose.connect("mongodb+srv://dormfinder2023:dormfinder@dormfinder.3vddaef.mongodb.net/Dormfinder?retryWrites=true&w=majority&appName=dormfinder");
+mongoose.connect("mongodb+srv://dormfinder2023:dormfinder@dormfinder.3vddaef.mongodb.net/Dormfinder?retryWrites=true&w=majority&appName=dormfinder");
 
-mongoose.connect("mongodb://127.0.0.1:27017/Dormfinder");
+// mongoose.connect("mongodb://127.0.0.1:27017/Dormfinder");
 
 
 const secretKey = 'secret_key';

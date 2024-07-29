@@ -24,7 +24,7 @@ function Sidebar() {
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/getUserDetails', {
+                const response = await axios.get('dorm-finder-api.vercel.app/getUserDetails', {
                     headers: {
                         Authorization: `Bearer ${auth.token}`
                     }
@@ -43,7 +43,7 @@ function Sidebar() {
 
         const fetchUsername = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/getUsername', {
+                const response = await axios.get('dorm-finder-api.vercel.app/getUsername', {
                     headers: {
                         Authorization: `Bearer ${auth.token}`
                     }

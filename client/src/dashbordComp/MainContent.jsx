@@ -20,7 +20,7 @@ function MainContent() {
 
   const fetchBookings = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/Customerbookings');
+      const response = await axios.get('dorm-finder-api.vercel.app/Customerbookings');
       setBookings(response.data);
       setLoading(false);
 
